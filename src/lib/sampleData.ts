@@ -3,7 +3,7 @@ export const HERO_BANNERS = [
         id: 1,
         title: "Unleash Your Inner Scientist",
         description: "Explore our latest science experiment kits designed for curious minds.",
-        image: "https://images.unsplash.com/photo-1532094349884-543bb11d23ac?auto=format&fit=crop&q=80&w=1200",
+        image: "https://images.unsplash.com/photo-1517524285303-d7fc883de526?auto=format&fit=crop&q=80&w=1600",
         link: "/category/experiments",
         buttonText: "Shop Kits",
     },
