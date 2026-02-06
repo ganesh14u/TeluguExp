@@ -303,7 +303,7 @@ export default function Home() {
 
       {/* Sticky WhatsApp Button */}
       <div className="fixed bottom-10 right-10 z-100">
-        <Link href="https://wa.me/919876543210" target="_blank" className="relative group flex items-center">
+        <Link href="https://wa.me/918142504687" target="_blank" className="relative group flex items-center">
           <div className="absolute right-full mr-4 bg-white px-4 py-2 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 pointer-events-none">
             <p className="text-xs font-black uppercase tracking-widest text-primary whitespace-nowrap">Need Help? Chat Now</p>
           </div>
