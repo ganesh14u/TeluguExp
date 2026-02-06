@@ -251,9 +251,27 @@ export default function CheckoutPage() {
                 theme: {
                     color: "#0f172a", // Match your primary color or slate-900
                 },
+                modal: {
+                    ondismiss: function () {
+                        toast.error("Payment Cancelled");
+                    },
+                    handleback: true,
+                    confirm_close: true,
+                    escape: true
+                },
+                retry: {
+                    enabled: false
+                } // Disable automatic retry to handle failure manually if needed, or keep default
             };
 
             const paymentObject = new (window as any).Razorpay(options);
+
+            // Listen for failures
+            paymentObject.on('payment.failed', function (response: any) {
+                toast.error(response.error.description || "Payment Failed. Please try again.");
+                console.error("Payment Failed:", response.error);
+            });
+
             paymentObject.open();
             setLoading(false);
 
