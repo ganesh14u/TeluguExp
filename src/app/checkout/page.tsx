@@ -38,7 +38,7 @@ export default function CheckoutPage() {
         phone: ""
     });
 
-    if (!mounted) return null;
+
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -288,6 +288,10 @@ export default function CheckoutPage() {
             setLoading(false);
         }
     };
+
+
+
+    if (!mounted) return null;
 
     if (step === 3) {
         return (
