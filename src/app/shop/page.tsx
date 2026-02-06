@@ -42,45 +42,45 @@ export default function ShopPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-10">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-8 md:mb-10">
                 <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">
                         <Rocket className="h-3 w-3" /> Best Choice
                     </div>
-                    <h1 className="text-5xl font-black tracking-tighter leading-none italic uppercase">
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-none italic uppercase">
                         Our <span className="text-primary NOT-italic">Products</span>
                     </h1>
-                    <p className="text-muted-foreground text-lg font-medium max-w-xl">
+                    <p className="text-muted-foreground text-sm md:text-lg font-medium max-w-xl">
                         Find the best products for your needs.
                     </p>
                 </div>
 
-                <div className="flex gap-4 w-full md:w-auto">
+                <div className="flex gap-3 md:gap-4 w-full md:w-auto">
                     <div className="relative grow md:w-80">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input placeholder="Search products..." className="h-12 pl-10 rounded-xl border-2 transition-all" />
                     </div>
-                    <Button size="icon" variant="outline" className="h-12 w-12 rounded-xl border-2">
+                    <Button size="icon" variant="outline" className="h-12 w-12 rounded-xl border-2 shrink-0">
                         <Filter className="h-4 w-4" />
                     </Button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
                 {/* Sidebar Filters */}
-                <div className="lg:col-span-1 space-y-8 sticky top-24 h-fit">
+                <div className="lg:col-span-1 space-y-6 md:space-y-8 sticky top-24 h-fit">
                     <div>
-                        <h3 className="text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <h3 className="text-sm font-black uppercase tracking-widest mb-4 md:mb-6 flex items-center gap-2">
                             <Sparkles className="h-4 w-4 text-primary" /> Categories
                         </h3>
-                        <div className="space-y-2">
+                        <div className="flex flex-row lg:flex-col overflow-x-scroll lg:overflow-visible gap-2 pb-2 lg:pb-0 no-scrollbar">
                             {shopCategories.map((catSlug) => (
                                 <button
                                     key={catSlug}
                                     onClick={() => setSelectedCategory(catSlug)}
-                                    className={`w-full text-left px-5 py-3 rounded-xl capitalize font-bold transition-all ${selectedCategory === catSlug
+                                    className={`shrink-0 lg:w-full text-left px-4 md:px-5 py-2 md:py-3 rounded-xl capitalize font-bold transition-all text-xs md:text-base whitespace-nowrap ${selectedCategory === catSlug
                                         ? "bg-primary text-primary-foreground -translate-y-0.5"
-                                        : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                                        : "bg-muted/50 lg:bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground border lg:border-none"
                                         }`}
                                 >
                                     {catSlug === "all" ? "All Products" : (categories.find(c => c.slug === catSlug)?.name || catSlug)}
@@ -89,7 +89,7 @@ export default function ShopPage() {
                         </div>
                     </div>
 
-                    <div className="p-6 rounded-3xl bg-linear-to-br from-primary to-secondary text-white relative overflow-hidden group">
+                    <div className="hidden lg:block p-6 rounded-3xl bg-linear-to-br from-primary to-secondary text-white relative overflow-hidden group">
                         <Zap className="absolute -right-4 -bottom-4 h-24 w-24 opacity-10 group-hover:scale-110 transition-transform duration-700" />
                         <h4 className="text-xl font-black mb-2 relative">Special Offer?</h4>
                         <p className="text-white/80 text-sm font-bold mb-4 relative">Get 20% off on your first order. Use code: WELCOME20</p>
@@ -113,7 +113,7 @@ export default function ShopPage() {
                             <p className="text-muted-foreground text-sm font-medium">Try changing your search or category filter.</p>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-8">
                             {filteredProducts.map((product) => (
                                 <ProductCard key={product._id} product={product} />
                             ))}

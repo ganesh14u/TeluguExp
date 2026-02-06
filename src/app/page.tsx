@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-10 pb-10">
       {/* Hero Section */}
-      <section className="relative h-[400px] md:h-[600px] overflow-hidden">
+      <section className="relative h-[500px] md:h-[600px] overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentBanner}
@@ -83,16 +83,16 @@ export default function Home() {
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-primary/80 backdrop-blur-md px-4 py-1 rounded-full mb-6 border border-white/10 w-fit"
+                className="inline-flex items-center gap-2 bg-primary/80 backdrop-blur-md px-3 py-1 md:px-4 md:py-1 rounded-full mb-4 md:mb-6 border border-white/10 w-fit"
               >
-                <Zap className="h-4 w-4 text-white fill-white" />
-                <span className="text-xs font-black uppercase tracking-widest text-white">New Product Available</span>
+                <Zap className="h-3 w-3 md:h-4 md:w-4 text-white fill-white" />
+                <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-white">New Product Available</span>
               </motion.div>
               <motion.h1
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-5xl md:text-8xl font-black max-w-4xl mb-6 tracking-tight leading-none italic uppercase pr-10"
+                className="text-4xl sm:text-5xl md:text-8xl font-black max-w-4xl mb-4 md:mb-6 tracking-tight leading-none italic uppercase pr-4 md:pr-10"
               >
                 {cmsContent?.heroTitle || HERO_BANNERS[currentBanner].title}
               </motion.h1>
@@ -100,7 +100,7 @@ export default function Home() {
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="text-lg md:text-2xl max-w-xl mb-10 text-gray-200 font-medium"
+                className="text-sm sm:text-lg md:text-2xl max-w-xl mb-6 md:mb-10 text-gray-200 font-medium leading-relaxed"
               >
                 {cmsContent?.heroSubtitle || HERO_BANNERS[currentBanner].description}
               </motion.p>
@@ -108,15 +108,15 @@ export default function Home() {
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.7 }}
-                className="flex gap-4"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto"
               >
-                <Link href={HERO_BANNERS[currentBanner].link}>
-                  <Button size="lg" className="h-16 rounded-2xl px-10 gap-3 text-lg font-black hover:scale-105 transition-transform">
+                <Link href={HERO_BANNERS[currentBanner].link} className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto h-14 md:h-16 rounded-2xl px-8 md:px-10 gap-3 text-base md:text-lg font-black hover:scale-105 transition-transform">
                     {HERO_BANNERS[currentBanner].buttonText} <ArrowRight className="h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/shop">
-                  <Button size="lg" variant="outline" className="h-16 rounded-2xl px-10 bg-white/5 backdrop-blur-md border-white/20 text-white font-black hover:bg-white/10 transition-all">
+                <Link href="/shop" className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 md:h-16 rounded-2xl px-8 md:px-10 bg-white/5 backdrop-blur-md border-white/20 text-white font-black hover:bg-white/10 transition-all text-base md:text-lg">
                     Browse All
                   </Button>
                 </Link>
@@ -126,64 +126,60 @@ export default function Home() {
         </AnimatePresence>
 
         {/* Banner Nav Dots */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+        <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
           {HERO_BANNERS.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentBanner(i)}
-              className={`h-2 rounded-full transition-all duration-500 ${currentBanner === i ? "w-12 bg-primary" : "w-2 bg-white/40"}`}
+              className={`h-1.5 md:h-2 rounded-full transition-all duration-500 ${currentBanner === i ? "w-8 md:w-12 bg-primary" : "w-1.5 md:w-2 bg-white/40"}`}
             />
           ))}
         </div>
       </section>
 
       {/* Stats/Trust Badges */}
-      <section className="container mx-auto px-4 -mt-16 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-card/80 backdrop-blur-2xl rounded-3xl border-2 border-white/10">
-          <div className="flex flex-col items-center text-center gap-3 p-4 hover:bg-muted/50 rounded-3xl transition-colors group">
-            <div className="p-4 bg-primary/10 rounded-2xl group-hover:bg-primary/20 transition-colors">
-              <Truck className="h-8 w-8 text-primary" />
+      <section className="container mx-auto px-4 -mt-10 md:-mt-16 relative z-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 p-4 md:p-6 bg-card/80 backdrop-blur-2xl rounded-3xl border-2 border-white/10 shadow-lg">
+          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
+            <div className="p-3 md:p-4 bg-primary/10 rounded-xl md:rounded-2xl group-hover:bg-primary/20 transition-colors">
+              <Truck className="h-6 w-6 md:h-8 md:w-8 text-primary" />
             </div>
-            <span className="font-black uppercase text-xs tracking-widest">Pan India Shipping</span>
-            <span className="text-[10px] text-muted-foreground font-bold uppercase">Fast & Secure</span>
+            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Pan India Shipping</span>
           </div>
-          <div className="flex flex-col items-center text-center gap-3 p-4 hover:bg-muted/50 rounded-3xl transition-colors group">
-            <div className="p-4 bg-blue-500/10 rounded-2xl group-hover:bg-blue-500/20 transition-colors">
-              <ShieldCheck className="h-8 w-8 text-blue-500" />
+          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
+            <div className="p-3 md:p-4 bg-blue-500/10 rounded-xl md:rounded-2xl group-hover:bg-blue-500/20 transition-colors">
+              <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
             </div>
-            <span className="font-black uppercase text-xs tracking-widest">Verified quality</span>
-            <span className="text-[10px] text-muted-foreground font-bold uppercase">Safe for kids</span>
+            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Verified Quality</span>
           </div>
-          <div className="flex flex-col items-center text-center gap-3 p-4 hover:bg-muted/50 rounded-3xl transition-colors group">
-            <div className="p-4 bg-orange-500/10 rounded-2xl group-hover:bg-orange-500/20 transition-colors">
-              <RefreshCcw className="h-8 w-8 text-orange-500" />
+          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
+            <div className="p-3 md:p-4 bg-orange-500/10 rounded-xl md:rounded-2xl group-hover:bg-orange-500/20 transition-colors">
+              <RefreshCcw className="h-6 w-6 md:h-8 md:w-8 text-orange-500" />
             </div>
-            <span className="font-black uppercase text-xs tracking-widest">Easy Returns</span>
-            <span className="text-[10px] text-muted-foreground font-bold uppercase">7 Day Policy</span>
+            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Easy Returns</span>
           </div>
-          <div className="flex flex-col items-center text-center gap-3 p-4 hover:bg-muted/50 rounded-3xl transition-colors group">
-            <div className="p-4 bg-green-500/10 rounded-2xl group-hover:bg-green-500/20 transition-colors">
-              <Zap className="h-8 w-8 text-green-500" />
+          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
+            <div className="p-3 md:p-4 bg-green-500/10 rounded-xl md:rounded-2xl group-hover:bg-green-500/20 transition-colors">
+              <Zap className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
             </div>
-            <span className="font-black uppercase text-xs tracking-widest">Active Support</span>
-            <span className="text-[10px] text-muted-foreground font-bold uppercase">WhatsApp 24/7</span>
+            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Active Support</span>
           </div>
         </div>
       </section>
 
       {/* Featured Categories */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+      <section className="container mx-auto px-4 py-6 md:py-8">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-6">
           <div className="space-y-1">
-            <div className="h-0.5 w-12 bg-primary" />
-            <h2 className="text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
+            <div className="h-0.5 w-12 bg-primary mb-2" />
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
             <p className="text-muted-foreground font-bold uppercase text-[10px] tracking-widest">Find the best products</p>
           </div>
           <Link href="/shop" className="group flex items-center gap-3 text-xs font-black uppercase tracking-widest hover:text-primary transition-colors">
             View All Products <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
           {(categories.length > 0 ? categories : [
             { name: "Experiments", slug: "experiments" },
             { name: "Gadgets", slug: "gadgets" },
@@ -191,16 +187,16 @@ export default function Home() {
             { name: "Seasonal", slug: "seasonal" }
           ]).slice(0, 4).map((cat) => (
             <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
-              <div className="group relative overflow-hidden rounded-3xl bg-muted/30 border-2 border-transparent hover:border-primary/20 p-8 text-center transition-all hover:bg-background">
-                <div className="mb-6 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500 flex justify-center text-primary">
-                  {cat.slug === 'experiments' && <FlaskConical className="h-16 w-16" />}
-                  {cat.slug === 'gadgets' && <Cpu className="h-16 w-16" />}
-                  {cat.slug === 'toys' && <Puzzle className="h-16 w-16" />}
-                  {cat.slug === 'seasonal' && <Gift className="h-16 w-16" />}
-                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-16 w-16" />}
+              <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl bg-muted/30 border-2 border-transparent hover:border-primary/20 p-4 md:p-8 text-center transition-all hover:bg-background">
+                <div className="mb-4 md:mb-6 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500 flex justify-center text-primary">
+                  {cat.slug === 'experiments' && <FlaskConical className="h-10 w-10 md:h-16 md:w-16" />}
+                  {cat.slug === 'gadgets' && <Cpu className="h-10 w-10 md:h-16 md:w-16" />}
+                  {cat.slug === 'toys' && <Puzzle className="h-10 w-10 md:h-16 md:w-16" />}
+                  {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-16 md:w-16" />}
+                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-16 md:w-16" />}
                 </div>
-                <h3 className="font-black text-lg uppercase tracking-tight">{cat.name}</h3>
-                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-2">View More →</p>
+                <h3 className="font-black text-sm md:text-lg uppercase tracking-tight line-clamp-1">{cat.name}</h3>
+                <p className="text-[9px] md:text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1 md:mt-2">View More →</p>
               </div>
             </Link>
           ))}
@@ -208,13 +204,13 @@ export default function Home() {
       </section>
 
       {/* Best Sellers */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+      <section className="container mx-auto px-4 py-6 md:py-8">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-6">
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
               <Zap className="h-3 w-3 fill-red-500" /> Hot This Week
             </div>
-            <h2 className="text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Best <span className="text-primary NOT-italic">Sellers</span></h2>
+            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Best <span className="text-primary NOT-italic">Sellers</span></h2>
           </div>
           <Link href="/shop" className="group flex items-center gap-3 text-xs font-black uppercase tracking-widest hover:text-primary transition-colors">
             View More <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
@@ -227,7 +223,7 @@ export default function Home() {
             <p className="font-black text-xs uppercase tracking-widest text-muted-foreground">Loading Products...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

@@ -31,6 +31,7 @@ export default function CheckoutPage() {
     const [shippingDetails, setShippingDetails] = useState({
         firstName: "",
         lastName: "",
+        email: "",
         street: "",
         city: "",
         state: "",
@@ -53,6 +54,7 @@ export default function CheckoutPage() {
                         setShippingDetails({
                             firstName: session?.user?.name?.split(' ')[0] || "",
                             lastName: session?.user?.name?.split(' ').slice(1).join(' ') || "",
+                            email: session?.user?.email || "",
                             street: defaultAddress.street || "",
                             city: defaultAddress.city || "",
                             state: defaultAddress.state || "",
@@ -79,6 +81,7 @@ export default function CheckoutPage() {
         setShippingDetails({
             firstName: session?.user?.name?.split(' ')[0] || "",
             lastName: session?.user?.name?.split(' ').slice(1).join(' ') || "",
+            email: session?.user?.email || shippingDetails.email || "",
             street: address.street || "",
             city: address.city || "",
             state: address.state || "",
@@ -151,7 +154,7 @@ export default function CheckoutPage() {
                 return;
             }
 
-            if (!shippingDetails.firstName || !shippingDetails.street || !shippingDetails.phone) {
+            if (!shippingDetails.firstName || !shippingDetails.street || !shippingDetails.phone || !shippingDetails.email) {
                 toast.error("Please fill in all shipping details");
                 return;
             }
@@ -252,7 +255,7 @@ export default function CheckoutPage() {
                 },
                 prefill: {
                     name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
-                    email: session.user.email,
+                    email: shippingDetails.email || session.user.email,
                     contact: shippingDetails.phone,
                 },
                 theme: {
@@ -318,13 +321,13 @@ export default function CheckoutPage() {
                     <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Secure <span className="text-primary NOT-italic">Checkout</span></h1>
 
                     <Card className="rounded-[2rem] border-2 bg-white">
-                        <CardHeader className="border-b border-dashed p-8 bg-muted/10 flex flex-row items-center gap-4">
+                        <CardHeader className="border-b border-dashed p-4 md:p-8 bg-muted/10 flex flex-row items-center gap-4">
                             <div className="p-3 bg-primary/10 rounded-2xl"><MapPin className="h-6 w-6 text-primary" /></div>
-                            <CardTitle className="text-xl font-black uppercase tracking-tighter italic">Shipping <span className="text-primary NOT-italic">Details</span></CardTitle>
+                            <CardTitle className="text-lg md:text-xl font-black uppercase tracking-tighter italic">Shipping <span className="text-primary NOT-italic">Details</span></CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-6 p-8">
+                        <CardContent className="space-y-4 md:space-y-6 p-4 md:p-8">
                             {savedAddresses.length > 0 && (
-                                <div className="space-y-4 mb-8">
+                                <div className="space-y-4 mb-6 md:mb-8">
                                     <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Select Saved Address</label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {savedAddresses.map((addr, idx) => (
@@ -343,6 +346,7 @@ export default function CheckoutPage() {
                                             onClick={() => setShippingDetails({
                                                 firstName: session?.user?.name?.split(' ')[0] || "",
                                                 lastName: session?.user?.name?.split(' ').slice(1).join(' ') || "",
+                                                email: session?.user?.email || "",
                                                 street: "", city: "", state: "", zipCode: "", phone: ""
                                             })}
                                             className={`p-4 rounded-2xl border-2 border-dashed cursor-pointer transition-all hover:bg-muted/50 flex flex-col items-center justify-center text-center ${shippingDetails.street === "" ? 'border-primary bg-primary/5' : 'border-muted'
@@ -355,7 +359,7 @@ export default function CheckoutPage() {
                                 </div>
                             )}
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1">
                                     <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">First Name</label>
                                     <Input
@@ -414,6 +418,15 @@ export default function CheckoutPage() {
                                 </div>
                             </div>
                             <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
+                                <Input
+                                    value={shippingDetails.email}
+                                    onChange={e => setShippingDetails({ ...shippingDetails, email: e.target.value })}
+                                    placeholder="Enter email address"
+                                    className="h-12 rounded-xl border-2"
+                                />
+                            </div>
+                            <div className="space-y-1">
                                 <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Phone Number</label>
                                 <Input
                                     value={shippingDetails.phone}
@@ -425,21 +438,7 @@ export default function CheckoutPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="rounded-[2rem] border-2 bg-white">
-                        <CardHeader className="border-b border-dashed p-8 bg-muted/10 flex flex-row items-center gap-4">
-                            <div className="p-3 bg-primary/10 rounded-2xl"><CreditCard className="h-6 w-6 text-primary" /></div>
-                            <CardTitle className="text-xl font-black uppercase tracking-tighter italic">Payment <span className="text-primary NOT-italic">Method</span></CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-8">
-                            <div className="p-5 border-2 border-primary rounded-2xl flex items-center justify-between bg-primary/5">
-                                <div className="flex items-center gap-3">
-                                    <div className="font-black uppercase tracking-widest text-xs italic">Razorpay</div>
-                                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">UPI, Cards, Wallets</div>
-                                </div>
-                                <div className="h-6 w-6 rounded-full border-4 border-primary bg-primary" />
-                            </div>
-                        </CardContent>
-                    </Card>
+
                 </div>
 
                 <div className="lg:mt-24">

@@ -124,12 +124,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             </Link>
 
             {/* Content */}
-            <div className="p-4 flex flex-col grow">
-                <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+            <div className="p-3 md:p-4 flex flex-col grow">
+                <div className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-wider mb-1">
                     {product.category}
                 </div>
                 <Link href={`/product/${product.slug}`}>
-                    <h3 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-12">
+                    <h3 className="font-bold text-sm md:text-lg leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-10 md:min-h-12">
                         {product.name}
                     </h3>
                 </Link>
@@ -140,35 +140,43 @@ export default function ProductCard({ product }: ProductCardProps) {
                         {[...Array(5)].map((_, i) => (
                             <Star
                                 key={i}
-                                className={`h-3 w-3 ${i < Math.floor(product.ratings) ? "fill-current" : "text-gray-300"
+                                className={`h-2.5 w-2.5 md:h-3 md:w-3 ${i < Math.floor(product.ratings) ? "fill-current" : "text-gray-300"
                                     }`}
                             />
                         ))}
                     </div>
-                    <span className="text-[10px] text-muted-foreground font-medium">
+                    <span className="text-[9px] md:text-[10px] text-muted-foreground font-medium">
                         ({product.numReviews})
                     </span>
                 </div>
 
-                {/* Pricing */}
-                <div className="mt-auto pt-3 flex items-end justify-between">
+                {/* Pricing & Add Button */}
+                <div className="mt-auto pt-3 flex items-end justify-between gap-2">
                     <div className="flex flex-col">
-                        <span className="text-xl font-black text-primary">
+                        <span className="text-lg md:text-xl font-black text-primary">
                             ₹{(product.discountPrice || product.price).toLocaleString()}
                         </span>
                         {product.discountPrice && (
-                            <span className="text-xs text-muted-foreground line-through">
+                            <span className="text-[10px] md:text-xs text-muted-foreground line-through">
                                 ₹{product.price.toLocaleString()}
                             </span>
                         )}
                     </div>
-                    <Button
-                        size="icon"
+
+                    <button
                         onClick={handleAddToCart}
-                        className="rounded-full group-hover:scale-110 transition-transform"
+                        className="group/btn flex items-center justify-center font-medium text-white tracking-wide cursor-pointer
+                        bg-linear-to-t from-[#14a73e] to-[#66f771]
+                        shadow-[0_0.7em_1.5em_-0.5em_#14a73e98] hover:shadow-[0_0.5em_1.5em_-0.5em_#14a73e98] active:shadow-[0_0.3em_1em_-0.5em_#14a73e98]
+                        transition-all rounded-full border-none
+                        px-4 py-2 text-xs md:text-sm md:px-5 md:py-2.5"
                     >
-                        <ShoppingBag className="h-4 w-4" />
-                    </Button>
+                        <svg height="20" width="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="mr-1 fill-current">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" />
+                        </svg>
+                        <span>Add</span>
+                    </button>
                 </div>
             </div>
         </motion.div>

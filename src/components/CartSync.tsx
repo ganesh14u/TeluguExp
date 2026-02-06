@@ -1,13 +1,15 @@
-
 "use client";
 
 import { useSession } from "next-auth/react";
 import { useEffect, useRef } from "react";
 import { useCart } from "@/hooks/useCart";
+import { useWishlist } from "@/hooks/useWishlist";
 
 export default function CartSync() {
     const { data: session, status } = useSession();
-    const { items, setItems, clearCart } = useCart();
+    const { items: cartItems, setItems: setCartItems, clearCart } = useCart();
+    const { items: wishlistItems, setItems: setWishlistItems, clearWishlist } = useWishlist();
+
     const prevStatus = useRef(status);
     const isFirstRender = useRef(true);
 
@@ -15,64 +17,96 @@ export default function CartSync() {
     useEffect(() => {
         if (status === 'authenticated' && prevStatus.current !== 'authenticated') {
             // User just logged in
+
+            // 1. Sync Cart
             fetch('/api/users/cart')
                 .then(res => res.json())
                 .then(dbCart => {
                     if (Array.isArray(dbCart)) {
-                        if (items.length > 0) {
+                        if (cartItems.length > 0) {
                             // Merge local cart with DB cart
-                            const mergedItems = [...items];
+                            const mergedItems = [...cartItems];
 
                             dbCart.forEach((dbItem: any) => {
                                 const existingIndex = mergedItems.findIndex(i => i._id === dbItem._id);
                                 if (existingIndex > -1) {
-                                    // If item exists locally, prioritize local state (assume it's more recent or the same)
-                                    // prevents doubling on refresh where local = DB
-                                    // mergedItems[existingIndex].quantity += dbItem.quantity; // REMOVED
-                                    // Keep existing local quantity
+                                    // Local takes precedence for quantity if conflict, or keep local
                                 } else {
                                     mergedItems.push(dbItem);
                                 }
                             });
-                            setItems(mergedItems);
+                            setCartItems(mergedItems);
                         } else if (dbCart.length > 0) {
-                            // Local empty, just restore DB
-                            setItems(dbCart);
+                            setCartItems(dbCart);
                         }
                     }
                 })
                 .catch(err => console.error("Failed to sync cart login", err));
+
+            // 2. Sync Wishlist
+            fetch('/api/users/wishlist')
+                .then(res => res.json())
+                .then(dbWishlist => {
+                    if (Array.isArray(dbWishlist)) {
+                        if (wishlistItems.length > 0) {
+                            // Merge local wishlist with DB wishlist (Union)
+                            const mergedWishlist = [...wishlistItems];
+
+                            dbWishlist.forEach((dbItem: any) => {
+                                if (!mergedWishlist.some(i => i._id === dbItem._id)) {
+                                    mergedWishlist.push(dbItem);
+                                }
+                            });
+                            setWishlistItems(mergedWishlist);
+                        } else if (dbWishlist.length > 0) {
+                            setWishlistItems(dbWishlist);
+                        }
+                    }
+                })
+                .catch(err => console.error("Failed to sync wishlist login", err));
+
         } else if (status === 'unauthenticated' && prevStatus.current === 'authenticated') {
             // User just logged out
             clearCart();
+            clearWishlist();
         }
         prevStatus.current = status;
-    }, [status, items.length, setItems, clearCart]); // items.length in dep array might be risky if items change rapidly during login? 
-    // Actually, we want snapshot of items AT MOMENT of login.
-    // The effect runs when status changes. 'items' current value will be used.
-    // WARNING: 'items' in dependency array means if items change while status is fluctuating this might re-run? 
-    // No, status check guards it.
+    }, [status, cartItems.length, wishlistItems.length, setCartItems, setWishlistItems, clearCart, clearWishlist]);
 
-    // Sync TO DB on changes
+    // Sync Cart TO DB on changes
     useEffect(() => {
         if (status !== 'authenticated') return;
+        if (isFirstRender.current) return;
 
-        // Skip the very first render to avoid double-save if data is just loading
+        const timeoutId = setTimeout(() => {
+            fetch('/api/users/cart', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: cartItems })
+            }).catch(e => console.error("Failed to save cart", e));
+        }, 1000);
+
+        return () => clearTimeout(timeoutId);
+    }, [cartItems, status]);
+
+    // Sync Wishlist TO DB on changes
+    useEffect(() => {
+        if (status !== 'authenticated') return;
         if (isFirstRender.current) {
             isFirstRender.current = false;
             return;
         }
 
         const timeoutId = setTimeout(() => {
-            fetch('/api/users/cart', {
+            fetch('/api/users/wishlist', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items })
-            }).catch(e => console.error("Failed to save cart", e));
+                body: JSON.stringify({ items: wishlistItems })
+            }).catch(e => console.error("Failed to save wishlist", e));
         }, 1000);
 
         return () => clearTimeout(timeoutId);
-    }, [items, status]);
+    }, [wishlistItems, status]);
 
     return null;
 }
