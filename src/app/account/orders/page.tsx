@@ -13,6 +13,7 @@ export default function OrdersPage() {
     const { data: session } = useSession();
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         if (session?.user?.id) {
@@ -36,7 +37,7 @@ export default function OrdersPage() {
                 <div className="flex justify-center py-20 italic font-bold text-muted-foreground">Loading your orders...</div>
             ) : orders.length > 0 ? (
                 <div className="space-y-4">
-                    {orders.map((order) => (
+                    {orders.slice((currentPage - 1) * 3, currentPage * 3).map((order) => (
                         <Card key={order._id} className="rounded-[2rem] border-2 overflow-hidden bg-white hover:border-primary/20 transition-all">
                             <CardContent className="p-0">
                                 <div className="bg-muted/30 p-6 flex flex-col md:flex-row justify-between gap-4 border-b border-dashed">
@@ -85,6 +86,31 @@ export default function OrdersPage() {
                             </CardContent>
                         </Card>
                     ))}
+
+                    {/* Pagination Controls */}
+                    {orders.length > 3 && (
+                        <div className="flex items-center justify-center gap-4 pt-4">
+                            <Button
+                                variant="outline"
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                disabled={currentPage === 1}
+                                className="rounded-xl border-2"
+                            >
+                                Previous
+                            </Button>
+                            <span className="text-sm font-bold">
+                                Page {currentPage} of {Math.ceil(orders.length / 3)}
+                            </span>
+                            <Button
+                                variant="outline"
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(orders.length / 3)))}
+                                disabled={currentPage === Math.ceil(orders.length / 3)}
+                                className="rounded-xl border-2"
+                            >
+                                Next
+                            </Button>
+                        </div>
+                    )}
                 </div>
             ) : (
                 <Card className="rounded-[2.5rem] border-2 overflow-hidden bg-white min-h-[400px] flex flex-col items-center justify-center text-center p-12">

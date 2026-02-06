@@ -10,32 +10,56 @@ export default function CartSync() {
     const { items: cartItems, setItems: setCartItems, clearCart } = useCart();
     const { items: wishlistItems, setItems: setWishlistItems, clearWishlist } = useWishlist();
 
-    const prevStatus = useRef(status);
+    // Track if the user was explicitly authenticated at some point in this session
+    // This helps us distinguish between "initial guest load" and "user logged out"
+    const wasAuthenticated = useRef(false);
+
+    // Prevent initial render from triggering a SAVE to DB
     const isFirstRender = useRef(true);
 
-    // Sync from DB on Login / Clear on Logout
-    useEffect(() => {
-        if (status === 'authenticated' && prevStatus.current !== 'authenticated') {
-            // User just logged in
+    // Refs to hold current items for DB sync logic to avoid stale closures without triggering re-runs
+    const cartItemsRef = useRef(cartItems);
+    const wishlistItemsRef = useRef(wishlistItems);
+    const hasFetchedOnLogin = useRef(false);
 
-            // 1. Sync Cart
-            fetch('/api/users/cart')
+    useEffect(() => {
+        cartItemsRef.current = cartItems;
+    }, [cartItems]);
+
+    useEffect(() => {
+        wishlistItemsRef.current = wishlistItems;
+    }, [wishlistItems]);
+
+    // 1. TRACK AUTH STATUS to detect when to allow logout cleanup
+    useEffect(() => {
+        if (status === 'authenticated') {
+            wasAuthenticated.current = true;
+        }
+    }, [status]);
+
+    // 2. FETCH FROM DB ON LOGIN (or Mount if Authenticated)
+    useEffect(() => {
+        if (status === 'authenticated' && !hasFetchedOnLogin.current) {
+            hasFetchedOnLogin.current = true;
+
+            // Sync Cart
+            fetch('/api/users/cart', { cache: 'no-store' })
                 .then(res => res.json())
                 .then(dbCart => {
                     if (Array.isArray(dbCart)) {
-                        if (cartItems.length > 0) {
-                            // Merge local cart with DB cart
-                            const mergedItems = [...cartItems];
+                        const currentLocalItems = cartItemsRef.current;
 
+                        if (currentLocalItems.length > 0) {
+                            const mergedItems = [...currentLocalItems];
+                            let changed = false;
                             dbCart.forEach((dbItem: any) => {
-                                const existingIndex = mergedItems.findIndex(i => i._id === dbItem._id);
-                                if (existingIndex > -1) {
-                                    // Local takes precedence for quantity if conflict, or keep local
-                                } else {
+                                const exists = mergedItems.some(i => i._id === dbItem._id);
+                                if (!exists) {
                                     mergedItems.push(dbItem);
+                                    changed = true;
                                 }
                             });
-                            setCartItems(mergedItems);
+                            if (changed) setCartItems(mergedItems);
                         } else if (dbCart.length > 0) {
                             setCartItems(dbCart);
                         }
@@ -43,40 +67,53 @@ export default function CartSync() {
                 })
                 .catch(err => console.error("Failed to sync cart login", err));
 
-            // 2. Sync Wishlist
-            fetch('/api/users/wishlist')
+            // Sync Wishlist
+            fetch('/api/users/wishlist', { cache: 'no-store' })
                 .then(res => res.json())
                 .then(dbWishlist => {
                     if (Array.isArray(dbWishlist)) {
-                        if (wishlistItems.length > 0) {
-                            // Merge local wishlist with DB wishlist (Union)
-                            const mergedWishlist = [...wishlistItems];
+                        const currentLocalItems = wishlistItemsRef.current;
 
+                        if (currentLocalItems.length > 0) {
+                            const mergedItems = [...currentLocalItems];
+                            let changed = false;
                             dbWishlist.forEach((dbItem: any) => {
-                                if (!mergedWishlist.some(i => i._id === dbItem._id)) {
-                                    mergedWishlist.push(dbItem);
+                                if (!mergedItems.some(i => i._id === dbItem._id)) {
+                                    mergedItems.push(dbItem);
+                                    changed = true;
                                 }
                             });
-                            setWishlistItems(mergedWishlist);
+                            if (changed) setWishlistItems(mergedItems);
                         } else if (dbWishlist.length > 0) {
                             setWishlistItems(dbWishlist);
                         }
                     }
                 })
                 .catch(err => console.error("Failed to sync wishlist login", err));
+        } else if (status === 'unauthenticated') {
+            hasFetchedOnLogin.current = false;
+        }
+    }, [status, setCartItems, setWishlistItems]);
 
-        } else if (status === 'unauthenticated' && prevStatus.current === 'authenticated') {
+    // 3. CLEAR LOCAL STATE ON LOGOUT
+    useEffect(() => {
+        if (status === 'unauthenticated' && wasAuthenticated.current) {
             // User just logged out
             clearCart();
             clearWishlist();
+            wasAuthenticated.current = false;
         }
-        prevStatus.current = status;
-    }, [status, cartItems.length, wishlistItems.length, setCartItems, setWishlistItems, clearCart, clearWishlist]);
+    }, [status, clearCart, clearWishlist]);
 
-    // Sync Cart TO DB on changes
+    // 4. SAVE CART TO DB ON CHANGES
     useEffect(() => {
         if (status !== 'authenticated') return;
-        if (isFirstRender.current) return;
+
+        // Skip the very first render cycle to avoid saving initial state immediately
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
 
         const timeoutId = setTimeout(() => {
             fetch('/api/users/cart', {
@@ -89,13 +126,10 @@ export default function CartSync() {
         return () => clearTimeout(timeoutId);
     }, [cartItems, status]);
 
-    // Sync Wishlist TO DB on changes
+    // 5. SAVE WISHLIST TO DB ON CHANGES
     useEffect(() => {
         if (status !== 'authenticated') return;
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
+        if (isFirstRender.current) return;
 
         const timeoutId = setTimeout(() => {
             fetch('/api/users/wishlist', {
