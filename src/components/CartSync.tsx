@@ -26,10 +26,10 @@ export default function CartSync() {
                             dbCart.forEach((dbItem: any) => {
                                 const existingIndex = mergedItems.findIndex(i => i._id === dbItem._id);
                                 if (existingIndex > -1) {
-                                    // If item exists, keep the larger quantity or sum?
-                                    // Let's protect the user's current session intent usually. 
-                                    // But safe bet is "max" or "sum". Let's sum.
-                                    mergedItems[existingIndex].quantity += dbItem.quantity;
+                                    // If item exists locally, prioritize local state (assume it's more recent or the same)
+                                    // prevents doubling on refresh where local = DB
+                                    // mergedItems[existingIndex].quantity += dbItem.quantity; // REMOVED
+                                    // Keep existing local quantity
                                 } else {
                                     mergedItems.push(dbItem);
                                 }

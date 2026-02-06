@@ -76,8 +76,27 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
         return () => clearInterval(timer);
     }, [product, isPaused]);
 
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const handleAddToCart = () => {
         if (!product) return;
+
+        // Stock Check
+        const currentQty = cart.items.find(item => item._id === product._id)?.quantity || 0;
+        if (product.stock <= currentQty + quantity - 1) { // -1 because quantity state starts at 1
+            toast.error("Out of Stock", { description: `You can only add ${Math.max(0, product.stock - currentQty)} more.` });
+            return;
+        }
+
+        if (currentQty + quantity > product.stock) {
+            toast.error("Insufficient Stock", { description: `Only ${product.stock} items available in total.` });
+            return;
+        }
+
         cart.addItem(product, quantity);
         toast.success(`${product.name} added to cart!`, {
             description: `Quantity: ${quantity}`,
@@ -88,9 +107,7 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
         });
     };
 
-
-
-    const isWishlisted = product ? wishlist.isInWishlist(product._id) : false;
+    const isWishlisted = mounted && product ? wishlist.isInWishlist(product._id) : false;
 
     const handleWishlist = () => {
         if (!product) return;
@@ -367,7 +384,7 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Price</span>
                     <span className="text-xl font-black text-primary">₹{(product.discountPrice || product.price).toLocaleString()}</span>
                 </div>
-                <Button className="rounded-xl px-10 h-12 font-black uppercase text-xs bg-slate-900">Add to Cart</Button>
+                <Button onClick={handleAddToCart} className="rounded-xl px-10 h-12 font-black uppercase text-xs bg-slate-900">Add to Cart</Button>
             </div>
         </div>
     );

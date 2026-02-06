@@ -1,5 +1,4 @@
-"use client";
-
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Star, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -23,12 +22,19 @@ interface ProductCardProps {
         numReviews: number;
         isFeatured?: boolean;
         isSeasonal?: boolean;
+        stock?: number;
     };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
     const cart = useCart();
     const wishlist = useWishlist();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     // Fallback to first image in array if main image is missing, or placeholder
     const displayImage = product.image || (product.images && product.images.length > 0 ? product.images[0] : null);
 
@@ -39,6 +45,14 @@ export default function ProductCard({ product }: ProductCardProps) {
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // Stock Check
+        const currentQty = cart.items.find(item => item._id === product._id)?.quantity || 0;
+        if ((product as any).stock <= currentQty) {
+            toast.error("Out of Stock", { description: "You have reached the maximum available quantity." });
+            return;
+        }
+
         cart.addItem(product, 1);
         toast.success(`${product.name} added to cart!`, {
             description: "Go to cart to checkout.",
@@ -48,6 +62,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             }
         });
     };
+
+    const isWishlisted = mounted && wishlist.isInWishlist(product._id);
 
     return (
         <motion.div
@@ -61,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (wishlist.isInWishlist(product._id)) {
+                    if (isWishlisted) {
                         wishlist.removeItem(product._id);
                         toast.success("Removed from wishlist");
                     } else {
@@ -69,12 +85,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                         toast.success("Added to wishlist");
                     }
                 }}
-                className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-colors ${wishlist.isInWishlist(product._id)
+                className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-colors ${isWishlisted
                     ? "bg-red-50 text-red-500 hover:bg-red-100"
                     : "bg-white/80 backdrop-blur-md hover:text-red-500"
                     }`}
             >
-                <Heart className={`h-4 w-4 ${wishlist.isInWishlist(product._id) ? "fill-current" : ""}`} />
+                <Heart className={`h-4 w-4 ${isWishlisted ? "fill-current" : ""}`} />
             </button>
 
             {/* Badges */}
