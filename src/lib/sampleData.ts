@@ -15,6 +15,14 @@ export const HERO_BANNERS = [
         link: "/category/gadgets",
         buttonText: "View Gadgets",
     },
+    {
+        id: 3,
+        title: "Discover Future Tech",
+        description: "Experience innovation with our latest drones and robotics collection.",
+        image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?auto=format&fit=crop&q=80&w=1200",
+        link: "/category/toys",
+        buttonText: "Explore More",
+    },
 ];
 
 export const FEATURED_CATEGORIES = [
