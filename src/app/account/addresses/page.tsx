@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { MapPin, Plus } from "lucide-react";
+import { MapPin, Plus, Loader2 } from "lucide-react";
 
 export default function AddressesPage() {
     const { data: session } = useSession();
@@ -107,6 +107,44 @@ export default function AddressesPage() {
         }
     };
 
+    const [isLocating, setIsLocating] = useState(false);
+
+    const handleUseLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation is not supported by your browser");
+            return;
+        }
+
+        setIsLocating(true);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                // Using OpenStreetMap Nominatim for Reverse Geocoding (Free, no key required for client-side usage)
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                const data = await response.json();
+
+                if (data.address) {
+                    setFormData(prev => ({
+                        ...prev,
+                        street: [data.address.house_number, data.address.road, data.address.suburb, data.address.neighbourhood].filter(Boolean).join(', '),
+                        city: data.address.city || data.address.town || data.address.village || "",
+                        state: data.address.state || "",
+                        zipCode: data.address.postcode || ""
+                    }));
+                    toast.success("Location fetched successfully");
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to fetch address details");
+            } finally {
+                setIsLocating(false);
+            }
+        }, () => {
+            toast.error("Unable to retrieve your location");
+            setIsLocating(false);
+        });
+    };
+
     return (
         <div className="space-y-8">
             <section className="bg-white p-8 rounded-[2rem] border-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -164,49 +202,63 @@ export default function AddressesPage() {
                             {editingAddress ? 'Edit' : 'Add New'} <span className="text-primary NOT-italic">Address</span>
                         </DialogTitle>
                     </DialogHeader>
-                    <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Name</label>
-                                <Input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Home/Work" className="rounded-xl border-2" />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone</label>
-                                <Input required value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="+91..." className="rounded-xl border-2" />
-                            </div>
-                        </div>
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Street Address</label>
-                            <Input required value={formData.street} onChange={e => setFormData({ ...formData, street: e.target.value })} placeholder="House No, Area..." className="rounded-xl border-2" />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">City</label>
-                                <Input required value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} placeholder="City" className="rounded-xl border-2" />
-                            </div>
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Pincode</label>
-                                <Input required value={formData.zipCode} onChange={e => setFormData({ ...formData, zipCode: e.target.value })} placeholder="520001" className="rounded-xl border-2" />
-                            </div>
-                        </div>
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">State</label>
-                            <Input required value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} placeholder="State" className="rounded-xl border-2" />
-                        </div>
-                        <div className="flex items-center gap-2 pt-2">
-                            <input
-                                type="checkbox"
-                                id="isDefault"
-                                checked={formData.isDefault}
-                                onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
-                                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                            />
-                            <label htmlFor="isDefault" className="text-xs font-bold uppercase tracking-widest cursor-pointer">Set as default address</label>
-                        </div>
-                        <Button type="submit" className="w-full h-12 rounded-xl font-black uppercase tracking-widest mt-4">
-                            {editingAddress ? 'Update' : 'Save'} Address
+
+                    <div className="mt-4">
+                        <Button
+                            onClick={handleUseLocation}
+                            type="button"
+                            variant="outline"
+                            disabled={isLocating}
+                            className="w-full mb-4 gap-2 rounded-xl border-dashed border-2 font-black uppercase tracking-widest text-[10px] h-12"
+                        >
+                            {isLocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+                            {isLocating ? "Getting Location..." : "Use My Current Location"}
                         </Button>
-                    </form>
+
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Name</label>
+                                    <Input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Home/Work" className="rounded-xl border-2" />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone</label>
+                                    <Input required value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="+91..." className="rounded-xl border-2" />
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Street Address</label>
+                                <Input required value={formData.street} onChange={e => setFormData({ ...formData, street: e.target.value })} placeholder="House No, Area..." className="rounded-xl border-2" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">City</label>
+                                    <Input required value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} placeholder="City" className="rounded-xl border-2" />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Pincode</label>
+                                    <Input required value={formData.zipCode} onChange={e => setFormData({ ...formData, zipCode: e.target.value })} placeholder="520001" className="rounded-xl border-2" />
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">State</label>
+                                <Input required value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} placeholder="State" className="rounded-xl border-2" />
+                            </div>
+                            <div className="flex items-center gap-2 pt-2">
+                                <input
+                                    type="checkbox"
+                                    id="isDefault"
+                                    checked={formData.isDefault}
+                                    onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+                                    className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                />
+                                <label htmlFor="isDefault" className="text-xs font-bold uppercase tracking-widest cursor-pointer">Set as default address</label>
+                            </div>
+                            <Button type="submit" className="w-full h-12 rounded-xl font-black uppercase tracking-widest mt-4">
+                                {editingAddress ? 'Update' : 'Save'} Address
+                            </Button>
+                        </form>
+                    </div>
                 </DialogContent>
             </Dialog>
         </div>

@@ -4,7 +4,7 @@ import { useCart } from "@/hooks/useCart";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, Truck, MapPin, CheckCircle2 } from "lucide-react";
+import { CreditCard, Truck, MapPin, CheckCircle2, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -23,6 +23,44 @@ export default function CheckoutPage() {
     const [discount, setDiscount] = useState(0);
     const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
     const [mounted, setMounted] = useState(false);
+
+    const [isLocating, setIsLocating] = useState(false);
+
+    const handleUseLocation = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation is not supported by your browser");
+            return;
+        }
+
+        setIsLocating(true);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                const { latitude, longitude } = position.coords;
+                // Using OpenStreetMap Nominatim for Reverse Geocoding
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                const data = await response.json();
+
+                if (data.address) {
+                    setShippingDetails(prev => ({
+                        ...prev,
+                        street: [data.address.house_number, data.address.road, data.address.suburb, data.address.neighbourhood].filter(Boolean).join(', '),
+                        city: data.address.city || data.address.town || data.address.village || "",
+                        state: data.address.state || "",
+                        zipCode: data.address.postcode || ""
+                    }));
+                    toast.success("Location fetched successfully");
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error("Failed to fetch address details");
+            } finally {
+                setIsLocating(false);
+            }
+        }, () => {
+            toast.error("Unable to retrieve your location");
+            setIsLocating(false);
+        });
+    };
 
     useEffect(() => {
         setMounted(true);
@@ -358,6 +396,16 @@ export default function CheckoutPage() {
                                     <div className="h-px bg-muted border-dashed border-b mt-8" />
                                 </div>
                             )}
+
+                            <Button
+                                onClick={handleUseLocation}
+                                variant="outline"
+                                disabled={isLocating}
+                                className="w-full mb-6 gap-2 rounded-xl border-dashed border-2 font-black uppercase tracking-widest text-[10px] h-12"
+                            >
+                                {isLocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+                                {isLocating ? "Getting Location..." : "Use My Current Location"}
+                            </Button>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1">

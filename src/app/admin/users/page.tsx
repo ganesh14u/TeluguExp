@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Shield, User, MoreHorizontal, Mail, Loader2, RefreshCw, Search, Trash2 } from "lucide-react";
+import { Shield, User, MoreHorizontal, Mail, Loader2, RefreshCw, Search, Trash2, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -153,6 +153,9 @@ export default function AdminUsersPage() {
                                                 <p className="font-black text-xl tracking-tight group-hover:text-primary transition-colors">{u.name}</p>
                                                 <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 uppercase tracking-widest opacity-60">
                                                     <Mail className="h-3 w-3" /> {u.email}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 uppercase tracking-widest opacity-60">
+                                                    <Phone className="h-3 w-3" /> {u.phone || "N/A"}
                                                 </p>
                                             </div>
                                         </div>

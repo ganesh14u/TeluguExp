@@ -32,10 +32,11 @@ export async function PUT(req: Request) {
         }
 
         const body = await req.json();
-        const { name, addresses } = body;
+        const { name, phone, addresses } = body;
 
         const updateData: any = {};
         if (name) updateData.name = name;
+        if (phone) updateData.phone = phone;
         if (addresses) updateData.addresses = addresses;
 
         const user = await User.findByIdAndUpdate(

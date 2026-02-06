@@ -22,8 +22,8 @@ export default function AccountPage() {
             const fetchData = async () => {
                 try {
                     const [oRes, uRes] = await Promise.all([
-                        fetch(`/api/orders?userId=${session.user.id}`),
-                        fetch('/api/users/profile')
+                        fetch(`/api/orders?userId=${session.user.id}`, { cache: 'no-store' }),
+                        fetch('/api/users/profile', { cache: 'no-store' })
                     ]);
                     const oData = await oRes.json();
                     const uData = await uRes.json();
@@ -60,31 +60,53 @@ export default function AccountPage() {
             </section>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                {/* 1. Basic Profile Card */}
                 <Card className="rounded-[2rem] border-2 overflow-hidden bg-white">
                     <CardHeader className="border-b border-dashed p-6 bg-muted/10">
                         <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Basic <span className="text-primary NOT-italic">Profile</span></CardTitle>
                     </CardHeader>
-                    <CardContent className="p-8 space-y-6">
-                        <div className="grid grid-cols-2 gap-4 text-center">
+                    <CardContent className="p-8 space-y-6 flex flex-col items-center">
+                        <div className="relative h-24 w-24 rounded-full border-4 border-white shadow-xl overflow-hidden mb-2">
+                            {session.user.image ? (
+                                <img
+                                    src={session.user.image}
+                                    alt={session.user.name || "User"}
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <div className="h-full w-full bg-primary/10 flex items-center justify-center">
+                                    <User className="h-10 w-10 text-primary" />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-center w-full">
                             <div className="space-y-1">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</p>
-                                <p className="text-sm font-bold">{session.user.name}</p>
+                                <p className="text-sm font-bold truncate">{userData?.name || session.user.name}</p>
                             </div>
                             <div className="space-y-1">
+                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone Number</p>
+                                <p className="text-sm font-bold truncate">{userData?.phone || "Not Set"}</p>
+                            </div>
+                            <div className="space-y-1 col-span-2">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Member Since</p>
                                 <p className="text-sm font-bold">{userData ? format(new Date(userData.createdAt), 'MMM yyyy') : '...'}</p>
                             </div>
                         </div>
-                        <div className="space-y-1 text-center">
+                        <div className="space-y-1 text-center w-full">
                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</p>
-                            <p className="text-sm font-bold">{session.user.email}</p>
+                            <p className="text-sm font-bold truncate">{userData?.email || session.user.email}</p>
                         </div>
-                        <Link href="/account/settings">
+                        <Link href="/account/settings" className="w-full">
                             <Button variant="outline" className="w-full h-12 rounded-xl border-2 font-black uppercase tracking-widest text-[10px]">Edit Profile Details</Button>
                         </Link>
                     </CardContent>
                 </Card>
 
+
+                {/* 2. Recent Orders Card */}
                 <Card className="rounded-[2rem] border-2 overflow-hidden bg-white">
                     <CardHeader className="border-b border-dashed p-6 bg-muted/10">
                         <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Recent <span className="text-primary NOT-italic">Orders</span></CardTitle>

@@ -116,8 +116,16 @@ const Header = () => {
                         <div className="flex items-center space-x-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full bg-primary/5 hover:bg-primary/10 transition-colors">
-                                        <User className="h-5 w-5 text-primary" />
+                                    <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full bg-primary/5 hover:bg-primary/10 transition-colors p-0 overflow-hidden">
+                                        {session.user?.image ? (
+                                            <img
+                                                src={session.user.image}
+                                                alt={session.user.name || "User"}
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <User className="h-5 w-5 text-primary" />
+                                        )}
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56 mt-2 rounded-2xl p-2 border-2" align="end">

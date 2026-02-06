@@ -37,33 +37,23 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
     ];
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-6xl">
-            <div className="flex flex-col md:flex-row gap-8">
-                {/* Sidebar */}
-                <aside className="w-full md:w-72 space-y-4">
-                    <Card className="rounded-3xl border-2 overflow-hidden bg-white">
-                        <CardHeader className="bg-muted/30 p-8 flex flex-col items-center border-b border-dashed">
-                            <div className="h-24 w-24 rounded-full bg-primary/5 flex items-center justify-center mb-4 relative group">
-                                <User className="h-12 w-12 text-primary" />
-                                <div className="absolute inset-0 rounded-full border-2 border-dashed border-primary/20 group-hover:rotate-180 transition-transform duration-1000" />
-                            </div>
-                            <CardTitle className="text-2xl font-black tracking-tight">{session.user.name}</CardTitle>
-                            <p className="text-sm text-muted-foreground font-bold">{session.user.email}</p>
-                            {session.user.role === 'admin' && (
-                                <div className="mt-4 flex items-center gap-1.5 bg-black text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-                                    <Shield className="h-3 w-3" /> Management
-                                </div>
-                            )}
+        <div className="container mx-auto px-4 py-12 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                {/* Sidebar - Quick Links */}
+                <aside className="md:col-span-1">
+                    <Card className="rounded-[2rem] border-2 overflow-hidden bg-white sticky top-24">
+                        <CardHeader className="border-b border-dashed p-6 bg-muted/10">
+                            <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Quick <span className="text-primary NOT-italic">Links</span></CardTitle>
                         </CardHeader>
-                        <CardContent className="p-3">
-                            <nav className="space-y-1">
+                        <CardContent className="p-4">
+                            <div className="space-y-2">
                                 {navLinks.map((link) => {
                                     const isActive = pathname === link.href;
                                     return (
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-[11px] transition-all ${isActive
+                                            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${isActive
                                                     ? "bg-primary text-white shadow-lg shadow-primary/20"
                                                     : "hover:bg-muted text-muted-foreground hover:text-foreground"
                                                 }`}
@@ -72,13 +62,13 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                                         </Link>
                                     );
                                 })}
-                            </nav>
+                            </div>
                         </CardContent>
                     </Card>
                 </aside>
 
                 {/* Main Content */}
-                <main className="grow">
+                <main className="md:col-span-3">
                     {children}
                 </main>
             </div>

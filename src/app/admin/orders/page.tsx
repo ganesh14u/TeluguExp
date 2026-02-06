@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import Script from "next/script";
 import {
     Dialog,
     DialogContent,
@@ -105,6 +106,25 @@ export default function AdminOrdersPage() {
         setIsDetailsOpen(true);
     };
 
+    const downloadInvoice = () => {
+        if (!selectedOrder) return;
+        const element = document.getElementById('invoice-content');
+        const opt = {
+            margin: 10,
+            filename: `Invoice_${selectedOrder._id.slice(-8).toUpperCase()}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { format: 'a4', orientation: 'portrait' }
+        };
+        // @ts-ignore
+        if (window.html2pdf) {
+            // @ts-ignore
+            window.html2pdf().set(opt).from(element).save();
+        } else {
+            toast.error("PDF Generator is loading, please wait...");
+        }
+    };
+
     const handleExport = () => {
         const csvContent = "data:text/csv;charset=utf-8,"
             + "Order ID,Customer Name,Date,Amount,Status,City\n"
@@ -132,6 +152,8 @@ export default function AdminOrdersPage() {
 
     return (
         <div className="space-y-10 p-2">
+            <Script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" strategy="lazyOnload" />
+
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Store <span className="text-primary NOT-italic">Orders</span></h1>
@@ -407,9 +429,76 @@ export default function AdminOrdersPage() {
 
                             {/* Footer Action - HIDDEN IN PRINT */}
                             <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-3 shrink-0 print:hidden">
-                                <Button onClick={() => window.print()} className="w-full sm:w-auto gap-2 font-bold uppercase tracking-wide">
+                                <Button onClick={downloadInvoice} className="w-full sm:w-auto gap-2 font-bold uppercase tracking-wide">
                                     Print Invoice
                                 </Button>
+                            </div>
+
+                            {/* Hidden Invoice Template for PDF Generation */}
+                            <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
+                                <div id="invoice-content">
+                                    <style>{`
+                                        #invoice-content { width: 800px; padding: 30px; background: #fff; font-family: Arial, sans-serif; }
+                                        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
+                                        .info { display: flex; justify-content: space-between; margin: 20px 0; }
+                                        .info-col { width: 48%; }
+                                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                                        th, td { border-bottom: 1px solid #ddd; padding: 12px; text-align: left; }
+                                        th { background-color: #f8f9fa; }
+                                        .total { text-align: right; margin-top: 20px; font-size: 1.25rem; }
+                                        .paid { color: green; font-weight: bold; border: 2px solid green; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 10px; }
+                                    `}</style>
+                                    <div className="header">
+                                        <div>
+                                            <h2 style={{ margin: 0, color: '#333' }}>INVOICE</h2>
+                                            <p style={{ margin: '5px 0', color: '#666' }}>Order ID: #{selectedOrder._id.slice(-8).toUpperCase()}</p>
+                                            <p style={{ margin: 0, color: '#666' }}>Date: {format(new Date(selectedOrder.createdAt), 'MMM dd, yyyy')}</p>
+                                        </div>
+                                        <div style={{ textAlign: 'right' }}>
+                                            <h3 style={{ margin: 0, color: '#000' }}>Telugu Experiments</h3>
+                                        </div>
+                                    </div>
+
+                                    <div className="info">
+                                        <div className="info-col">
+                                            <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Bill To</h4>
+                                            <p style={{ fontWeight: 'bold', margin: '5px 0' }}>{selectedOrder.shippingAddress?.name}</p>
+                                            <p style={{ margin: '2px 0' }}>{selectedOrder.shippingAddress?.phone}</p>
+                                            <p style={{ margin: '2px 0' }}>{selectedOrder.userId?.email || "Guest"}</p>
+                                        </div>
+                                        <div className="info-col">
+                                            <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Ship To</h4>
+                                            <p style={{ margin: '5px 0' }}>{selectedOrder.shippingAddress?.street}</p>
+                                            <p style={{ margin: '2px 0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
+                                        </div>
+                                    </div>
+
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th style={{ width: '80px', textAlign: 'center' }}>Qty</th>
+                                                <th style={{ width: '120px', textAlign: 'right' }}>Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selectedOrder.orderItems.map((item: any, idx: number) => (
+                                                <tr key={idx}>
+                                                    <td>
+                                                        <div style={{ fontWeight: 'bold' }}>{item.name}</div>
+                                                    </td>
+                                                    <td style={{ textAlign: 'center' }}>{item.quantity}</td>
+                                                    <td style={{ textAlign: 'right' }}>₹{item.price.toLocaleString()}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+
+                                    <div className="total">
+                                        <div style={{ marginBottom: '10px' }}>Total: <span style={{ fontWeight: 'bold' }}>₹{selectedOrder.totalPrice.toLocaleString()}</span></div>
+                                        <span className="paid">PAID</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
