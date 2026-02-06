@@ -15,6 +15,8 @@ import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
+import { toast } from "sonner";
+
 export default function CartSheet({ children }: { children: React.ReactNode }) {
     const cart = useCart();
 
@@ -95,7 +97,13 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                                     variant="ghost"
                                                     size="icon"
                                                     className="h-6 w-6 rounded-sm"
-                                                    onClick={() => cart.updateQuantity(item._id, item.quantity + 1)}
+                                                    onClick={() => {
+                                                        if (item.stock && item.quantity >= item.stock) {
+                                                            toast.error("Stock Limit Reached", { description: `Only ${item.stock} items available.` });
+                                                            return;
+                                                        }
+                                                        cart.updateQuantity(item._id, item.quantity + 1);
+                                                    }}
                                                 >
                                                     <Plus className="h-3 w-3" />
                                                 </Button>

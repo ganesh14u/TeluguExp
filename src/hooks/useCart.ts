@@ -9,6 +9,7 @@ interface CartItem {
     discountPrice?: number;
     image: string;
     quantity: number;
+    stock: number;
 }
 
 interface CartStore {

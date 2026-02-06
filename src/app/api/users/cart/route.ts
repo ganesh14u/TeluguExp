@@ -31,7 +31,8 @@ export async function GET() {
                 price: item.price,
                 discountPrice: item.discountPrice,
                 image: item.image,
-                quantity: item.quantity
+                quantity: item.quantity,
+                stock: item.productId.stock
             };
         }).filter((item: any) => item !== null);
 

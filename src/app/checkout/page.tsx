@@ -22,6 +22,11 @@ export default function CheckoutPage() {
     const [couponCode, setCouponCode] = useState("");
     const [discount, setDiscount] = useState(0);
     const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const [shippingDetails, setShippingDetails] = useState({
         firstName: "",
@@ -32,6 +37,8 @@ export default function CheckoutPage() {
         zipCode: "",
         phone: ""
     });
+
+    if (!mounted) return null;
 
     useEffect(() => {
         const fetchProfile = async () => {

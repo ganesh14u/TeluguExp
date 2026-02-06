@@ -7,6 +7,7 @@ import { Trash2, Plus, Minus, ShoppingBag, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
@@ -76,7 +77,13 @@ export default function CartPage() {
                                             variant="ghost"
                                             size="icon"
                                             className="h-8 w-8 rounded-lg hover:bg-white"
-                                            onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                                            onClick={() => {
+                                                if (item.stock && item.quantity >= item.stock) {
+                                                    toast.error("Stock Limit Reached", { description: `Only ${item.stock} items available.` });
+                                                    return;
+                                                }
+                                                updateQuantity(item._id, item.quantity + 1);
+                                            }}
                                         >
                                             <Plus className="h-3 w-3" />
                                         </Button>
