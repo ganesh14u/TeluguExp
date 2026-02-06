@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ShoppingBag, Zap, ShieldCheck, Truck, RefreshCcw, Loader2 } from "lucide-react";
+import { ArrowRight, ShoppingBag, Zap, ShieldCheck, Truck, RefreshCcw, Loader2, FlaskConical, Cpu, Puzzle, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HERO_BANNERS, FEATURED_CATEGORIES } from "@/lib/sampleData";
 import { useState, useEffect } from "react";
@@ -192,9 +192,12 @@ export default function Home() {
           ]).slice(0, 4).map((cat) => (
             <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
               <div className="group relative overflow-hidden rounded-3xl bg-muted/30 border-2 border-transparent hover:border-primary/20 p-8 text-center transition-all hover:bg-background">
-                <div className="text-6xl mb-6 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500">
-                  {/* Default Icons since we removed icons from categories admin */}
-                  {cat.slug === 'experiments' ? '🧪' : cat.slug === 'gadgets' ? '📱' : cat.slug === 'toys' ? '🧸' : '📦'}
+                <div className="mb-6 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500 flex justify-center text-primary">
+                  {cat.slug === 'experiments' && <FlaskConical className="h-16 w-16" />}
+                  {cat.slug === 'gadgets' && <Cpu className="h-16 w-16" />}
+                  {cat.slug === 'toys' && <Puzzle className="h-16 w-16" />}
+                  {cat.slug === 'seasonal' && <Gift className="h-16 w-16" />}
+                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-16 w-16" />}
                 </div>
                 <h3 className="font-black text-lg uppercase tracking-tight">{cat.name}</h3>
                 <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-2">View More →</p>
