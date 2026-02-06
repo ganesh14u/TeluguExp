@@ -127,6 +127,16 @@ export default function CheckoutPage() {
         toast.info("Coupon removed");
     };
 
+    const loadRazorpaySync = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = () => resolve(true);
+            script.onerror = () => resolve(false);
+            document.body.appendChild(script);
+        });
+    };
+
     const handlePayment = async () => {
         try {
             if (!session) {
@@ -134,61 +144,123 @@ export default function CheckoutPage() {
                 return;
             }
 
-            const finalTotal = totalPrice() - discount;
-
-            // 1. Create Order
-            const orderData = {
-                userId: session.user.id,
-                orderItems: items.map(item => ({
-                    productId: item._id,
-                    name: item.name,
-                    quantity: item.quantity,
-                    price: item.discountPrice || item.price,
-                    image: item.image
-                })),
-                shippingAddress: {
-                    name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
-                    ...shippingDetails
-                },
-                itemsPrice: totalPrice(),
-                shippingPrice: 0,
-                taxPrice: 0,
-                totalPrice: finalTotal,
-                isPaid: true,
-                paidAt: new Date(),
-                orderStatus: "Processing",
-                couponCode: appliedCoupon ? appliedCoupon.code : undefined,
-                discountAmount: discount
-            };
-
-            const orderRes = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
-            });
-
-            if (!orderRes.ok) throw new Error("Failed to create order");
-
-            // 2. Save Address if user has NO addresses
-            if (!savedAddresses || savedAddresses.length === 0) {
-                const newAddress = {
-                    name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
-                    ...shippingDetails,
-                    isDefault: true
-                };
-
-                await fetch('/api/users/profile', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ addresses: [newAddress] })
-                });
+            if (!shippingDetails.firstName || !shippingDetails.street || !shippingDetails.phone) {
+                toast.error("Please fill in all shipping details");
+                return;
             }
 
-            toast.success("Order placed successfully!");
-            setStep(3);
-            clearCart();
+            setLoading(true);
+
+            // 1. Load Razorpay SDK
+            const res = await loadRazorpaySync();
+            if (!res) {
+                toast.error("Razorpay SDK failed to load");
+                setLoading(false);
+                return;
+            }
+
+            const finalTotal = totalPrice() - discount;
+
+            // 2. Create Order on Server (Razorpay)
+            const razorpayOrderRes = await fetch("/api/razorpay/order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: finalTotal }),
+            });
+
+            const razorpayOrder = await razorpayOrderRes.json();
+            if (razorpayOrder.error) throw new Error(razorpayOrder.error);
+
+            // 3. Open Razorpay Checkout
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_SBWgdWuuYDiVuk", // Fallback for safety
+                amount: razorpayOrder.amount,
+                currency: razorpayOrder.currency,
+                name: "Telugu Experiments",
+                description: "Science Kits & Gadgets",
+                image: "/logo.png",
+                order_id: razorpayOrder.id,
+                handler: async function (response: any) {
+                    try {
+                        // 4. On Success -> Create Order in DB
+                        const orderData = {
+                            userId: session.user.id,
+                            orderItems: items.map(item => ({
+                                productId: item._id,
+                                name: item.name,
+                                quantity: item.quantity,
+                                price: item.discountPrice || item.price,
+                                image: item.image
+                            })),
+                            shippingAddress: {
+                                name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
+                                ...shippingDetails
+                            },
+                            itemsPrice: totalPrice(),
+                            shippingPrice: 0,
+                            taxPrice: 0,
+                            totalPrice: finalTotal,
+                            isPaid: true,
+                            paidAt: new Date(),
+                            paymentResult: {
+                                id: response.razorpay_payment_id,
+                                status: "COMPLETED",
+                                update_time: new Date().toISOString(),
+                                email_address: session.user.email,
+                            },
+                            orderStatus: "Processing",
+                            couponCode: appliedCoupon ? appliedCoupon.code : undefined,
+                            discountAmount: discount
+                        };
+
+                        const orderRes = await fetch('/api/orders', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(orderData)
+                        });
+
+                        if (!orderRes.ok) throw new Error("Failed to save order");
+
+                        // Save address if needed
+                        if (!savedAddresses || savedAddresses.length === 0) {
+                            const newAddress = {
+                                name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
+                                ...shippingDetails,
+                                isDefault: true
+                            };
+                            await fetch('/api/users/profile', {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ addresses: [newAddress] })
+                            });
+                        }
+
+                        toast.success("Payment Successful! Order placed.");
+                        clearCart();
+                        setStep(3);
+                    } catch (error) {
+                        console.error(error);
+                        toast.error("Payment successful but failed to save order. Contact support.");
+                    }
+                },
+                prefill: {
+                    name: `${shippingDetails.firstName} ${shippingDetails.lastName}`,
+                    email: session.user.email,
+                    contact: shippingDetails.phone,
+                },
+                theme: {
+                    color: "#0f172a", // Match your primary color or slate-900
+                },
+            };
+
+            const paymentObject = new (window as any).Razorpay(options);
+            paymentObject.open();
+            setLoading(false);
+
         } catch (error: any) {
-            toast.error(error.message || "Something went wrong");
+            console.error(error);
+            toast.error(error.message || "Something went wrong initiating payment");
+            setLoading(false);
         }
     };
 
