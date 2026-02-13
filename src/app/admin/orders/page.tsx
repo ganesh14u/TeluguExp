@@ -58,7 +58,7 @@ export default function AdminOrdersPage() {
     const fetchOrders = async () => {
         setLoading(true);
         try {
-            const res = await fetch("/api/orders");
+            const res = await fetch("/api/orders", { cache: 'no-store' });
             const data = await res.json();
             if (data.error) throw new Error(data.error);
             setOrders(data);
@@ -269,7 +269,7 @@ export default function AdminOrdersPage() {
 
             {/* Order Details Modal */}
             <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-                <DialogContent className="invoice-modal-content max-w-4xl p-0 bg-white rounded-xl shadow-2xl border-none overflow-hidden my-8 max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                <DialogContent className="invoice-modal-content max-w-4xl p-0 bg-white rounded-2xl shadow-2xl border-none overflow-hidden my-8 h-[90vh] flex flex-col">
                     <DialogTitle className="sr-only">Order Details</DialogTitle>
                     <style suppressHydrationWarning>{`
                         @media print {
@@ -313,52 +313,49 @@ export default function AdminOrdersPage() {
                         /* --- SINGLE VIEW FOR BOTH SCREEN ACND PRINT --- */
                         <div className="flex flex-col h-full print:h-auto">
                             {/* Header */}
-                            {/* Header */}
-                            <div className="bg-slate-900 text-white p-6 flex justify-between items-start shrink-0">
+                            <div className="bg-slate-950 text-white p-6 flex justify-between items-center shrink-0">
                                 <div>
-                                    <p className="text-slate-400 font-medium text-xs uppercase tracking-widest mb-1">Order Details</p>
-                                    <h2 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                                    <p className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em] mb-1">Order Details</p>
+                                    <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-3 italic">
                                         #{selectedOrder._id.substring(selectedOrder._id.length - 8).toUpperCase()}
-                                        <Badge className={`ml-2 text-[10px] px-2 py-0.5 rounded-full ${selectedOrder.isPaid ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'
+                                        <Badge className={`px-3 py-1 rounded-lg font-black uppercase text-[10px] tracking-widest ${selectedOrder.isPaid ? 'bg-green-500 text-white border-none' : 'bg-amber-500 text-white border-none'
                                             }`}>
                                             {selectedOrder.isPaid ? 'PAID' : 'PENDING'}
                                         </Badge>
                                     </h2>
-                                    <div className="flex items-center gap-3 text-slate-400 text-sm mt-2">
-                                        <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {format(new Date(selectedOrder.createdAt), "MMM d, yyyy")}</span>
+                                    <div className="flex items-center gap-3 text-slate-400 text-[11px] font-bold mt-2 uppercase tracking-wider">
+                                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(new Date(selectedOrder.createdAt), "MMM d, yyyy")}</span>
                                         <span>•</span>
-                                        <span>{selectedOrder.paymentMethod || 'Online'}</span>
+                                        <span>{selectedOrder.paymentMethod || 'Razorpay'}</span>
                                     </div>
                                 </div>
-                                <Button variant="outline" size="sm" className="bg-white/10 text-white border-white/20 hover:bg-white/20 print:hidden" onClick={() => setIsDetailsOpen(false)}>
+                                <Button variant="outline" size="sm" className="bg-white/5 text-white border-white/20 hover:bg-white/10 rounded-xl h-10 px-6 font-bold uppercase tracking-widest text-[10px] print:hidden" onClick={() => setIsDetailsOpen(false)}>
                                     Close
                                 </Button>
                             </div>
 
-                            {/* Scrollable Content - Expands in Print */}
-                            <div className="p-6 overflow-y-auto space-y-8 print:overflow-visible print:h-auto">
-                                {/* Panels */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-500"><ShieldAlert className="w-3 h-3" /></div>
-                                            Customer
-                                        </h3>
-                                        <div className="space-y-1 text-sm">
-                                            <p className="font-bold text-slate-900">{selectedOrder.shippingAddress?.name}</p>
-                                            <p className="text-slate-600">{selectedOrder.userId?.email}</p>
-                                            <p className="text-slate-600">{selectedOrder.shippingAddress?.phone}</p>
+                            {/* Scrollable Content */}
+                            <div className="flex-1 overflow-y-auto p-6 space-y-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                                {/* Details Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-center">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary"><ShieldAlert className="w-4 h-4" /></div>
+                                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</h3>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="font-black text-slate-900 uppercase italic text-lg tracking-tight">{selectedOrder.shippingAddress?.name}</p>
+                                            <p className="text-sm text-slate-500 font-bold">{selectedOrder.shippingAddress?.phone}</p>
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-500"><Truck className="w-3 h-3" /></div>
-                                            Shipping
-                                        </h3>
-                                        <div className="space-y-1 text-sm">
-                                            <p className="font-bold text-slate-900">{selectedOrder.shippingAddress?.street}</p>
-                                            <p className="text-slate-600">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state}</p>
-                                            <p className="text-slate-600 font-mono text-xs">{selectedOrder.shippingAddress?.zipCode}</p>
+                                    <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-center">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary"><Truck className="w-4 h-4" /></div>
+                                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shipping</h3>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <p className="font-black text-slate-900 uppercase italic text-sm tracking-tight line-clamp-1">{selectedOrder.shippingAddress?.street}</p>
+                                            <p className="text-[11px] text-slate-500 font-black uppercase tracking-wider">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -390,97 +387,78 @@ export default function AdminOrdersPage() {
                                 </div>
 
                                 {/* Breakdown */}
-                                <div className="bg-slate-50 rounded-xl p-4 space-y-2">
-                                    <div className="flex justify-between text-sm">
-                                        <span className="text-slate-500">Subtotal</span>
-                                        <span className="font-medium text-slate-900">₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
+                                <div className="bg-slate-950 rounded-2xl p-6 text-white text-right space-y-1 relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-8 opacity-5">
+                                        <CheckCircle className="h-24 w-24" />
                                     </div>
-                                    {selectedOrder.couponCode && (
-                                        <div className="flex justify-between text-sm text-green-600">
-                                            <span className="font-medium flex items-center gap-1">Coupons <span className="text-[10px] bg-green-100 px-1.5 rounded">{selectedOrder.couponCode}</span></span>
-                                            <span className="font-bold">-₹{selectedOrder.discountAmount?.toLocaleString()}</span>
-                                        </div>
-                                    )}
-                                    <div className="flex justify-between text-lg pt-2 border-t border-slate-200 mt-2">
-                                        <span className="font-bold text-slate-900">Total</span>
-                                        <span className="font-black text-primary">₹{(selectedOrder.totalPrice || 0).toLocaleString()}</span>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">Final Summary</p>
+                                    <div className="flex justify-between items-center text-sm font-bold text-white/60">
+                                        <span>Subtotal</span>
+                                        <span>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
+                                    </div>
+                                    <div className="flex justify-between items-end pt-4 border-t border-white/10 mt-2">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Total Amount</span>
+                                        <span className="text-4xl font-black italic tracking-tighter text-primary">₹{(selectedOrder.totalPrice || 0).toLocaleString()}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Footer Action - HIDDEN IN PRINT */}
-                            <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-3 shrink-0 no-print">
-                                <Button onClick={handlePrint} className="w-full sm:w-auto gap-2 font-bold uppercase tracking-wide">
+                            {/* Sticky Footer */}
+                            <div className="p-6 border-t border-slate-100 bg-white flex justify-end gap-3 shrink-0 no-print shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
+                                <Button onClick={handlePrint} className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/30 hover:scale-105 transition-all italic gap-3">
                                     <Download className="h-4 w-4" /> Print Invoice
                                 </Button>
                             </div>
 
                             {/* This is the container that will be visible in Print */}
-                            <div className="hidden print:block print-container">
-                                <div style={{ marginBottom: '30px' }}>
-                                    <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Order Details</p>
-                                    <h2 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', margin: '0 0 8px 0' }}>#{selectedOrder._id.slice(-8).toUpperCase()}</h2>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span style={{ border: '1px solid #16a34a', color: '#16a34a', fontSize: '10px', fontWeight: '900', padding: '2px 8px', borderRadius: '4px' }}>PAID</span>
-                                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#64748b' }}>{format(new Date(selectedOrder.createdAt), 'MMM d, yyyy')}</span>
-                                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#64748b' }}>• {selectedOrder.paymentMethod || 'Razorpay'}</span>
+                            <div className="hidden print:block print-container" style={{ width: '100%' }}>
+                                <div style={{ marginBottom: '45px' }}>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Order Details</p>
+                                    <h2 style={{ fontSize: '32px', fontWeight: '900', color: '#000', margin: '0 0 10px 0' }}>#{selectedOrder._id.slice(-8).toUpperCase()}</h2>
+                                    <p style={{ fontSize: '15px', fontWeight: '900', color: '#16a34a', margin: '0' }}>{selectedOrder.isPaid ? 'PAID' : 'PENDING'}</p>
+                                    <p style={{ fontSize: '15px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{format(new Date(selectedOrder.createdAt), 'MMM d, yyyy')}</p>
+                                    <p style={{ fontSize: '15px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>• {selectedOrder.paymentMethod || 'Razorpay'}</p>
+                                </div>
+
+                                <div style={{ marginBottom: '45px' }}>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Customer</p>
+                                    <p style={{ fontSize: '18px', fontWeight: '900', color: '#000', margin: '0' }}>{selectedOrder.shippingAddress?.name}</p>
+                                    <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.phone}</p>
+                                </div>
+
+                                <div style={{ marginBottom: '45px' }}>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Shipping</p>
+                                    <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '0' }}>{selectedOrder.shippingAddress?.street}</p>
+                                    <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state}</p>
+                                    <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.zipCode}</p>
+                                </div>
+
+                                <div style={{ marginBottom: '45px' }}>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '20px' }}>Order Items</p>
+                                    <div style={{ borderTop: '4px solid #000' }}>
+                                        {selectedOrder.orderItems.map((item: any, idx: number) => (
+                                            <div key={idx} style={{ padding: '20px 0', borderBottom: '1px solid #eee' }}>
+                                                <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '0' }}>{item.name}</p>
+                                                <p style={{ fontSize: '14px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>Qty: {item.quantity}</p>
+                                                <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>₹{(item.price * item.quantity).toLocaleString()}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #e2e8f0' }}>
-                                    <div>
-                                        <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Customer</p>
-                                        <p style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a', margin: '0' }}>{selectedOrder.shippingAddress?.name}</p>
-                                        <p style={{ fontSize: '14px', color: '#475569', margin: '2px 0' }}>{selectedOrder.shippingAddress?.phone}</p>
-                                    </div>
-                                    <div>
-                                        <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Shipping Address</p>
-                                        <p style={{ fontSize: '14px', color: '#475569', margin: '0', lineHeight: '1.4' }}>{selectedOrder.shippingAddress?.street}</p>
-                                        <p style={{ fontSize: '14px', color: '#475569', margin: '0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
-                                    </div>
-                                </div>
-
-                                <div style={{ marginBottom: '30px' }}>
-                                    <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '12px' }}>Items Summary</p>
-                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                                        <thead>
-                                            <tr>
-                                                <th style={{ textAlign: 'left', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Product</th>
-                                                <th style={{ textAlign: 'center', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Qty</th>
-                                                <th style={{ textAlign: 'right', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {selectedOrder.orderItems.map((item: any, idx: number) => (
-                                                <tr key={idx}>
-                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: '700' }}>{item.name}</td>
-                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', textAlign: 'center' }}>{item.quantity}</td>
-                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: '700', textAlign: 'right' }}>₹{(item.price * item.quantity).toLocaleString()}</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div style={{ marginLeft: 'auto', width: '250px' }}>
+                                <div style={{ width: '100%', marginTop: '30px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                                        <span style={{ fontSize: '14px', color: '#64748b' }}>Subtotal</span>
-                                        <span style={{ fontSize: '14px', fontWeight: '700' }}>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
+                                        <span style={{ fontSize: '18px', color: '#000', fontWeight: '900' }}>Subtotal</span>
+                                        <span style={{ fontSize: '18px', fontWeight: '900', color: '#000' }}>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
                                     </div>
-                                    {selectedOrder.discountAmount > 0 && (
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', color: '#16a34a' }}>
-                                            <span style={{ fontSize: '14px' }}>Discount</span>
-                                            <span style={{ fontSize: '14px', fontWeight: '700' }}>-₹{selectedOrder.discountAmount.toLocaleString()}</span>
-                                        </div>
-                                    )}
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '2px solid #0f172a', marginTop: '10px' }}>
-                                        <span style={{ fontSize: '16px', fontWeight: '900' }}>TOTAL</span>
-                                        <span style={{ fontSize: '20px', fontWeight: '900' }}>₹{selectedOrder.totalPrice.toLocaleString()}</span>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '20px', borderTop: '5px solid #000' }}>
+                                        <span style={{ fontSize: '22px', fontWeight: '900', color: '#000' }}>Total</span>
+                                        <span style={{ fontSize: '26px', fontWeight: '900', color: '#000' }}>₹{selectedOrder.totalPrice.toLocaleString()}</span>
                                     </div>
                                 </div>
 
-                                <div style={{ marginTop: '80px', textAlign: 'center', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
-                                    <p style={{ color: '#94a3b8', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Telugu Experiments</p>
+                                <div style={{ marginTop: '20px', textAlign: 'center', borderTop: '2px solid #000', paddingTop: '10px' }}>
+                                    <p style={{ color: '#000', fontSize: '16px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.6em' }}>Telugu Experiments</p>
                                 </div>
                             </div>
 

@@ -17,7 +17,7 @@ export default function OrdersPage() {
 
     useEffect(() => {
         if (session?.user?.id) {
-            fetch(`/api/orders?userId=${session.user.id}`)
+            fetch(`/api/orders?userId=${session.user.id}`, { cache: 'no-store' })
                 .then(res => res.json())
                 .then(data => {
                     if (!data.error) setOrders(data);
@@ -62,9 +62,6 @@ export default function OrdersPage() {
                                             }`}>
                                             {order.orderStatus}
                                         </div>
-                                        <Link href={`/account/orders/${order._id}`}>
-                                            <Button variant="outline" className="h-9 rounded-xl border-2 font-black uppercase tracking-widest text-[9px]">View Details</Button>
-                                        </Link>
                                     </div>
                                 </div>
                                 <div className="p-6 space-y-4">

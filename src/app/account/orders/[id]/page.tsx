@@ -118,14 +118,14 @@ export default function OrderDetailsPage() {
                         <CardContent className="p-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
                             <div className="space-y-1">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Contact</p>
-                                <p className="font-bold">{order.shippingAddress.name}</p>
-                                <p className="text-sm text-muted-foreground font-medium">{order.shippingAddress.phone}</p>
+                                <p className="font-bold">{order.shippingAddress?.name || "N/A"}</p>
+                                <p className="text-sm text-muted-foreground font-medium">{order.shippingAddress?.phone || "N/A"}</p>
                             </div>
                             <div className="space-y-1">
                                 <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Address</p>
                                 <p className="text-sm font-bold leading-relaxed">
-                                    {order.shippingAddress.street}<br />
-                                    {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                                    {order.shippingAddress?.street || "N/A"}<br />
+                                    {order.shippingAddress?.city || ""}, {order.shippingAddress?.state || ""} {order.shippingAddress?.zipCode || ""}
                                 </p>
                             </div>
                         </CardContent>
@@ -194,14 +194,14 @@ export default function OrderDetailsPage() {
                     <div className="info">
                         <div className="info-col">
                             <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Bill To</h4>
-                            <p style={{ fontWeight: 'bold', margin: '5px 0' }}>{order.shippingAddress.name}</p>
-                            <p style={{ margin: '2px 0' }}>{order.shippingAddress.phone}</p>
+                            <p style={{ fontWeight: 'bold', margin: '5px 0' }}>{order.shippingAddress?.name || "N/A"}</p>
+                            <p style={{ margin: '2px 0' }}>{order.shippingAddress?.phone || "N/A"}</p>
                             <p style={{ margin: '2px 0' }}>{session?.user?.email}</p>
                         </div>
                         <div className="info-col">
                             <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Ship To</h4>
-                            <p style={{ margin: '5px 0' }}>{order.shippingAddress.street}</p>
-                            <p style={{ margin: '2px 0' }}>{order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.zipCode}</p>
+                            <p style={{ margin: '5px 0' }}>{order.shippingAddress?.street || "N/A"}</p>
+                            <p style={{ margin: '2px 0' }}>{order.shippingAddress?.city || ""}, {order.shippingAddress?.state || ""} - {order.shippingAddress?.zipCode || ""}</p>
                         </div>
                     </div>
 
