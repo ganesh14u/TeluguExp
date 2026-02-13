@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, User, Search, Menu, Heart, Zap, ShoppingBag, Bell, Check } from "lucide-react";
+import { ShoppingCart, User, Search, Menu, Heart, Zap, ShoppingBag, Bell, Check, FlaskConical, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAdminNotifications } from "@/context/AdminNotificationContext";
 import { useUserNotifications } from "@/context/UserNotificationContext";
@@ -406,46 +406,67 @@ const Header = () => {
                                 <Menu className="h-6 w-6" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="right">
-                            <SheetHeader className="sr-only">
-                                <SheetTitle>Navigation Menu</SheetTitle>
+                        <SheetContent side="right" className="p-0 border-l-0 w-[85%] sm:w-[400px] bg-slate-950 text-white">
+                            <SheetHeader className="p-8 border-b border-white/5">
+                                <SheetTitle className="text-left text-primary font-black uppercase italic tracking-tighter text-2xl flex items-center gap-2">
+                                    <FlaskConical className="h-6 w-6" /> Telugu <span className="text-white NOT-italic">Exp</span>
+                                </SheetTitle>
                             </SheetHeader>
-                            <div className="flex flex-col space-y-4 mt-8">
-                                {!pathname.startsWith('/admin') && (
-                                    <>
-                                        {navLinks.map((link) => (
-                                            <Link
-                                                key={link.name}
-                                                href={link.href}
-                                                onClick={() => setIsOpen(false)}
-                                                className="text-lg font-medium hover:text-primary"
-                                            >
-                                                {link.name}
-                                            </Link>
-                                        ))}
-                                        {!session && (
-                                            <Link href="/login" onClick={() => setIsOpen(false)}>
-                                                <Button className="w-full">Login / Signup</Button>
-                                            </Link>
-                                        )}
-                                    </>
-                                )}
-                                {session && (
-                                    <>
-                                        <Link href="/account" onClick={() => setIsOpen(false)}>Account</Link>
-                                        <Link href="/account/orders" onClick={() => setIsOpen(false)}>Orders</Link>
-                                        {session.user?.role === 'admin' && (
-                                            <Link
-                                                href={pathname.startsWith('/admin') ? "/" : "/admin"}
-                                                onClick={() => setIsOpen(false)}
-                                                className="text-primary font-black uppercase tracking-tighter"
-                                            >
-                                                {pathname.startsWith('/admin') ? "Back to Home Site" : "Admin Dashboard"}
-                                            </Link>
-                                        )}
-                                        <Button variant="ghost" onClick={() => signOut()} className="justify-start px-0 font-bold text-red-500">Logout</Button>
-                                    </>
-                                )}
+
+                            <div className="flex flex-col h-[calc(100vh-100px)] justify-between p-8">
+                                <div className="space-y-6">
+                                    {!pathname.startsWith('/admin') ? (
+                                        <div className="space-y-4">
+                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-6">Explore Site</p>
+                                            {navLinks.map((link) => (
+                                                <Link
+                                                    key={link.name}
+                                                    href={link.href}
+                                                    onClick={() => setIsOpen(false)}
+                                                    className={`block text-3xl font-black uppercase italic tracking-tighter transition-all ${pathname === link.href ? 'text-primary' : 'text-white hover:text-primary'}`}
+                                                >
+                                                    {link.name}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-6">Admin Panel</p>
+                                            <Link href="/admin" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Dashboard</Link>
+                                            <Link href="/admin/products" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Products</Link>
+                                            <Link href="/admin/orders" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Orders</Link>
+                                            <Link href="/admin/coupons" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Coupons</Link>
+                                            <Link href="/" onClick={() => setIsOpen(false)} className="block text-sm font-black uppercase tracking-widest text-primary pt-10">← Back to Store</Link>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="space-y-6 border-t border-white/5 pt-8">
+                                    {session ? (
+                                        <div className="space-y-4">
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="h-12 w-12 rounded-2xl bg-white/10 overflow-hidden border border-white/10">
+                                                    {session.user?.image ? <img src={session.user.image} className="h-full w-full object-cover" alt="" /> : <User className="h-full w-full p-3 text-white/40" />}
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-black uppercase tracking-tight">{session.user?.name}</span>
+                                                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Active Session</span>
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-3">
+                                                <Link href="/account" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">Profile</Link>
+                                                <Link href="/account/orders" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">Orders</Link>
+                                            </div>
+                                            <Button variant="ghost" onClick={() => signOut()} className="w-full h-12 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 font-black uppercase text-[10px] tracking-[0.2em] transition-all">Sign Out Account</Button>
+                                        </div>
+                                    ) : (
+                                        <Link href="/login" onClick={() => setIsOpen(false)}>
+                                            <Button className="w-full h-16 rounded-2xl font-black uppercase italic text-lg shadow-2xl shadow-primary/20">
+                                                Join The Lab <ArrowRight className="ml-2 h-5 w-5" />
+                                            </Button>
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
                         </SheetContent>
                     </Sheet>

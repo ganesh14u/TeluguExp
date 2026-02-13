@@ -186,90 +186,92 @@ export default function AdminOrdersPage() {
                 </div>
             </div>
 
-            <div className="bg-background border-2 rounded-[3rem] overflow-hidden shadow-2xl shadow-black/5">
-                <Table>
-                    <TableHeader className="bg-muted/50 border-b-2">
-                        <TableRow className="hover:bg-transparent border-none">
-                            <TableHead className="h-20 pl-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order ID</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Customer</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order Date</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Amount</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Status</TableHead>
-                            <TableHead className="h-20 text-right pr-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <TableRow>
-                                <TableCell colSpan={6} className="h-80 text-center">
-                                    <div className="flex flex-col items-center justify-center">
-                                        <Loader2 className="h-12 w-12 animate-spin text-primary opacity-20 mb-4" />
-                                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Loading Orders...</p>
-                                    </div>
-                                </TableCell>
+            <div className="bg-background border-2 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-black/5 overflow-x-auto">
+                <div className="min-w-[800px] md:min-w-full">
+                    <Table>
+                        <TableHeader className="bg-muted/50 border-b-2">
+                            <TableRow className="hover:bg-transparent border-none">
+                                <TableHead className="h-20 pl-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order ID</TableHead>
+                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Customer</TableHead>
+                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order Date</TableHead>
+                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Amount</TableHead>
+                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Status</TableHead>
+                                <TableHead className="h-20 text-right pr-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
                             </TableRow>
-                        ) : filteredOrders.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={6} className="h-80 text-center">
-                                    <p className="text-muted-foreground font-black uppercase opacity-20 text-4xl italic tracking-tighter">No Orders Found</p>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            filteredOrders.map((order) => (
-                                <TableRow key={order._id} className="group hover:bg-primary/2 transition-colors border-muted/20">
-                                    <TableCell className="pl-10 py-8 font-black text-sm">
-                                        <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                                <Package className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                                            </div>
-                                            <span className="tracking-tighter font-black opacity-40">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex flex-col">
-                                            <span className="font-black text-xl tracking-tight uppercase italic">{order.shippingAddress?.name || "GUEST"}</span>
-                                            <span className="text-[9px] font-black text-muted-foreground uppercase mt-1 tracking-[0.2em] opacity-50">{order.shippingAddress?.city}</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-sm font-black text-muted-foreground italic">
-                                        {format(new Date(order.createdAt), "MMM d, yyyy")}
-                                    </TableCell>
-                                    <TableCell className="font-black text-primary text-2xl tracking-tighter italic">₹{(order.totalPrice || 0).toLocaleString()}</TableCell>
-                                    <TableCell>
-                                        <Select
-                                            defaultValue={order.orderStatus}
-                                            onValueChange={(val: any) => handleStatusUpdate(order._id, val)}
-                                        >
-                                            <SelectTrigger className={`w-36 h-10 rounded-xl font-black uppercase text-[9px] tracking-widest border-2 ${order.orderStatus === 'Delivered' ? 'text-green-600 bg-green-50 border-green-200' :
-                                                order.orderStatus === 'Cancelled' ? 'text-red-600 bg-red-50 border-red-200' :
-                                                    'text-primary bg-primary/5 border-primary/20'
-                                                }`}>
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                            <SelectContent className="rounded-2xl border-2 font-bold uppercase text-[10px] tracking-widest">
-                                                <SelectItem value="Pending">Pending</SelectItem>
-                                                <SelectItem value="Processing">Processing</SelectItem>
-                                                <SelectItem value="Shipped">Shipped</SelectItem>
-                                                <SelectItem value="Delivered">Delivered</SelectItem>
-                                                <SelectItem value="Cancelled">Cancelled</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </TableCell>
-                                    <TableCell className="text-right pr-10">
-                                        <div className="flex justify-end gap-2">
-                                            <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl hover:bg-primary/10 hover:text-primary transition-all" onClick={() => openDetails(order)}>
-                                                <Eye className="h-6 w-6" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl hover:bg-red-50 hover:text-red-500 transition-all" onClick={() => handleDeleteOrder(order._id)}>
-                                                <Trash2 className="h-6 w-6" />
-                                            </Button>
+                        </TableHeader>
+                        <TableBody>
+                            {loading ? (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="h-80 text-center">
+                                        <div className="flex flex-col items-center justify-center">
+                                            <Loader2 className="h-12 w-12 animate-spin text-primary opacity-20 mb-4" />
+                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Loading Orders...</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                            ) : filteredOrders.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="h-80 text-center">
+                                        <p className="text-muted-foreground font-black uppercase opacity-20 text-4xl italic tracking-tighter">No Orders Found</p>
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                filteredOrders.map((order) => (
+                                    <TableRow key={order._id} className="group hover:bg-primary/2 transition-colors border-muted/20">
+                                        <TableCell className="pl-10 py-8 font-black text-sm">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-10 w-10 rounded-xl bg-muted/50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                                                    <Package className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                                                </div>
+                                                <span className="tracking-tighter font-black opacity-40">#{order._id.substring(order._id.length - 8).toUpperCase()}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-col">
+                                                <span className="font-black text-xl tracking-tight uppercase italic">{order.shippingAddress?.name || "GUEST"}</span>
+                                                <span className="text-[9px] font-black text-muted-foreground uppercase mt-1 tracking-[0.2em] opacity-50">{order.shippingAddress?.city}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-sm font-black text-muted-foreground italic">
+                                            {format(new Date(order.createdAt), "MMM d, yyyy")}
+                                        </TableCell>
+                                        <TableCell className="font-black text-primary text-2xl tracking-tighter italic">₹{(order.totalPrice || 0).toLocaleString()}</TableCell>
+                                        <TableCell>
+                                            <Select
+                                                defaultValue={order.orderStatus}
+                                                onValueChange={(val: any) => handleStatusUpdate(order._id, val)}
+                                            >
+                                                <SelectTrigger className={`w-36 h-10 rounded-xl font-black uppercase text-[9px] tracking-widest border-2 ${order.orderStatus === 'Delivered' ? 'text-green-600 bg-green-50 border-green-200' :
+                                                    order.orderStatus === 'Cancelled' ? 'text-red-600 bg-red-50 border-red-200' :
+                                                        'text-primary bg-primary/5 border-primary/20'
+                                                    }`}>
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent className="rounded-2xl border-2 font-bold uppercase text-[10px] tracking-widest">
+                                                    <SelectItem value="Pending">Pending</SelectItem>
+                                                    <SelectItem value="Processing">Processing</SelectItem>
+                                                    <SelectItem value="Shipped">Shipped</SelectItem>
+                                                    <SelectItem value="Delivered">Delivered</SelectItem>
+                                                    <SelectItem value="Cancelled">Cancelled</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </TableCell>
+                                        <TableCell className="text-right pr-10">
+                                            <div className="flex justify-end gap-2">
+                                                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl hover:bg-primary/10 hover:text-primary transition-all" onClick={() => openDetails(order)}>
+                                                    <Eye className="h-6 w-6" />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" className="h-12 w-12 rounded-xl hover:bg-red-50 hover:text-red-500 transition-all" onClick={() => handleDeleteOrder(order._id)}>
+                                                    <Trash2 className="h-6 w-6" />
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
 
             {/* Order Details Modal */}
