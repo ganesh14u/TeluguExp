@@ -7,8 +7,18 @@ import { Button } from "@/components/ui/button";
 import {
     Sheet,
     SheetContent,
+    SheetHeader,
+    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+    Dialog as SearchDialog,
+    DialogContent as SearchDialogContent,
+    DialogTitle as SearchDialogTitle,
+    DialogHeader as SearchDialogHeader
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession, signOut } from "next-auth/react";
 import {
@@ -33,9 +43,37 @@ const Header = () => {
     const cart = useCart();
     const wishlist = useWishlist();
 
+    // Search State
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    useEffect(() => {
+        const fetchResults = async () => {
+            if (searchQuery.length < 2) {
+                setSearchResults([]);
+                return;
+            }
+            setIsSearching(true);
+            try {
+                const res = await fetch(`/api/products?q=${searchQuery}`);
+                const data = await res.json();
+                setSearchResults(data.slice(0, 5)); // Show top 5
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setIsSearching(false);
+            }
+        };
+
+        const timer = setTimeout(fetchResults, 300);
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
 
     const navLinks = [
         { name: "Home", href: "/" },
@@ -79,9 +117,88 @@ const Header = () => {
                 <div className="flex items-center space-x-2">
                     {!pathname.startsWith('/admin') ? (
                         <>
-                            <Button variant="ghost" size="icon" className="hidden sm:flex">
-                                <Search className="h-5 w-5" />
-                            </Button>
+                            <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="hidden sm:flex transition-all hover:bg-primary/10 hover:text-primary rounded-full"
+                                    onClick={() => setIsSearchOpen(true)}
+                                >
+                                    <Search className="h-5 w-5" />
+                                </Button>
+                                <SearchDialogContent className="sm:max-w-[550px] p-0 gap-0 border-2 rounded-3xl overflow-hidden shadow-2xl bg-white/95 backdrop-blur-xl">
+                                    <SearchDialogHeader className="p-4 pr-12 border-b bg-slate-50/50 relative">
+                                        <SearchDialogTitle className="sr-only">Search Products</SearchDialogTitle>
+                                        <div className="relative">
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                                            <Input
+                                                placeholder="Search for science kits, projects..."
+                                                className="pl-10 h-12 bg-white border-slate-200 focus-visible:ring-primary/20 rounded-xl font-bold italic"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                autoFocus
+                                            />
+                                            {isSearching && (
+                                                <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-primary" />
+                                            )}
+                                        </div>
+                                    </SearchDialogHeader>
+
+                                    <div className="max-h-[60vh] overflow-y-auto">
+                                        {searchQuery.length >= 2 ? (
+                                            <div className="p-2">
+                                                {searchResults.length > 0 ? (
+                                                    <div className="space-y-1">
+                                                        <p className="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Matching Products</p>
+                                                        {searchResults.map((p) => (
+                                                            <Link
+                                                                key={p._id}
+                                                                href={`/product/${p.slug}`}
+                                                                onClick={() => setIsSearchOpen(false)}
+                                                                className="flex items-center gap-3 p-3 rounded-2xl hover:bg-primary/5 group transition-all"
+                                                            >
+                                                                <div className="h-12 w-12 rounded-lg overflow-hidden border bg-white shrink-0">
+                                                                    <img src={p.image || p.images?.[0]} alt="" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                                </div>
+                                                                <div className="flex flex-col flex-1 min-w-0">
+                                                                    <span className="font-black uppercase tracking-tight text-sm truncate group-hover:text-primary transition-colors">{p.name}</span>
+                                                                    <span className="text-[10px] font-bold text-slate-400 uppercase italic">{p.category}</span>
+                                                                </div>
+                                                                <div className="text-right">
+                                                                    <p className="font-black text-sm italic">₹{(p.discountPrice || p.price).toLocaleString()}</p>
+                                                                </div>
+                                                            </Link>
+                                                        ))}
+                                                        <Link
+                                                            href={`/shop?q=${searchQuery}`}
+                                                            onClick={() => setIsSearchOpen(false)}
+                                                            className="flex items-center justify-center p-3 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-xl mt-2 transition-all"
+                                                        >
+                                                            View All Results
+                                                        </Link>
+                                                    </div>
+                                                ) : (
+                                                    <div className="py-12 text-center">
+                                                        <Search className="h-8 w-8 text-slate-200 mx-auto mb-3" />
+                                                        <p className="text-sm font-black uppercase italic text-slate-400">No matching experiments found</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : searchQuery.length > 0 ? (
+                                            <div className="py-8 text-center">
+                                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 italic">Type at least 2 characters...</p>
+                                            </div>
+                                        ) : (
+                                            <div className="p-12 text-center space-y-4">
+                                                <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                    <Search className="h-8 w-8 text-primary/20" />
+                                                </div>
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Start typing to search products</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </SearchDialogContent>
+                            </SearchDialog>
 
                             <WishlistSheet>
                                 <Button variant="ghost" size="icon" className="relative hidden sm:flex">
@@ -175,6 +292,9 @@ const Header = () => {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="right">
+                            <SheetHeader className="sr-only">
+                                <SheetTitle>Navigation Menu</SheetTitle>
+                            </SheetHeader>
                             <div className="flex flex-col space-y-4 mt-8">
                                 {!pathname.startsWith('/admin') && (
                                     <>

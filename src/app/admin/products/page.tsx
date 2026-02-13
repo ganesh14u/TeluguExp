@@ -45,6 +45,7 @@ export default function AdminProductsPage() {
         price: "",
         discountPrice: "",
         stock: "",
+        videoUrl: "",
         images: [""] // Array for multiple images
     });
 
@@ -124,7 +125,7 @@ export default function AdminProductsPage() {
         setProductForm({
             name: "", slug: "", description: "", sku: "",
             category: "", price: "", discountPrice: "",
-            stock: "", images: [""]
+            stock: "", videoUrl: "", images: [""]
         });
         setEditingProduct(null);
     };
@@ -140,6 +141,7 @@ export default function AdminProductsPage() {
             price: product.price.toString(),
             discountPrice: product.discountPrice?.toString() || "",
             stock: product.stock.toString(),
+            videoUrl: product.videoUrl || "",
             images: product.images?.length > 0 ? product.images : [""]
         });
         setIsDialogOpen(true);
@@ -297,6 +299,15 @@ export default function AdminProductsPage() {
                                         placeholder="EXP-001"
                                         value={productForm.sku}
                                         onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
+                                    />
+                                </div>
+
+                                <div className="space-y-1">
+                                    <label className="text-sm font-medium">YouTube Product Video Link (Optional)</label>
+                                    <Input
+                                        placeholder="https://www.youtube.com/watch?v=..."
+                                        value={productForm.videoUrl}
+                                        onChange={(e) => setProductForm({ ...productForm, videoUrl: e.target.value })}
                                     />
                                 </div>
 

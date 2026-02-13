@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +20,8 @@ import {
     Info,
     CheckCircle2,
     Zap,
-    Box
+    Box,
+    X
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -40,6 +42,8 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
     const [isPaused, setIsPaused] = useState(false);
     const cart = useCart();
     const wishlist = useWishlist();
+    const { data: session } = useSession();
+    const [hasBought, setHasBought] = useState(false);
 
     usePageTitle(product?.name || "Product");
 
@@ -64,6 +68,23 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
         };
         fetchProduct();
     }, [slug]);
+
+    useEffect(() => {
+        const checkPurchase = async () => {
+            if (!session?.user?.id || !product?._id) return;
+            try {
+                const res = await fetch(`/api/orders?userId=${(session.user as any).id}`);
+                const orders = await res.json();
+                const bought = orders.some((order: any) =>
+                    order.isPaid && order.orderItems.some((item: any) => item.productId === product._id)
+                );
+                setHasBought(bought);
+            } catch (error) {
+                console.error("Failed to check purchase", error);
+            }
+        };
+        checkPurchase();
+    }, [session, product]);
 
     // Auto-rotate images every 2 seconds (pause on hover)
     useEffect(() => {
@@ -168,7 +189,11 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
                     {/* Left: Images - Better Scale */}
                     <div className="lg:col-span-6 space-y-4">
-                        <div className="relative aspect-square max-w-[500px] mx-auto rounded-3xl overflow-hidden bg-white border shadow-md">
+                        <div
+                            className="relative aspect-square max-w-[500px] mx-auto rounded-3xl overflow-hidden bg-white border shadow-md"
+                            onMouseEnter={() => setIsPaused(true)}
+                            onMouseLeave={() => setIsPaused(false)}
+                        >
                             <AnimatePresence mode="wait">
                                 <motion.img
                                     key={selectedImage}
@@ -177,7 +202,7 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                                     exit={{ opacity: 0 }}
                                     src={images[selectedImage]}
                                     alt={product.name}
-                                    className="w-full h-full object-contain p-4"
+                                    className="w-full h-full object-contain p-4 transition-transform duration-500 hover:scale-105"
                                 />
                             </AnimatePresence>
                             {/* Badges */}
@@ -239,6 +264,16 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                                     <span className="text-xl text-slate-300 line-through font-bold">₹{product.price.toLocaleString()}</span>
                                 )}
                             </div>
+                            {product.stock > 0 && product.stock < 5 && (
+                                <p className="text-[10px] font-black uppercase text-red-500 animate-pulse mt-2 flex items-center gap-1">
+                                    <Box className="h-3 w-3" /> Only {product.stock} items left in stock!
+                                </p>
+                            )}
+                            {product.stock === 0 && (
+                                <p className="text-[10px] font-black uppercase text-red-600 mt-2 flex items-center gap-1">
+                                    <X className="h-3 w-3" /> Out of Stock
+                                </p>
+                            )}
                         </div>
 
                         {/* Actions */}
@@ -258,13 +293,22 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                                         variant="ghost"
                                         size="icon"
                                         className="rounded-lg h-10 w-10 text-slate-400"
-                                        onClick={() => setQuantity(quantity + 1)}
+                                        disabled={quantity >= product.stock}
+                                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
                                     >
                                         <Plus className="h-4 w-4" />
                                     </Button>
                                 </div>
-                                <Button onClick={handleAddToCart} className="grow rounded-xl h-14 text-base font-black uppercase tracking-tight gap-2 shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 italic">
-                                    <ShoppingCart className="h-4 w-4 text-primary" /> Add to Cart
+                                <Button
+                                    onClick={handleAddToCart}
+                                    disabled={product.stock === 0}
+                                    className="grow rounded-xl h-14 text-base font-black uppercase tracking-tight gap-2 shadow-lg shadow-primary/20 bg-slate-900 hover:bg-slate-800 italic disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none"
+                                >
+                                    {product.stock === 0 ? "Out of Stock" : (
+                                        <>
+                                            <ShoppingCart className={`h-4 w-4 ${product.stock === 0 ? "text-slate-400" : "text-primary"}`} /> Add to Cart
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
@@ -307,7 +351,6 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                         <TabsList className="w-full justify-start bg-slate-50 border h-12 rounded-xl p-1 gap-2 mb-8">
                             {[
                                 { id: "description", label: "Description" },
-                                { id: "specification", label: "Details" },
                                 { id: "reviews", label: "Reviews" }
                             ].map(tab => (
                                 <TabsTrigger
@@ -328,30 +371,56 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                                         About this product
                                     </h3>
                                     <p className="text-slate-500 font-medium leading-relaxed whitespace-pre-wrap text-sm">{product.description}</p>
+
+                                    {product.videoUrl && (
+                                        <div className="mt-8 space-y-4">
+                                            <h3 className="text-xl font-black uppercase italic tracking-tighter text-slate-900 flex items-center gap-3">
+                                                <div className="h-6 w-1 bg-primary rounded-full" />
+                                                Product Showcase
+                                            </h3>
+                                            <div className="relative aspect-video rounded-2xl overflow-hidden border shadow-inner bg-slate-100">
+                                                {(() => {
+                                                    const getYouTubeID = (url: string) => {
+                                                        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                                                        const match = url.match(regExp);
+                                                        return (match && match[2].length === 11) ? match[2] : null;
+                                                    };
+                                                    const videoId = getYouTubeID(product.videoUrl);
+                                                    if (videoId) {
+                                                        return (
+                                                            <iframe
+                                                                src={`https://www.youtube.com/embed/${videoId}`}
+                                                                title="YouTube video player"
+                                                                className="absolute inset-0 w-full h-full"
+                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowFullScreen
+                                                            />
+                                                        );
+                                                    }
+                                                    return <p className="p-8 text-center text-slate-400 font-bold uppercase text-[10px]">Invalid Video Link</p>;
+                                                })()}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </TabsContent>
 
-                            <TabsContent value="specification" className="mt-0 focus-visible:outline-none">
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {[
-                                        ["Product ID", product.sku || "N/A"],
-                                        ["Category", product.category],
-                                        ["Origin", "India"],
-                                        ["Weight", "500g"],
-                                        ["Status", "In Stock"],
-                                    ].map(([label, value], i) => (
-                                        <div key={i} className="p-4 rounded-xl bg-white border border-slate-50 flex flex-col justify-center">
-                                            <span className="text-[8px] font-black uppercase tracking-widest text-slate-400 mb-1">{label}</span>
-                                            <span className="text-xs font-black text-slate-800 uppercase">{value}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </TabsContent>
 
                             <TabsContent value="reviews" className="mt-0 focus-visible:outline-none">
                                 <div className="text-center py-10 px-4 bg-white border-2 border-dashed rounded-2xl">
-                                    <p className="text-slate-400 font-black uppercase text-[10px] tracking-widest">No reviews yet. Be the first!</p>
-                                    <Button variant="outline" className="mt-4 rounded-lg h-10 px-6 font-black text-[9px] uppercase tracking-widest">Write a Review</Button>
+                                    <p className="text-slate-400 font-black uppercase text-[10px] tracking-widest">
+                                        {product.reviews?.length > 0 ? "What our customers are saying" : "No reviews yet."}
+                                    </p>
+
+                                    {hasBought ? (
+                                        <Button variant="outline" className="mt-4 rounded-lg h-10 px-6 font-black text-[9px] uppercase tracking-widest">
+                                            Write a Review
+                                        </Button>
+                                    ) : (
+                                        <p className="mt-4 text-[9px] font-bold text-slate-400 uppercase italic">
+                                            Only verified buyers can write a review.
+                                        </p>
+                                    )}
                                 </div>
                             </TabsContent>
                         </div>

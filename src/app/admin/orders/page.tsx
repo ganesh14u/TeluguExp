@@ -51,6 +51,7 @@ export default function AdminOrdersPage() {
     const [search, setSearch] = useState("");
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
     const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+    const [isPrinting, setIsPrinting] = useState(false);
 
     const [statusFilter, setStatusFilter] = useState("All");
 
@@ -106,23 +107,9 @@ export default function AdminOrdersPage() {
         setIsDetailsOpen(true);
     };
 
-    const downloadInvoice = () => {
+    const handlePrint = () => {
         if (!selectedOrder) return;
-        const element = document.getElementById('invoice-content');
-        const opt = {
-            margin: 10,
-            filename: `Invoice_${selectedOrder._id.slice(-8).toUpperCase()}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { format: 'a4', orientation: 'portrait' }
-        };
-        // @ts-ignore
-        if (window.html2pdf) {
-            // @ts-ignore
-            window.html2pdf().set(opt).from(element).save();
-        } else {
-            toast.error("PDF Generator is loading, please wait...");
-        }
+        window.print();
     };
 
     const handleExport = () => {
@@ -152,7 +139,6 @@ export default function AdminOrdersPage() {
 
     return (
         <div className="space-y-10 p-2">
-            <Script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" strategy="lazyOnload" />
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
@@ -287,43 +273,38 @@ export default function AdminOrdersPage() {
                     <DialogTitle className="sr-only">Order Details</DialogTitle>
                     <style suppressHydrationWarning>{`
                         @media print {
-                            body { 
-                                visibility: hidden; 
+                            /* Remove browser headers and footers */
+                            @page { 
+                                size: auto; 
+                                margin: 0; 
                             }
                             
-                            /* TARGET THE RADIX DIALOG CONTENT DIRECTLY */
-                            .invoice-modal-content {
+                            body { 
+                                visibility: hidden !important;
+                                background: white !important;
+                                margin: 0 !important;
+                                padding: 0 !important;
+                            }
+                            
+                            /* Fix for double pages and layout */
+                            .print-container {
                                 visibility: visible !important;
                                 position: absolute !important;
                                 left: 0 !important;
                                 top: 0 !important;
                                 width: 100% !important;
-                                max-width: none !important;
-                                height: auto !important;
-                                min-height: 100vh !important;
                                 margin: 0 !important;
-                                padding: 0 !important;
-                                transform: none !important;
-                                border: none !important;
-                                box-shadow: none !important;
+                                padding: 25mm !important; /* Standard print padding */
                                 background: white !important;
+                                color: black !important;
+                                display: block !important;
+                                height: auto !important;
+                                min-height: 0 !important;
                                 overflow: visible !important;
-                                -webkit-print-color-adjust: exact !important;
-                                print-color-adjust: exact !important;
-                            }
-                            
-                            /* Make all children visible */
-                            .invoice-modal-content * {
-                                visibility: visible !important;
                             }
 
-                            /* Hide specific elements */
-                            .no-print, .print\\:hidden { display: none !important; }
-
-                            /* PAGE SETTINGS */
-                            @page { 
-                                size: auto; 
-                                margin: 0mm; 
+                            .no-print {
+                                display: none !important;
                             }
                         }
                     `}</style>
@@ -428,82 +409,85 @@ export default function AdminOrdersPage() {
                             </div>
 
                             {/* Footer Action - HIDDEN IN PRINT */}
-                            <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-3 shrink-0 print:hidden">
-                                <Button onClick={downloadInvoice} className="w-full sm:w-auto gap-2 font-bold uppercase tracking-wide">
-                                    Print Invoice
+                            <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-end gap-3 shrink-0 no-print">
+                                <Button onClick={handlePrint} className="w-full sm:w-auto gap-2 font-bold uppercase tracking-wide">
+                                    <Download className="h-4 w-4" /> Print Invoice
                                 </Button>
                             </div>
 
-                            {/* Hidden Invoice Template for PDF Generation */}
-                            <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
-                                <div id="invoice-content">
-                                    <style>{`
-                                        #invoice-content { width: 800px; padding: 30px; background: #fff; font-family: Arial, sans-serif; }
-                                        .header { display: flex; justify-content: space-between; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
-                                        .info { display: flex; justify-content: space-between; margin: 20px 0; }
-                                        .info-col { width: 48%; }
-                                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                                        th, td { border-bottom: 1px solid #ddd; padding: 12px; text-align: left; }
-                                        th { background-color: #f8f9fa; }
-                                        .total { text-align: right; margin-top: 20px; font-size: 1.25rem; }
-                                        .paid { color: green; font-weight: bold; border: 2px solid green; padding: 5px 10px; border-radius: 5px; display: inline-block; margin-top: 10px; }
-                                    `}</style>
-                                    <div className="header">
-                                        <div>
-                                            <h2 style={{ margin: 0, color: '#333' }}>INVOICE</h2>
-                                            <p style={{ margin: '5px 0', color: '#666' }}>Order ID: #{selectedOrder._id.slice(-8).toUpperCase()}</p>
-                                            <p style={{ margin: 0, color: '#666' }}>Date: {format(new Date(selectedOrder.createdAt), 'MMM dd, yyyy')}</p>
-                                        </div>
-                                        <div style={{ textAlign: 'right' }}>
-                                            <h3 style={{ margin: 0, color: '#000' }}>Telugu Experiments</h3>
-                                        </div>
+                            {/* This is the container that will be visible in Print */}
+                            <div className="hidden print:block print-container">
+                                <div style={{ marginBottom: '30px' }}>
+                                    <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Order Details</p>
+                                    <h2 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', margin: '0 0 8px 0' }}>#{selectedOrder._id.slice(-8).toUpperCase()}</h2>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span style={{ border: '1px solid #16a34a', color: '#16a34a', fontSize: '10px', fontWeight: '900', padding: '2px 8px', borderRadius: '4px' }}>PAID</span>
+                                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#64748b' }}>{format(new Date(selectedOrder.createdAt), 'MMM d, yyyy')}</span>
+                                        <span style={{ fontSize: '14px', fontWeight: '600', color: '#64748b' }}>• {selectedOrder.paymentMethod || 'Razorpay'}</span>
                                     </div>
+                                </div>
 
-                                    <div className="info">
-                                        <div className="info-col">
-                                            <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Bill To</h4>
-                                            <p style={{ fontWeight: 'bold', margin: '5px 0' }}>{selectedOrder.shippingAddress?.name}</p>
-                                            <p style={{ margin: '2px 0' }}>{selectedOrder.shippingAddress?.phone}</p>
-                                            <p style={{ margin: '2px 0' }}>{selectedOrder.userId?.email || "Guest"}</p>
-                                        </div>
-                                        <div className="info-col">
-                                            <h4 style={{ borderBottom: '1px solid #ccc', paddingBottom: '5px' }}>Ship To</h4>
-                                            <p style={{ margin: '5px 0' }}>{selectedOrder.shippingAddress?.street}</p>
-                                            <p style={{ margin: '2px 0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
-                                        </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #e2e8f0' }}>
+                                    <div>
+                                        <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Customer</p>
+                                        <p style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a', margin: '0' }}>{selectedOrder.shippingAddress?.name}</p>
+                                        <p style={{ fontSize: '14px', color: '#475569', margin: '2px 0' }}>{selectedOrder.shippingAddress?.phone}</p>
                                     </div>
+                                    <div>
+                                        <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '5px' }}>Shipping Address</p>
+                                        <p style={{ fontSize: '14px', color: '#475569', margin: '0', lineHeight: '1.4' }}>{selectedOrder.shippingAddress?.street}</p>
+                                        <p style={{ fontSize: '14px', color: '#475569', margin: '0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
+                                    </div>
+                                </div>
 
-                                    <table>
+                                <div style={{ marginBottom: '30px' }}>
+                                    <p style={{ color: '#64748b', fontSize: '10px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '12px' }}>Items Summary</p>
+                                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                                         <thead>
                                             <tr>
-                                                <th>Item</th>
-                                                <th style={{ width: '80px', textAlign: 'center' }}>Qty</th>
-                                                <th style={{ width: '120px', textAlign: 'right' }}>Price</th>
+                                                <th style={{ textAlign: 'left', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Product</th>
+                                                <th style={{ textAlign: 'center', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Qty</th>
+                                                <th style={{ textAlign: 'right', padding: '10px 0', borderBottom: '2px solid #f1f5f9', fontSize: '10px', textTransform: 'uppercase', color: '#64748b' }}>Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {selectedOrder.orderItems.map((item: any, idx: number) => (
                                                 <tr key={idx}>
-                                                    <td>
-                                                        <div style={{ fontWeight: 'bold' }}>{item.name}</div>
-                                                    </td>
-                                                    <td style={{ textAlign: 'center' }}>{item.quantity}</td>
-                                                    <td style={{ textAlign: 'right' }}>₹{item.price.toLocaleString()}</td>
+                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: '700' }}>{item.name}</td>
+                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', textAlign: 'center' }}>{item.quantity}</td>
+                                                    <td style={{ padding: '12px 0', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: '700', textAlign: 'right' }}>₹{(item.price * item.quantity).toLocaleString()}</td>
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
+                                </div>
 
-                                    <div className="total">
-                                        <div style={{ marginBottom: '10px' }}>Total: <span style={{ fontWeight: 'bold' }}>₹{selectedOrder.totalPrice.toLocaleString()}</span></div>
-                                        <span className="paid">PAID</span>
+                                <div style={{ marginLeft: 'auto', width: '250px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                                        <span style={{ fontSize: '14px', color: '#64748b' }}>Subtotal</span>
+                                        <span style={{ fontSize: '14px', fontWeight: '700' }}>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
+                                    </div>
+                                    {selectedOrder.discountAmount > 0 && (
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px', color: '#16a34a' }}>
+                                            <span style={{ fontSize: '14px' }}>Discount</span>
+                                            <span style={{ fontSize: '14px', fontWeight: '700' }}>-₹{selectedOrder.discountAmount.toLocaleString()}</span>
+                                        </div>
+                                    )}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '2px solid #0f172a', marginTop: '10px' }}>
+                                        <span style={{ fontSize: '16px', fontWeight: '900' }}>TOTAL</span>
+                                        <span style={{ fontSize: '20px', fontWeight: '900' }}>₹{selectedOrder.totalPrice.toLocaleString()}</span>
                                     </div>
                                 </div>
+
+                                <div style={{ marginTop: '80px', textAlign: 'center', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
+                                    <p style={{ color: '#94a3b8', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.2em' }}>Telugu Experiments</p>
+                                </div>
                             </div>
+
                         </div>
                     )}
                 </DialogContent>
             </Dialog>
-        </div>
+        </div >
     );
 }

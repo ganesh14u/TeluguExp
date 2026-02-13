@@ -7,10 +7,17 @@ export async function GET(req: Request) {
         await dbConnect();
         const { searchParams } = new URL(req.url);
         const category = searchParams.get("category");
+        const q = searchParams.get("q");
 
-        let query = {};
+        let query: any = {};
         if (category) {
-            query = { category };
+            query.category = category;
+        }
+        if (q) {
+            query.$or = [
+                { name: { $regex: q, $options: "i" } },
+                { category: { $regex: q, $options: "i" } },
+            ];
         }
 
         const products = await Product.find(query).sort({ createdAt: -1 });
