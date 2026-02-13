@@ -210,43 +210,41 @@ export default function AdminProductsPage() {
 
     return (
         <div className="space-y-6 container mx-auto p-4">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold">Products</h1>
-                    <p className="text-gray-500">Add and manage your store products.</p>
+                    <h1 className="text-3xl font-black tracking-tight uppercase italic">Store <span className="text-primary NOT-italic">Products</span></h1>
+                    <p className="text-gray-500 font-bold text-xs uppercase tracking-widest mt-1">Add and manage your store products.</p>
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
                     {/* Payment Mode Toggle */}
-                    <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-2xl p-1 shadow-sm">
+                    <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-2xl p-1 shadow-sm grow md:grow-0 justify-center">
                         <Button
                             variant={paymentMode === "test" ? "default" : "ghost"}
                             size="sm"
                             className={cn(
-                                "rounded-xl h-8 px-4 text-[10px] font-black uppercase tracking-widest transition-all",
+                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all",
                                 paymentMode === "test" ? "bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20" : "text-slate-400 hover:text-slate-600"
                             )}
                             onClick={() => paymentMode !== "test" && togglePaymentMode()}
                             disabled={updatingMode || paymentMode === "loading"}
                         >
-                            <ShieldAlert className="h-3 w-3 mr-1" /> Test Mode
+                            <ShieldAlert className="h-3 w-3 mr-1" /> Test
                         </Button>
                         <Button
                             variant={paymentMode === "live" ? "default" : "ghost"}
                             size="sm"
                             className={cn(
-                                "rounded-xl h-8 px-4 text-[10px] font-black uppercase tracking-widest transition-all",
+                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all",
                                 paymentMode === "live" ? "bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20" : "text-slate-400 hover:text-slate-600"
                             )}
                             onClick={() => paymentMode !== "live" && togglePaymentMode()}
                             disabled={updatingMode || paymentMode === "loading"}
                         >
-                            <ShieldCheck className="h-3 w-3 mr-1" /> Live Mode
+                            <ShieldCheck className="h-3 w-3 mr-1" /> Live
                         </Button>
                     </div>
 
-                    <div className="h-8 w-px bg-slate-200" />
-
-                    <Button variant="outline" size="icon" onClick={fetchProducts} disabled={loading} className="rounded-xl">
+                    <Button variant="outline" size="icon" onClick={fetchProducts} disabled={loading} className="rounded-xl h-10 w-10 shrink-0">
                         <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
                     </Button>
 
@@ -255,22 +253,23 @@ export default function AdminProductsPage() {
                         if (!open) resetForm();
                     }}>
                         <DialogTrigger asChild>
-                            <Button className="font-bold rounded-xl">
+                            <Button className="font-black uppercase tracking-widest italic h-10 px-6 rounded-xl grow md:grow-0 text-xs">
                                 <Plus className="h-4 w-4 mr-2" /> Add Product
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[600px] rounded-[2rem] border-2 shadow-2xl">
+                        <DialogContent className="w-[95vw] max-w-[600px] rounded-[2rem] border-2 shadow-2xl p-4 md:p-6 overflow-hidden">
                             <DialogHeader>
                                 <DialogTitle className="text-xl font-black uppercase tracking-tight italic">
                                     {editingProduct ? "Edit Product" : "Add New <span className='text-primary NOT-italic'>Product</span>"}
                                 </DialogTitle>
                             </DialogHeader>
                             {/* Form content exactly as before... */}
-                            <form onSubmit={handleSubmit} className="space-y-4 py-4 max-h-[80vh] overflow-y-auto px-1">
+                            <form onSubmit={handleSubmit} className="space-y-4 py-4 max-h-[75vh] overflow-y-auto px-1 scrollbar-none">
                                 <div className="space-y-1">
-                                    <label className="text-sm font-medium">Product Name</label>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Product Name</label>
                                     <Input
-                                        placeholder="e.g. Science Kit"
+                                        placeholder="e.g. Science Experiment Kit"
+                                        className="h-12 rounded-xl border-2 font-bold"
                                         value={productForm.name}
                                         onChange={(e) => setProductForm({ ...productForm, name: e.target.value, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
                                         required
@@ -278,10 +277,10 @@ export default function AdminProductsPage() {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-sm font-medium">Description</label>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Description</label>
                                     <textarea
-                                        className="w-full min-h-[100px] rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                                        placeholder="Tell us about the product..."
+                                        className="w-full min-h-[120px] rounded-xl border-2 bg-transparent px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:border-primary transition-colors"
+                                        placeholder="Enter product details..."
                                         value={productForm.description}
                                         onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
                                         required
@@ -290,9 +289,10 @@ export default function AdminProductsPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <label className="text-sm font-medium">Price (₹)</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Price (₹)</label>
                                         <Input
                                             type="number"
+                                            className="h-12 rounded-xl border-2 font-black italic"
                                             placeholder="1000"
                                             value={productForm.price}
                                             onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
@@ -300,9 +300,10 @@ export default function AdminProductsPage() {
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-sm font-medium">Sell Price (₹)</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Offer Price (₹)</label>
                                         <Input
                                             type="number"
+                                            className="h-12 rounded-xl border-2 font-black italic text-primary"
                                             placeholder="800"
                                             value={productForm.discountPrice}
                                             onChange={(e) => setProductForm({ ...productForm, discountPrice: e.target.value })}
@@ -312,25 +313,26 @@ export default function AdminProductsPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <label className="text-sm font-medium">Category</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Category</label>
                                         <Select
                                             value={productForm.category}
                                             onValueChange={(val) => setProductForm({ ...productForm, category: val })}
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger className="h-12 rounded-xl border-2 font-bold">
                                                 <SelectValue placeholder="Select Category" />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent className="rounded-xl border-2 font-bold">
                                                 {categories.map(c => (
-                                                    <SelectItem key={c._id} value={c.slug}>{c.name}</SelectItem>
+                                                    <SelectItem key={c._id} value={c.slug} className="rounded-lg">{c.name}</SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-sm font-medium">Stock</label>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Stock Units</label>
                                         <Input
                                             type="number"
+                                            className="h-12 rounded-xl border-2 font-bold"
                                             placeholder="10"
                                             value={productForm.stock}
                                             onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
@@ -341,20 +343,21 @@ export default function AdminProductsPage() {
 
                                 <div className="space-y-3">
                                     <div className="flex justify-between items-center">
-                                        <label className="text-sm font-medium">Product Images (URLs)</label>
-                                        <Button type="button" variant="outline" size="sm" onClick={addImageField} className="h-7 text-[10px] uppercase font-bold">
-                                            + Add Image
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Images (URLs)</label>
+                                        <Button type="button" variant="outline" size="sm" onClick={addImageField} className="h-7 px-3 rounded-lg text-[9px] uppercase font-black border-2">
+                                            + Add More
                                         </Button>
                                     </div>
                                     {productForm.images.map((img, index) => (
                                         <div key={index} className="flex gap-2">
                                             <Input
-                                                placeholder="https://..."
+                                                placeholder="https://image-url.com/photo.jpg"
+                                                className="h-11 rounded-xl border-2 text-xs font-medium"
                                                 value={img}
                                                 onChange={(e) => updateImageField(index, e.target.value)}
                                             />
                                             {productForm.images.length > 1 && (
-                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeImageField(index)} className="text-red-500">
+                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeImageField(index)} className="h-11 w-11 shrink-0 rounded-xl text-red-500 hover:bg-red-50">
                                                     <X className="h-4 w-4" />
                                                 </Button>
                                             )}
@@ -363,25 +366,17 @@ export default function AdminProductsPage() {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-sm font-medium">SKU ID (Optional)</label>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Video Link (YouTube)</label>
                                     <Input
-                                        placeholder="EXP-001"
-                                        value={productForm.sku}
-                                        onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
-                                    />
-                                </div>
-
-                                <div className="space-y-1">
-                                    <label className="text-sm font-medium">YouTube Product Video Link (Optional)</label>
-                                    <Input
-                                        placeholder="https://www.youtube.com/watch?v=..."
+                                        placeholder="https://youtube.com/watch?v=..."
+                                        className="h-12 rounded-xl border-2 text-xs font-medium"
                                         value={productForm.videoUrl}
                                         onChange={(e) => setProductForm({ ...productForm, videoUrl: e.target.value })}
                                     />
                                 </div>
 
-                                <Button type="submit" className="w-full font-black uppercase tracking-widest h-14 rounded-2xl shadow-lg shadow-primary/20">
-                                    {editingProduct ? "Update Product" : "Launch Product"}
+                                <Button type="submit" className="w-full font-black uppercase tracking-[0.2em] italic h-14 rounded-2xl shadow-xl shadow-primary/20 mt-4">
+                                    {editingProduct ? "Save Changes" : "Deploy Product"}
                                 </Button>
                             </form>
                         </DialogContent>
@@ -389,84 +384,86 @@ export default function AdminProductsPage() {
                 </div>
             </div>
 
-            <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <div className="relative group">
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
                 <Input
-                    placeholder="Search products..."
-                    className="pl-12 h-14 rounded-2xl border-2 shadow-sm focus-visible:ring-primary/20 font-bold italic"
+                    placeholder="Search products by name or SKU..."
+                    className="pl-14 h-16 rounded-[1.5rem] border-2 shadow-sm focus-visible:ring-primary/20 font-bold italic text-lg"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
 
-            <div className="border-2 rounded-3xl overflow-hidden shadow-sm bg-white">
-                <Table>
-                    <TableHeader className="bg-slate-50/50">
-                        <TableRow className="hover:bg-transparent">
-                            <TableHead className="w-[80px] font-black uppercase text-[10px] tracking-widest pl-6">Image</TableHead>
-                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Name</TableHead>
-                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Category</TableHead>
-                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Price</TableHead>
-                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Stock</TableHead>
-                            <TableHead className="text-right font-black uppercase text-[10px] tracking-widest pr-6">Action</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <TableRow>
-                                <TableCell colSpan={6} className="h-40 text-center">
-                                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary opacity-20" />
-                                    <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Syncing products...</p>
-                                </TableCell>
+            <div className="border-2 rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl shadow-black/5 bg-white overflow-x-auto">
+                <div className="min-w-[800px] md:min-w-full">
+                    <Table>
+                        <TableHeader className="bg-slate-50/50">
+                            <TableRow className="hover:bg-transparent">
+                                <TableHead className="w-[80px] font-black uppercase text-[10px] tracking-widest pl-6">Image</TableHead>
+                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Name</TableHead>
+                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Category</TableHead>
+                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Price</TableHead>
+                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Stock</TableHead>
+                                <TableHead className="text-right font-black uppercase text-[10px] tracking-widest pr-6">Action</TableHead>
                             </TableRow>
-                        ) : filteredProducts.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={6} className="h-40 text-center">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No products found</p>
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            filteredProducts.map((product) => (
-                                <TableRow key={product._id} className="hover:bg-slate-50/50 transition-colors group">
-                                    <TableCell className="pl-6">
-                                        <div className="w-12 h-12 rounded-xl overflow-hidden border bg-white group-hover:scale-105 transition-transform duration-300">
-                                            <img src={(product.images && product.images[0]) || product.image || 'https://placehold.co/100'} alt="" className="w-full h-full object-cover" />
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="font-black text-sm uppercase tracking-tight">{product.name}</TableCell>
-                                    <TableCell>
-                                        <Badge variant="secondary" className="capitalize text-[10px] font-bold bg-slate-100/50 text-slate-600 border-none px-3 py-1 rounded-lg italic">{product.category}</Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        <p className="font-black text-sm italic tracking-tight">₹{(product.discountPrice || product.price).toLocaleString()}</p>
-                                        {product.discountPrice && (
-                                            <p className="text-[10px] font-bold text-slate-400 line-through opacity-50">₹{product.price.toLocaleString()}</p>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        <span className={cn(
-                                            "text-[10px] font-black uppercase px-2 py-1 rounded-lg",
-                                            product.stock < 5 ? "bg-red-50 text-red-500" : "bg-emerald-50 text-emerald-500"
-                                        )}>
-                                            {product.stock} Units
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right pr-6">
-                                        <div className="flex justify-end gap-2 transition-opacity">
-                                            <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-600 hover:bg-white hover:text-primary hover:shadow-lg rounded-xl transition-all border border-slate-100 shadow-sm" onClick={() => handleEdit(product)}>
-                                                <Edit className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all border border-red-50 shadow-sm" onClick={() => handleDelete(product._id)}>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
+                        </TableHeader>
+                        <TableBody>
+                            {loading ? (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="h-40 text-center">
+                                        <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary opacity-20" />
+                                        <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Syncing products...</p>
                                     </TableCell>
                                 </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                            ) : filteredProducts.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={6} className="h-40 text-center">
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No products found</p>
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                filteredProducts.map((product) => (
+                                    <TableRow key={product._id} className="hover:bg-slate-50/50 transition-colors group">
+                                        <TableCell className="pl-6">
+                                            <div className="w-12 h-12 rounded-xl overflow-hidden border bg-white group-hover:scale-105 transition-transform duration-300">
+                                                <img src={(product.images && product.images[0]) || product.image || 'https://placehold.co/100'} alt="" className="w-full h-full object-cover" />
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="font-black text-sm uppercase tracking-tight">{product.name}</TableCell>
+                                        <TableCell>
+                                            <Badge variant="secondary" className="capitalize text-[10px] font-bold bg-slate-100/50 text-slate-600 border-none px-3 py-1 rounded-lg italic">{product.category}</Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <p className="font-black text-sm italic tracking-tight">₹{(product.discountPrice || product.price).toLocaleString()}</p>
+                                            {product.discountPrice && (
+                                                <p className="text-[10px] font-bold text-slate-400 line-through opacity-50">₹{product.price.toLocaleString()}</p>
+                                            )}
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className={cn(
+                                                "text-[10px] font-black uppercase px-2 py-1 rounded-lg",
+                                                product.stock < 5 ? "bg-red-50 text-red-500" : "bg-emerald-50 text-emerald-500"
+                                            )}>
+                                                {product.stock} Units
+                                            </span>
+                                        </TableCell>
+                                        <TableCell className="text-right pr-6">
+                                            <div className="flex justify-end gap-2 transition-opacity">
+                                                <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-600 hover:bg-white hover:text-primary hover:shadow-lg rounded-xl transition-all border border-slate-100 shadow-sm" onClick={() => handleEdit(product)}>
+                                                    <Edit className="h-4 w-4" />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all border border-red-50 shadow-sm" onClick={() => handleDelete(product._id)}>
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
-        </div>
+        </div >
     );
 }
