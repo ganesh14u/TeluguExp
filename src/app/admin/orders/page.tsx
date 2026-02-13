@@ -44,8 +44,12 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
+import { useAdminNotifications } from "@/context/AdminNotificationContext";
+
 export default function AdminOrdersPage() {
     usePageTitle("Admin - Orders");
+    const { clearAll } = useAdminNotifications();
+
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
@@ -71,7 +75,8 @@ export default function AdminOrdersPage() {
 
     useEffect(() => {
         fetchOrders();
-    }, []);
+        clearAll();
+    }, [clearAll]);
 
     const handleStatusUpdate = async (orderId: string, status: string) => {
         try {

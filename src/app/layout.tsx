@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import CartSync from "@/components/CartSync";
 
 import { Providers } from "@/components/shared/Providers";
+import { UserNotificationProvider } from "@/context/UserNotificationContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,14 +55,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
-          <CartSync />
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <UserNotificationProvider> {/* Added UserNotificationProvider */}
+            <CartSync />
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="grow">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </UserNotificationProvider> {/* Closing tag for UserNotificationProvider */}
         </Providers>
       </body>
     </html>

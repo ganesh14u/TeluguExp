@@ -207,9 +207,14 @@ export default function CheckoutPage() {
                 return;
             }
 
+            // 2. Fetch Payment Config
+            const configRes = await fetch("/api/payment-config");
+            const paymentConfig = await configRes.json();
+            if (paymentConfig.error) throw new Error(paymentConfig.error);
+
             const finalTotal = totalPrice() - discount;
 
-            // 2. Create Order on Server (Razorpay)
+            // 3. Create Order on Server (Razorpay)
             const razorpayOrderRes = await fetch("/api/razorpay/order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -219,9 +224,9 @@ export default function CheckoutPage() {
             const razorpayOrder = await razorpayOrderRes.json();
             if (razorpayOrder.error) throw new Error(razorpayOrder.error);
 
-            // 3. Open Razorpay Checkout
+            // 4. Open Razorpay Checkout
             const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_live_SBWgdWuuYDiVuk", // Fallback for safety
+                key: paymentConfig.keyId,
                 amount: razorpayOrder.amount,
                 currency: razorpayOrder.currency,
                 name: "Telugu Experiments",

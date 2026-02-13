@@ -11,7 +11,7 @@ import {
 } from "../../../components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Search, Edit, Trash2, Loader2, RefreshCw, X } from "lucide-react";
+import { Plus, Search, Edit, Trash2, Loader2, RefreshCw, X, ShieldCheck, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,8 @@ export default function AdminProductsPage() {
     const [search, setSearch] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<any>(null);
+    const [paymentMode, setPaymentMode] = useState<"test" | "live" | "loading">("loading");
+    const [updatingMode, setUpdatingMode] = useState(false);
 
     const [productForm, setProductForm] = useState({
         name: "",
@@ -46,7 +48,7 @@ export default function AdminProductsPage() {
         discountPrice: "",
         stock: "",
         videoUrl: "",
-        images: [""] // Array for multiple images
+        images: [""]
     });
 
     const fetchProducts = async () => {
@@ -63,6 +65,40 @@ export default function AdminProductsPage() {
         }
     };
 
+    const fetchSettings = async () => {
+        try {
+            const res = await fetch("/api/admin/settings");
+            const data = await res.json();
+            if (data.paymentMode) {
+                setPaymentMode(data.paymentMode);
+            } else {
+                setPaymentMode("test");
+            }
+        } catch (e) {
+            setPaymentMode("test");
+        }
+    };
+
+    const togglePaymentMode = async () => {
+        const newMode = paymentMode === "test" ? "live" : "test";
+        setUpdatingMode(true);
+        try {
+            const res = await fetch("/api/admin/settings", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ key: "paymentMode", value: newMode })
+            });
+            if (res.ok) {
+                setPaymentMode(newMode);
+                toast.success(`Payment Mode switched to ${newMode.toUpperCase()}`);
+            }
+        } catch (e) {
+            toast.error("Failed to update payment mode");
+        } finally {
+            setUpdatingMode(false);
+        }
+    };
+
     const fetchCategories = async () => {
         try {
             const res = await fetch("/api/categories");
@@ -74,6 +110,7 @@ export default function AdminProductsPage() {
     useEffect(() => {
         fetchProducts();
         fetchCategories();
+        fetchSettings();
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -81,7 +118,6 @@ export default function AdminProductsPage() {
         const method = editingProduct ? "PUT" : "POST";
         const url = editingProduct ? `/api/products/${editingProduct._id}` : "/api/products";
 
-        // Filter out empty image URLs
         const validImages = productForm.images.filter(img => img.trim() !== "");
 
         try {
@@ -94,7 +130,7 @@ export default function AdminProductsPage() {
                     discountPrice: Number(productForm.discountPrice) || undefined,
                     stock: Number(productForm.stock) || 0,
                     images: validImages,
-                    image: validImages[0] || "" // Set first image as main image
+                    image: validImages[0] || ""
                 })
             });
             const data = await res.json();
@@ -179,8 +215,38 @@ export default function AdminProductsPage() {
                     <h1 className="text-3xl font-bold">Products</h1>
                     <p className="text-gray-500">Add and manage your store products.</p>
                 </div>
-                <div className="flex gap-2">
-                    <Button variant="outline" size="icon" onClick={fetchProducts} disabled={loading}>
+                <div className="flex items-center gap-4">
+                    {/* Payment Mode Toggle */}
+                    <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-2xl p-1 shadow-sm">
+                        <Button
+                            variant={paymentMode === "test" ? "default" : "ghost"}
+                            size="sm"
+                            className={cn(
+                                "rounded-xl h-8 px-4 text-[10px] font-black uppercase tracking-widest transition-all",
+                                paymentMode === "test" ? "bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20" : "text-slate-400 hover:text-slate-600"
+                            )}
+                            onClick={() => paymentMode !== "test" && togglePaymentMode()}
+                            disabled={updatingMode || paymentMode === "loading"}
+                        >
+                            <ShieldAlert className="h-3 w-3 mr-1" /> Test Mode
+                        </Button>
+                        <Button
+                            variant={paymentMode === "live" ? "default" : "ghost"}
+                            size="sm"
+                            className={cn(
+                                "rounded-xl h-8 px-4 text-[10px] font-black uppercase tracking-widest transition-all",
+                                paymentMode === "live" ? "bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20" : "text-slate-400 hover:text-slate-600"
+                            )}
+                            onClick={() => paymentMode !== "live" && togglePaymentMode()}
+                            disabled={updatingMode || paymentMode === "loading"}
+                        >
+                            <ShieldCheck className="h-3 w-3 mr-1" /> Live Mode
+                        </Button>
+                    </div>
+
+                    <div className="h-8 w-px bg-slate-200" />
+
+                    <Button variant="outline" size="icon" onClick={fetchProducts} disabled={loading} className="rounded-xl">
                         <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
                     </Button>
 
@@ -189,14 +255,17 @@ export default function AdminProductsPage() {
                         if (!open) resetForm();
                     }}>
                         <DialogTrigger asChild>
-                            <Button className="font-bold">
+                            <Button className="font-bold rounded-xl">
                                 <Plus className="h-4 w-4 mr-2" /> Add Product
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[600px] rounded-2xl">
+                        <DialogContent className="sm:max-w-[600px] rounded-[2rem] border-2 shadow-2xl">
                             <DialogHeader>
-                                <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
+                                <DialogTitle className="text-xl font-black uppercase tracking-tight italic">
+                                    {editingProduct ? "Edit Product" : "Add New <span className='text-primary NOT-italic'>Product</span>"}
+                                </DialogTitle>
                             </DialogHeader>
+                            {/* Form content exactly as before... */}
                             <form onSubmit={handleSubmit} className="space-y-4 py-4 max-h-[80vh] overflow-y-auto px-1">
                                 <div className="space-y-1">
                                     <label className="text-sm font-medium">Product Name</label>
@@ -311,8 +380,8 @@ export default function AdminProductsPage() {
                                     />
                                 </div>
 
-                                <Button type="submit" className="w-full font-bold h-12">
-                                    {editingProduct ? "Update Product" : "Submit Product"}
+                                <Button type="submit" className="w-full font-black uppercase tracking-widest h-14 rounded-2xl shadow-lg shadow-primary/20">
+                                    {editingProduct ? "Update Product" : "Launch Product"}
                                 </Button>
                             </form>
                         </DialogContent>
@@ -321,63 +390,73 @@ export default function AdminProductsPage() {
             </div>
 
             <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                     placeholder="Search products..."
-                    className="pl-10 h-12"
+                    className="pl-12 h-14 rounded-2xl border-2 shadow-sm focus-visible:ring-primary/20 font-bold italic"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
 
-            <div className="border rounded-xl overflow-x-auto shadow-sm bg-white">
+            <div className="border-2 rounded-3xl overflow-hidden shadow-sm bg-white">
                 <Table>
-                    <TableHeader className="bg-gray-50/50">
-                        <TableRow>
-                            <TableHead className="w-[80px]">Image</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Category</TableHead>
-                            <TableHead>Price</TableHead>
-                            <TableHead>Stock</TableHead>
-                            <TableHead className="text-right">Action</TableHead>
+                    <TableHeader className="bg-slate-50/50">
+                        <TableRow className="hover:bg-transparent">
+                            <TableHead className="w-[80px] font-black uppercase text-[10px] tracking-widest pl-6">Image</TableHead>
+                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Name</TableHead>
+                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Category</TableHead>
+                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Price</TableHead>
+                            <TableHead className="font-black uppercase text-[10px] tracking-widest">Stock</TableHead>
+                            <TableHead className="text-right font-black uppercase text-[10px] tracking-widest pr-6">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {loading ? (
                             <TableRow>
                                 <TableCell colSpan={6} className="h-40 text-center">
-                                    <Loader2 className="h-6 w-6 animate-spin mx-auto text-primary" />
-                                    <p className="mt-2 text-sm text-gray-500">Loading products...</p>
+                                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary opacity-20" />
+                                    <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Syncing products...</p>
                                 </TableCell>
                             </TableRow>
                         ) : filteredProducts.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={6} className="h-40 text-center text-gray-500">
-                                    No products found.
+                                <TableCell colSpan={6} className="h-40 text-center">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No products found</p>
                                 </TableCell>
                             </TableRow>
                         ) : (
                             filteredProducts.map((product) => (
-                                <TableRow key={product._id} className="hover:bg-gray-50/50 transition-colors">
-                                    <TableCell>
-                                        <img src={product.image || product.images?.[0] || 'https://placehold.co/100'} alt="" className="w-10 h-10 rounded-lg object-cover border" />
+                                <TableRow key={product._id} className="hover:bg-slate-50/50 transition-colors group">
+                                    <TableCell className="pl-6">
+                                        <div className="w-12 h-12 rounded-xl overflow-hidden border bg-white group-hover:scale-105 transition-transform duration-300">
+                                            <img src={(product.images && product.images[0]) || product.image || 'https://placehold.co/100'} alt="" className="w-full h-full object-cover" />
+                                        </div>
                                     </TableCell>
-                                    <TableCell className="font-semibold text-sm">{product.name}</TableCell>
+                                    <TableCell className="font-black text-sm uppercase tracking-tight">{product.name}</TableCell>
                                     <TableCell>
-                                        <Badge variant="secondary" className="capitalize text-[10px] font-bold">{product.category}</Badge>
+                                        <Badge variant="secondary" className="capitalize text-[10px] font-bold bg-slate-100/50 text-slate-600 border-none px-3 py-1 rounded-lg italic">{product.category}</Badge>
                                     </TableCell>
-                                    <TableCell className="font-bold">₹{product.discountPrice || product.price}</TableCell>
                                     <TableCell>
-                                        <span className={cn(product.stock < 5 ? "text-red-500 font-bold" : "text-gray-600 font-medium")}>
-                                            {product.stock}
+                                        <p className="font-black text-sm italic tracking-tight">₹{(product.discountPrice || product.price).toLocaleString()}</p>
+                                        {product.discountPrice && (
+                                            <p className="text-[10px] font-bold text-slate-400 line-through opacity-50">₹{product.price.toLocaleString()}</p>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        <span className={cn(
+                                            "text-[10px] font-black uppercase px-2 py-1 rounded-lg",
+                                            product.stock < 5 ? "bg-red-50 text-red-500" : "bg-emerald-50 text-emerald-500"
+                                        )}>
+                                            {product.stock} Units
                                         </span>
                                     </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-1">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500 hover:bg-blue-50" onClick={() => handleEdit(product)}>
+                                    <TableCell className="text-right pr-6">
+                                        <div className="flex justify-end gap-2 transition-opacity">
+                                            <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-600 hover:bg-white hover:text-primary hover:shadow-lg rounded-xl transition-all border border-slate-100 shadow-sm" onClick={() => handleEdit(product)}>
                                                 <Edit className="h-4 w-4" />
                                             </Button>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:bg-red-50" onClick={() => handleDelete(product._id)}>
+                                            <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:bg-red-50 hover:text-red-500 rounded-xl transition-all border border-red-50 shadow-sm" onClick={() => handleDelete(product._id)}>
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>

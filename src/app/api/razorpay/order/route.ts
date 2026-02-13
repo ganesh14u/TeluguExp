@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
-
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID!,
-    key_secret: process.env.RAZORPAY_KEY_SECRET!,
-});
+import dbConnect from "@/lib/mongodb";
+import Settings from "@/models/Settings";
 
 export async function POST(req: Request) {
     try {
@@ -13,6 +10,25 @@ export async function POST(req: Request) {
         if (!amount) {
             return NextResponse.json({ error: "Amount is required" }, { status: 400 });
         }
+
+        await dbConnect();
+        const settings = await Settings.findOne({ key: "paymentMode" });
+        const mode = settings?.value || "test";
+
+        const isLive = mode === "live";
+        const key_id = isLive ? process.env.RAZORPAY_KEY_ID : process.env.RAZORPAY_TEST_KEY_ID;
+        const key_secret = isLive ? process.env.RAZORPAY_KEY_SECRET : process.env.RAZORPAY_TEST_KEY_SECRET;
+
+        if (!key_id || !key_secret || key_id.includes("placeholder")) {
+            return NextResponse.json({
+                error: `Razorpay ${mode.toUpperCase()} keys are not configured correctly. Please update your .env.local with valid ${mode.toUpperCase()} keys.`
+            }, { status: 400 });
+        }
+
+        const razorpay = new Razorpay({
+            key_id: key_id,
+            key_secret: key_secret,
+        });
 
         const options = {
             amount: Math.round(amount * 100), // Razorpay accepts amount in paise

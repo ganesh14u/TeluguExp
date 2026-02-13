@@ -17,7 +17,6 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminHeader } from "@/components/admin/AdminHeader";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const { data: session, status } = useSession();
@@ -39,7 +38,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex min-h-screen bg-slate-50/50">
             <AdminSidebar />
             <div className="grow flex flex-col min-h-screen">
-                <AdminHeader />
                 <main className="grow p-8">
                     <div className="container mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {children}

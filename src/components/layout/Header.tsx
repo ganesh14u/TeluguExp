@@ -2,8 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingCart, User, Search, Menu, Heart, Zap, ShoppingBag, Bell } from "lucide-react";
+import { ShoppingCart, User, Search, Menu, Heart, Zap, ShoppingBag, Bell, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAdminNotifications } from "@/context/AdminNotificationContext";
+import { useUserNotifications } from "@/context/UserNotificationContext";
+import { format } from "date-fns";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import {
     Sheet,
     SheetContent,
@@ -42,6 +50,8 @@ const Header = () => {
     const { data: session } = useSession();
     const cart = useCart();
     const wishlist = useWishlist();
+    const { notifications, unreadCount, markAsRead, clearAll } = useAdminNotifications();
+    const { notifications: userNotifs, unreadCount: userUnread, markAsRead: markUserRead, clearAll: clearUserAll } = useUserNotifications();
 
     // Search State
     const [searchQuery, setSearchQuery] = useState("");
@@ -115,7 +125,7 @@ const Header = () => {
 
                 {/* Actions */}
                 <div className="flex items-center space-x-2">
-                    {!pathname.startsWith('/admin') ? (
+                    {!pathname.startsWith('/admin') && (
                         <>
                             <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen}>
                                 <Button
@@ -222,12 +232,117 @@ const Header = () => {
                                 </Button>
                             </CartSheet>
                         </>
-                    ) : (
-                        <Button variant="ghost" size="icon" className="relative">
-                            <Bell className="h-5 w-5" />
-                            <span className="absolute top-2 right-2 h-2 w-2 bg-primary rounded-full" />
-                        </Button>
                     )}
+
+                    {session?.user?.role === 'admin' ? (
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant="ghost" size="icon" className="relative transition-all hover:bg-primary/10 hover:text-primary rounded-full">
+                                    <Bell className="h-5 w-5" />
+                                    {unreadCount > 0 && (
+                                        <span className="absolute top-0 right-0 h-4 w-4 bg-primary text-[9px] font-black text-white flex items-center justify-center rounded-full animate-in zoom-in duration-300">
+                                            {unreadCount}
+                                        </span>
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-80 rounded-2xl p-0 overflow-hidden border-2 shadow-2xl bg-white" align="end">
+                                <div className="bg-slate-950 text-white p-4 flex items-center justify-between">
+                                    <div>
+                                        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] opacity-60">Notifications</h3>
+                                        <p className="text-xs font-bold">{unreadCount} New Orders</p>
+                                    </div>
+                                    {notifications.length > 0 && (
+                                        <Button onClick={clearAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/10 text-white border border-white/20">
+                                            Clear All
+                                        </Button>
+                                    )}
+                                </div>
+                                <div className="max-h-[350px] overflow-y-auto">
+                                    {notifications.length === 0 ? (
+                                        <div className="p-12 text-center">
+                                            <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Bell className="h-6 w-6 text-slate-300" />
+                                            </div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">All caught up!</p>
+                                        </div>
+                                    ) : (
+                                        notifications.map((notif: any) => (
+                                            <div key={notif.id} className="p-4 border-b last:border-0 hover:bg-slate-50 transition-all group relative">
+                                                <div className="flex justify-between items-start mb-1 pr-8">
+                                                    <span className="font-black text-sm text-slate-950">{notif.title}</span>
+                                                    <span className="text-[10px] text-slate-400 font-bold uppercase">{format(notif.time, 'HH:mm')}</span>
+                                                </div>
+                                                <p className="text-xs text-slate-500 font-medium mb-2">{notif.description}</p>
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        onClick={() => markAsRead(notif.id)}
+                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary/90"
+                                                    >
+                                                        <Check className="h-3 w-3 mr-1" /> Mark Read
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                    ) : session ? (
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant="ghost" size="icon" className="relative transition-all hover:bg-primary/10 hover:text-primary rounded-full">
+                                    <Bell className="h-5 w-5" />
+                                    {userUnread > 0 && (
+                                        <span className="absolute top-0 right-0 h-4 w-4 bg-primary text-[9px] font-black text-white flex items-center justify-center rounded-full animate-in zoom-in duration-300">
+                                            {userUnread}
+                                        </span>
+                                    )}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-80 rounded-2xl p-0 overflow-hidden border-2 shadow-2xl bg-white" align="end">
+                                <div className="bg-primary text-white p-4 flex items-center justify-between">
+                                    <div>
+                                        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] opacity-60">Alerts</h3>
+                                        <p className="text-xs font-bold">{userUnread} New Updates</p>
+                                    </div>
+                                    {userNotifs.length > 0 && (
+                                        <Button onClick={clearUserAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/10 text-white border border-white/20">
+                                            Clear All
+                                        </Button>
+                                    )}
+                                </div>
+                                <div className="max-h-[350px] overflow-y-auto">
+                                    {userNotifs.length === 0 ? (
+                                        <div className="p-12 text-center">
+                                            <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                                <Bell className="h-6 w-6 text-slate-300" />
+                                            </div>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No new alerts</p>
+                                        </div>
+                                    ) : (
+                                        userNotifs.map((notif: any) => (
+                                            <div key={notif._id} className="p-4 border-b last:border-0 hover:bg-slate-50 transition-all group relative">
+                                                <div className="flex justify-between items-start mb-1 pr-2">
+                                                    <span className="font-black text-sm text-slate-950">{notif.title}</span>
+                                                    <span className="text-[9px] text-slate-400 font-bold uppercase">{format(new Date(notif.createdAt), 'HH:mm')}</span>
+                                                </div>
+                                                <p className="text-xs text-slate-500 font-medium mb-2">{notif.message}</p>
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        onClick={() => markUserRead(notif._id)}
+                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary/90"
+                                                    >
+                                                        <Check className="h-3 w-3 mr-1" /> Mark Read
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </PopoverContent>
+                        </Popover>
+                    ) : null}
 
                     {session ? (
                         <div className="flex items-center space-x-2">

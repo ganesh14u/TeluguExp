@@ -30,11 +30,14 @@ const sidebarLinks = [
     { name: "Reviews", href: "/admin/reviews", icon: MessageSquare },
 ];
 
+import { useAdminNotifications } from "@/context/AdminNotificationContext";
+
 export function AdminSidebar() {
     const pathname = usePathname();
+    const { unreadCount } = useAdminNotifications();
 
     return (
-        <aside className="w-64 border-r bg-muted/30 hidden md:flex flex-col h-screen sticky top-0">
+        <aside className="w-64 border-r bg-muted/30 hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16">
             <div className="p-6">
                 <Link href="/" className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
@@ -48,6 +51,8 @@ export function AdminSidebar() {
                 <div className="space-y-1 py-4">
                     {sidebarLinks.map((link) => {
                         const isActive = pathname === link.href;
+                        const isOrders = link.name === "Orders";
+
                         return (
                             <Link
                                 key={link.name}
@@ -63,7 +68,14 @@ export function AdminSidebar() {
                                     <link.icon className={cn("h-4 w-4", isActive ? "text-primary-foreground" : "group-hover:text-primary")} />
                                     {link.name}
                                 </div>
-                                {isActive && <ChevronRight className="h-4 w-4" />}
+                                <div className="flex items-center gap-2">
+                                    {isOrders && unreadCount > 0 && (
+                                        <span className="bg-primary text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-in zoom-in duration-300">
+                                            {unreadCount}
+                                        </span>
+                                    )}
+                                    {isActive && <ChevronRight className="h-4 w-4" />}
+                                </div>
                             </Link>
                         );
                     })}
