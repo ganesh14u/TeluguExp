@@ -29,6 +29,7 @@ import ProductCard from "@/components/products/ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/hooks/useCart";
 import { toast } from "sonner";
+import AddToCartToast from "@/components/cart/AddToCartToast";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useWishlist } from "@/hooks/useWishlist";
 
@@ -119,13 +120,14 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
         }
 
         cart.addItem(product, quantity);
-        toast.success(`${product.name} added to cart!`, {
-            description: `Quantity: ${quantity}`,
-            action: {
-                label: "View Cart",
-                onClick: () => window.location.href = "/cart"
-            }
-        });
+        toast.custom((t) => (
+            <AddToCartToast
+                toastId={t}
+                productName={product.name}
+                productPrice={product.discountPrice || product.price}
+                productImage={images[0] || product.image || "https://placehold.co/100"}
+            />
+        ), { duration: 4000 });
     };
 
     const isWishlisted = mounted && product ? wishlist.isInWishlist(product._id) : false;

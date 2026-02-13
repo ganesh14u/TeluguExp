@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
+import AddToCartToast from "@/components/cart/AddToCartToast";
 
 interface ProductCardProps {
     product: {
@@ -54,13 +55,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         }
 
         cart.addItem(product, 1);
-        toast.success(`${product.name} added to cart!`, {
-            description: "Go to cart to checkout.",
-            action: {
-                label: "View Cart",
-                onClick: () => window.location.href = "/cart"
-            }
-        });
+        toast.custom((t) => (
+            <AddToCartToast
+                toastId={t}
+                productName={product.name}
+                productPrice={product.discountPrice || product.price}
+                productImage={displayImage as string || "https://placehold.co/100"}
+            />
+        ), { duration: 4000 });
     };
 
     const isWishlisted = mounted && wishlist.isInWishlist(product._id);

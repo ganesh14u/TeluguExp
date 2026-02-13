@@ -63,7 +63,8 @@ export function AdminNotificationProvider({ children }: { children: React.ReactN
             }
         };
 
-        const intervalId = setInterval(checkNewOrders, 30000);
+        checkNewOrders();
+        const intervalId = setInterval(checkNewOrders, 5000);
         return () => clearInterval(intervalId);
     }, [isAdmin]);
 

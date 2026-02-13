@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Order from "@/models/Order";
 import Notification from "@/models/Notification";
+import Product from "@/models/Product";
 
 export async function GET(req: Request) {
-    // ... existing GET lines ...
+    // ... existing GET implementation ...
     try {
         await dbConnect();
         const { searchParams } = new URL(req.url);
@@ -23,11 +24,20 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    // ... existing POST lines ...
     try {
         await dbConnect();
         const body = await req.json();
         const order = await Order.create(body);
+
+        // Decrease Stock Quantity for each item
+        if (order && order.orderItems) {
+            for (const item of order.orderItems) {
+                await Product.findByIdAndUpdate(item.productId, {
+                    $inc: { stock: -item.quantity }
+                });
+            }
+        }
+
         return NextResponse.json(order, { status: 201 });
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
