@@ -37,15 +37,15 @@ export default function CartPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-6xl">
-            <h1 className="text-5xl font-black mb-12 tracking-tighter uppercase italic pr-4">Shopping <span className="text-primary NOT-italic">Cart</span></h1>
+        <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
+            <h1 className="text-3xl md:text-5xl font-black mb-6 md:mb-12 tracking-tighter uppercase italic pr-4">Shopping <span className="text-primary NOT-italic">Cart</span></h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
                 {/* Cart Items */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-4 md:space-y-6">
                     {items.map((item) => (
-                        <div key={item._id} className="flex gap-6 p-6 border-2 rounded-[2rem] bg-white transition-all hover:border-primary/20">
-                            <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 bg-muted shrink-0 shadow-sm">
+                        <div key={item._id} className="flex flex-col sm:flex-row gap-4 md:gap-6 p-4 md:p-6 border-2 rounded-2xl md:rounded-[2rem] bg-white transition-all hover:border-primary/20">
+                            <div className="w-full sm:w-32 h-48 sm:h-32 rounded-xl md:rounded-2xl overflow-hidden border-2 bg-muted shrink-0 shadow-sm">
                                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                             </div>
                             <div className="flex flex-col justify-between grow">
@@ -102,37 +102,37 @@ export default function CartPage() {
 
                 {/* Order Summary */}
                 <div className="lg:col-span-1">
-                    <Card className="rounded-[2.5rem] bg-slate-900 border-none p-10 text-white sticky top-24 shadow-2xl overflow-hidden">
+                    <Card className="rounded-[2rem] md:rounded-[2.5rem] bg-slate-900 border-none p-6 md:p-10 text-white sticky top-24 shadow-2xl overflow-hidden">
                         <div className="absolute top-0 right-0 p-8 opacity-10">
                             <ShoppingBag className="h-24 w-24" />
                         </div>
-                        <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter">Order Summary</h2>
-                        <div className="space-y-5">
-                            <div className="flex justify-between text-white/60 font-bold text-xs uppercase tracking-widest">
+                        <h2 className="text-xl md:text-2xl font-black mb-6 md:mb-8 italic uppercase tracking-tighter">Order Summary</h2>
+                        <div className="space-y-4 md:space-y-5">
+                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs uppercase tracking-widest">
                                 <span>Subtotal ({totalItems()} items)</span>
                                 <span className="text-white">₹{totalPrice().toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between text-white/60 font-bold text-xs uppercase tracking-widest">
+                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs uppercase tracking-widest">
                                 <span>Shipping Fees</span>
                                 <span className="text-green-400">FREE</span>
                             </div>
-                            <Separator className="bg-white/10 my-6" />
-                            <div className="flex justify-between text-3xl font-black italic">
+                            <Separator className="bg-white/10 my-4 md:my-6" />
+                            <div className="flex justify-between text-2xl md:text-3xl font-black italic">
                                 <span className="uppercase tracking-tighter">Total</span>
                                 <span className="text-primary tracking-tighter">₹{totalPrice().toLocaleString()}</span>
                             </div>
 
-                            <Link href="/checkout" className="block mt-10">
-                                <Button className="w-full h-16 rounded-2xl text-lg font-black uppercase italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform">
+                            <Link href="/checkout" className="block mt-8 md:mt-10">
+                                <Button className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl text-base md:text-lg font-black uppercase italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform">
                                     Secure Checkout <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
 
-                            <div className="mt-10 space-y-4 pt-10 border-t border-white/5">
-                                <div className="flex items-center gap-3 text-[10px] text-white/40 font-black uppercase tracking-widest">
+                            <div className="mt-8 md:mt-10 space-y-4 pt-8 md:pt-10 border-t border-white/5">
+                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black uppercase tracking-widest">
                                     <div className="h-2 w-2 rounded-full bg-green-500" /> Secure Payments
                                 </div>
-                                <div className="flex items-center gap-3 text-[10px] text-white/40 font-black uppercase tracking-widest">
+                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black uppercase tracking-widest">
                                     <div className="h-2 w-2 rounded-full bg-green-500" /> Easy Returns
                                 </div>
                             </div>

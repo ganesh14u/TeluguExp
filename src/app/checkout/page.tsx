@@ -358,31 +358,31 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-12 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <div className="space-y-8">
-                    <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Secure <span className="text-primary NOT-italic">Checkout</span></h1>
+        <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                <div className="space-y-6 md:space-y-8">
+                    <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic pr-4">Secure <span className="text-primary NOT-italic">Checkout</span></h1>
 
-                    <Card className="rounded-[2rem] border-2 bg-white">
-                        <CardHeader className="border-b border-dashed p-4 md:p-8 bg-muted/10 flex flex-row items-center gap-4">
-                            <div className="p-3 bg-primary/10 rounded-2xl"><MapPin className="h-6 w-6 text-primary" /></div>
-                            <CardTitle className="text-lg md:text-xl font-black uppercase tracking-tighter italic">Shipping <span className="text-primary NOT-italic">Details</span></CardTitle>
+                    <Card className="rounded-[1.5rem] md:rounded-[2rem] border-2 bg-white">
+                        <CardHeader className="border-b border-dashed p-5 md:p-8 bg-muted/10 flex flex-row items-center gap-4">
+                            <div className="p-2.5 md:p-3 bg-primary/10 rounded-xl md:rounded-2xl shrink-0"><MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary" /></div>
+                            <CardTitle className="text-base md:text-xl font-black uppercase tracking-tighter italic">Shipping <span className="text-primary NOT-italic">Details</span></CardTitle>
                         </CardHeader>
-                        <CardContent className="space-y-4 md:space-y-6 p-4 md:p-8">
+                        <CardContent className="space-y-5 md:space-y-6 p-5 md:p-8">
                             {savedAddresses.length > 0 && (
                                 <div className="space-y-4 mb-6 md:mb-8">
-                                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Select Saved Address</label>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground ml-1">Select Saved Address</label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
                                         {savedAddresses.map((addr, idx) => (
                                             <div
                                                 key={idx}
                                                 onClick={() => handleAddressSelect(addr)}
-                                                className={`p-4 rounded-2xl border-2 cursor-pointer transition-all hover:border-primary/50 ${shippingDetails.street === addr.street ? 'border-primary bg-primary/5' : 'border-muted'
+                                                className={`p-4 rounded-xl md:rounded-2xl border-2 cursor-pointer transition-all hover:border-primary/50 ${shippingDetails.street === addr.street ? 'border-primary bg-primary/5' : 'border-muted'
                                                     }`}
                                             >
-                                                <p className="font-black text-[10px] uppercase tracking-widest text-primary mb-1">{addr.name || 'Saved Address'}</p>
+                                                <p className="font-black text-[9px] md:text-[10px] uppercase tracking-widest text-primary mb-1">{addr.name || 'Saved Address'}</p>
                                                 <p className="text-xs font-bold truncate opacity-70">{addr.street}</p>
-                                                <p className="text-[10px] uppercase font-black opacity-40">{addr.city}, {addr.state}</p>
+                                                <p className="text-[9px] md:text-[10px] uppercase font-black opacity-40">{addr.city}, {addr.state}</p>
                                             </div>
                                         ))}
                                         <div
@@ -392,13 +392,13 @@ export default function CheckoutPage() {
                                                 email: session?.user?.email || "",
                                                 street: "", city: "", state: "", zipCode: "", phone: ""
                                             })}
-                                            className={`p-4 rounded-2xl border-2 border-dashed cursor-pointer transition-all hover:bg-muted/50 flex flex-col items-center justify-center text-center ${shippingDetails.street === "" ? 'border-primary bg-primary/5' : 'border-muted'
+                                            className={`p-4 rounded-xl md:rounded-2xl border-2 border-dashed cursor-pointer transition-all hover:bg-muted/50 flex flex-col items-center justify-center text-center ${shippingDetails.street === "" ? 'border-primary bg-primary/5' : 'border-muted'
                                                 }`}
                                         >
-                                            <p className="font-black text-[10px] uppercase tracking-widest">New Address</p>
+                                            <p className="font-black text-[9px] md:text-[10px] uppercase tracking-widest">New Address</p>
                                         </div>
                                     </div>
-                                    <div className="h-px bg-muted border-dashed border-b mt-8" />
+                                    <div className="h-px bg-muted border-dashed border-b mt-6 md:mt-8" />
                                 </div>
                             )}
 
@@ -406,7 +406,7 @@ export default function CheckoutPage() {
                                 onClick={handleUseLocation}
                                 variant="outline"
                                 disabled={isLocating}
-                                className="w-full mb-6 gap-2 rounded-xl border-dashed border-2 font-black uppercase tracking-widest text-[10px] h-12"
+                                className="w-full mb-4 md:mb-6 gap-2 rounded-xl border-dashed border-2 font-black uppercase tracking-widest text-[9px] md:text-[10px] h-10 md:h-12"
                             >
                                 {isLocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
                                 {isLocating ? "Getting Location..." : "Use My Current Location"}
@@ -414,114 +414,112 @@ export default function CheckoutPage() {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">First Name</label>
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">First Name</label>
                                     <Input
                                         value={shippingDetails.firstName}
                                         onChange={e => setShippingDetails({ ...shippingDetails, firstName: e.target.value })}
                                         placeholder="Enter first name"
-                                        className="h-12 rounded-xl border-2"
+                                        className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Last Name</label>
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Last Name</label>
                                     <Input
                                         value={shippingDetails.lastName}
                                         onChange={e => setShippingDetails({ ...shippingDetails, lastName: e.target.value })}
                                         placeholder="Enter last name"
-                                        className="h-12 rounded-xl border-2"
+                                        className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Street Address</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Street Address</label>
                                 <Input
                                     value={shippingDetails.street}
                                     onChange={e => setShippingDetails({ ...shippingDetails, street: e.target.value })}
                                     placeholder="House/Appt No, Area/Landmark"
-                                    className="h-12 rounded-xl border-2"
+                                    className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                 />
                             </div>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">City</label>
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">City</label>
                                     <Input
                                         value={shippingDetails.city}
                                         onChange={e => setShippingDetails({ ...shippingDetails, city: e.target.value })}
                                         placeholder="City"
-                                        className="h-12 rounded-xl border-2"
+                                        className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">State</label>
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">State</label>
                                     <Input
                                         value={shippingDetails.state}
                                         onChange={e => setShippingDetails({ ...shippingDetails, state: e.target.value })}
                                         placeholder="State"
-                                        className="h-12 rounded-xl border-2"
+                                        className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                     />
                                 </div>
                                 <div className="space-y-1 col-span-2 sm:col-span-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">ZIP Code</label>
+                                    <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">ZIP Code</label>
                                     <Input
                                         value={shippingDetails.zipCode}
                                         onChange={e => setShippingDetails({ ...shippingDetails, zipCode: e.target.value })}
                                         placeholder="520001"
-                                        className="h-12 rounded-xl border-2"
+                                        className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
                                 <Input
                                     value={shippingDetails.email}
                                     onChange={e => setShippingDetails({ ...shippingDetails, email: e.target.value })}
                                     placeholder="Enter email address"
-                                    className="h-12 rounded-xl border-2"
+                                    className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                 />
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Phone Number</label>
+                                <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Phone Number</label>
                                 <Input
                                     value={shippingDetails.phone}
                                     onChange={e => setShippingDetails({ ...shippingDetails, phone: e.target.value })}
                                     placeholder="+91..."
-                                    className="h-12 rounded-xl border-2"
+                                    className="h-11 md:h-12 rounded-xl border-2 font-bold"
                                 />
                             </div>
                         </CardContent>
                     </Card>
-
-
                 </div>
 
                 <div className="lg:mt-24">
-                    <Card className="rounded-[2.5rem] bg-slate-900 text-white border-none p-10 overflow-hidden relative shadow-2xl">
+                    <Card className="rounded-[2rem] md:rounded-[2.5rem] bg-slate-900 text-white border-none p-6 md:p-10 overflow-hidden relative shadow-2xl">
                         <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <Truck className="h-32 w-32" />
+                            <Truck className="h-24 md:h-32 w-24 md:w-32" />
                         </div>
-                        <h2 className="text-3xl font-black mb-8 italic uppercase tracking-tighter">Order Summary</h2>
-                        <div className="space-y-5 mb-10 relative z-10">
+                        <h2 className="text-2xl md:text-3xl font-black mb-6 md:mb-8 italic uppercase tracking-tighter">Order Summary</h2>
+                        <div className="space-y-4 md:space-y-5 mb-8 md:mb-10 relative z-10">
                             {items.map(item => (
                                 <div key={item._id} className="flex justify-between items-center text-sm border-b border-white/5 pb-4 last:border-0">
-                                    <div className="flex flex-col">
-                                        <span className="font-black uppercase text-xs tracking-widest text-white/80 italic">{item.name}</span>
-                                        <span className="text-white/40 font-black text-[9px] uppercase tracking-widest mt-1">QTY: {item.quantity}</span>
+                                    <div className="flex flex-col max-w-[60%]">
+                                        <span className="font-black uppercase text-[10px] md:text-xs tracking-widest text-white/80 italic line-clamp-1">{item.name}</span>
+                                        <span className="text-white/40 font-black text-[8px] md:text-[9px] uppercase tracking-widest mt-1">QTY: {item.quantity}</span>
                                     </div>
-                                    <span className="font-black text-primary italic text-lg tracking-tighter">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
+                                    <span className="font-black text-primary italic text-base md:text-lg tracking-tighter shrink-0">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* Coupon Section */}
                         <div className="mb-6 relative z-10 w-full">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2 block">Promo Code</label>
+                            <label className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-white/40 mb-2 block">Promo Code</label>
                             {appliedCoupon ? (
                                 <div className="flex items-center justify-between bg-green-500/10 border border-green-500/50 p-3 rounded-xl">
                                     <div className="flex flex-col">
-                                        <span className="font-black text-green-400 uppercase tracking-widest text-xs">{appliedCoupon.code}</span>
-                                        <span className="text-[9px] text-green-400/80 font-bold">Discount Applied</span>
+                                        <span className="font-black text-green-400 uppercase tracking-widest text-[10px] md:text-xs">{appliedCoupon.code}</span>
+                                        <span className="text-[8px] md:text-[9px] text-green-400/80 font-bold">Discount Applied</span>
                                     </div>
-                                    <Button onClick={handleRemoveCoupon} variant="ghost" size="sm" className="h-8 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-500/10 font-black uppercase tracking-widest">
+                                    <Button onClick={handleRemoveCoupon} variant="ghost" size="sm" className="h-8 text-[9px] md:text-[10px] text-red-400 hover:text-red-300 hover:bg-red-500/10 font-black uppercase tracking-widest">
                                         Remove
                                     </Button>
                                 </div>
@@ -531,9 +529,9 @@ export default function CheckoutPage() {
                                         value={couponCode}
                                         onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
                                         placeholder="ENTER CODE"
-                                        className="uppercase placeholder:uppercase border-white/20 bg-white/5 text-white placeholder:text-white/30 font-bold tracking-widest h-11"
+                                        className="uppercase placeholder:uppercase border-white/20 bg-white/5 text-white placeholder:text-white/30 font-bold tracking-widest h-11 text-xs"
                                     />
-                                    <Button onClick={handleApplyCoupon} className="font-black uppercase tracking-widest bg-white text-black hover:bg-white/90 h-11 px-6">
+                                    <Button onClick={handleApplyCoupon} className="font-black uppercase tracking-widest bg-white text-black hover:bg-white/90 h-11 px-4 md:px-6 text-[10px] md:text-xs">
                                         Apply
                                     </Button>
                                 </div>
@@ -542,22 +540,25 @@ export default function CheckoutPage() {
 
                         {appliedCoupon && (
                             <div className="flex justify-between items-center text-sm font-bold text-green-400 mb-2 relative z-10">
-                                <span className="uppercase tracking-widest">Discount</span>
-                                <span>-₹{discount.toLocaleString()}</span>
+                                <span className="uppercase tracking-widest text-[10px]">Discount</span>
+                                <span className="text-base">-₹{discount.toLocaleString()}</span>
                             </div>
                         )}
 
-                        <div className="flex justify-between items-end text-3xl font-black mb-10 pt-4 border-t border-white/10 relative z-10">
-                            <span className="italic uppercase tracking-tighter text-white/60 text-xl">Total To Pay</span>
-                            <span className="text-primary tracking-tighter italic">₹{(totalPrice() - discount).toLocaleString()}</span>
+                        <div className="flex justify-between items-end text-3xl font-black mb-8 md:mb-10 pt-4 border-t border-white/10 relative z-10">
+                            <div className="flex flex-col">
+                                <span className="italic uppercase tracking-tighter text-white/40 text-[10px] md:text-xs mb-1">Final Amount</span>
+                                <span className="italic uppercase tracking-tighter text-white/80 text-lg md:text-xl">Total To Pay</span>
+                            </div>
+                            <span className="text-primary tracking-tighter italic text-2xl md:text-3xl">₹{(totalPrice() - discount).toLocaleString()}</span>
                         </div>
-                        <Button onClick={handlePayment} className="w-full h-16 rounded-2xl text-lg font-black uppercase italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform relative z-10">
-                            Complete Purchase Now
+                        <Button onClick={handlePayment} className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl text-base md:text-lg font-black uppercase italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform relative z-10">
+                            Complete Order
                         </Button>
 
                         <div className="mt-8 flex items-center justify-center gap-4 opacity-40">
                             <div className="h-px bg-white grow" />
-                            <div className="text-[9px] font-black uppercase tracking-widest">Secure Checkout</div>
+                            <div className="text-[8px] md:text-[9px] font-black uppercase tracking-widest">Secure Gateway</div>
                             <div className="h-px bg-white grow" />
                         </div>
                     </Card>

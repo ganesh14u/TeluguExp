@@ -62,61 +62,61 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-10 pb-10">
       {/* Hero Section */}
-      <section className="relative h-[500px] md:h-[600px] overflow-hidden">
+      <section className="relative h-[480px] md:h-[650px] overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentBanner}
-            initial={{ opacity: 0, scale: 1.1 }}
+            initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
             className="absolute inset-0"
           >
             <div
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-[5s] scale-105 group-hover:scale-100"
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-[8s] scale-110"
               style={{ backgroundImage: `url(${HERO_BANNERS[currentBanner].image})` }}
             >
-              <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/20 to-black/60" />
+              <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/30 to-black/70" />
             </div>
-            <div className="relative container mx-auto px-4 h-full flex flex-col justify-center text-white">
+            <div className="relative container mx-auto px-4 md:px-8 h-full flex flex-col justify-center text-white">
               <motion.div
-                initial={{ x: -50, opacity: 0 }}
+                initial={{ x: -30, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-primary/80 backdrop-blur-md px-3 py-1 md:px-4 md:py-1 rounded-full mb-4 md:mb-6 border border-white/10 w-fit"
+                transition={{ delay: 0.3 }}
+                className="inline-flex items-center gap-1.5 md:gap-2 bg-primary/90 backdrop-blur-xl px-3 md:px-5 py-1.5 md:py-2 rounded-full mb-5 md:mb-8 border border-white/20 w-fit shadow-xl shadow-primary/20"
               >
                 <Zap className="h-3 w-3 md:h-4 md:w-4 text-white fill-white" />
-                <span className="text-[10px] md:text-xs font-black uppercase tracking-widest text-white">New Product Available</span>
+                <span className="text-[9px] md:text-xs font-black uppercase tracking-[0.2em] text-white">Advanced Science Kits</span>
               </motion.div>
               <motion.h1
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-4xl sm:text-5xl md:text-8xl font-black max-w-4xl mb-4 md:mb-6 tracking-tight leading-none italic uppercase pr-4 md:pr-10"
+                transition={{ delay: 0.5, duration: 0.7 }}
+                className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black max-w-5xl mb-4 md:mb-8 tracking-tighter leading-[0.9] italic uppercase pr-4 md:pr-12 drop-shadow-2xl"
               >
                 {cmsContent?.heroTitle || HERO_BANNERS[currentBanner].title}
               </motion.h1>
               <motion.p
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-sm sm:text-lg md:text-2xl max-w-xl mb-6 md:mb-10 text-gray-200 font-medium leading-relaxed"
+                transition={{ delay: 0.7, duration: 0.7 }}
+                className="text-xs sm:text-lg md:text-2xl max-w-xl mb-8 md:mb-12 text-white/80 font-bold leading-relaxed uppercase tracking-tight md:normal-case md:tracking-normal"
               >
                 {cmsContent?.heroSubtitle || HERO_BANNERS[currentBanner].description}
               </motion.p>
               <motion.div
-                initial={{ y: 30, opacity: 0 }}
+                initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto"
+                transition={{ delay: 0.9, duration: 0.7 }}
+                className="flex flex-col sm:flex-row gap-3 md:gap-5 w-full sm:w-auto"
               >
                 <Link href={HERO_BANNERS[currentBanner].link} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto h-14 md:h-16 rounded-2xl px-8 md:px-10 gap-3 text-base md:text-lg font-black hover:scale-105 transition-transform">
-                    {HERO_BANNERS[currentBanner].buttonText} <ArrowRight className="h-5 w-5" />
+                  <Button size="lg" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 gap-3 text-sm md:text-lg font-black uppercase italic shadow-2xl shadow-primary/30 active:scale-95 transition-all">
+                    {HERO_BANNERS[currentBanner].buttonText} <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </Link>
                 <Link href="/shop" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 md:h-16 rounded-2xl px-8 md:px-10 bg-white/5 backdrop-blur-md border-white/20 text-white font-black hover:bg-white/10 transition-all text-base md:text-lg">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 bg-white/10 backdrop-blur-xl border-white/20 text-white font-black uppercase italic hover:bg-white/20 active:scale-95 transition-all text-sm md:text-lg">
                     Browse All
                   </Button>
                 </Link>
@@ -126,60 +126,48 @@ export default function Home() {
         </AnimatePresence>
 
         {/* Banner Nav Dots */}
-        <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+        <div className="absolute bottom-6 md:bottom-12 left-1/2 -translate-x-1/2 flex gap-2.5 md:gap-4 z-20">
           {HERO_BANNERS.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentBanner(i)}
-              className={`h-1.5 md:h-2 rounded-full transition-all duration-500 ${currentBanner === i ? "w-8 md:w-12 bg-primary" : "w-1.5 md:w-2 bg-white/40"}`}
+              className={`h-1 md:h-1.5 rounded-full transition-all duration-700 ${currentBanner === i ? "w-8 md:w-16 bg-primary shadow-lg shadow-primary/50" : "w-1.5 md:w-3 bg-white/30"}`}
             />
           ))}
         </div>
       </section>
 
       {/* Stats/Trust Badges */}
-      <section className="container mx-auto px-4 -mt-10 md:-mt-16 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 p-4 md:p-6 bg-card/80 backdrop-blur-2xl rounded-3xl border-2 border-white/10 shadow-lg">
-          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
-            <div className="p-3 md:p-4 bg-primary/10 rounded-xl md:rounded-2xl group-hover:bg-primary/20 transition-colors">
-              <Truck className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      <section className="container mx-auto px-4 -mt-8 md:-mt-16 relative z-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 p-4 md:p-6 bg-white/80 backdrop-blur-3xl rounded-[2rem] md:rounded-[3rem] border border-slate-100 shadow-2xl shadow-black/5">
+          {[
+            { icon: Truck, label: "Pan India Shipping", color: "text-primary", bg: "bg-primary/10" },
+            { icon: ShieldCheck, label: "Verified Quality", color: "text-blue-500", bg: "bg-blue-500/10" },
+            { icon: RefreshCcw, label: "Easy Returns", color: "text-orange-500", bg: "bg-orange-500/10" },
+            { icon: Zap, label: "Active Support", color: "text-green-500", bg: "bg-green-500/10" }
+          ].map((stat, i) => (
+            <div key={i} className="flex flex-col items-center text-center gap-2 md:gap-4 p-3 md:p-5 hover:bg-slate-50 transition-colors rounded-2xl md:rounded-[2rem] group">
+              <div className={`p-3 md:p-5 ${stat.bg} rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform`}>
+                <stat.icon className={`h-5 w-5 md:h-7 md:w-7 ${stat.color}`} />
+              </div>
+              <span className="font-black uppercase text-[9px] md:text-xs tracking-widest leading-tight italic">{stat.label}</span>
             </div>
-            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Pan India Shipping</span>
-          </div>
-          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
-            <div className="p-3 md:p-4 bg-blue-500/10 rounded-xl md:rounded-2xl group-hover:bg-blue-500/20 transition-colors">
-              <ShieldCheck className="h-6 w-6 md:h-8 md:w-8 text-blue-500" />
-            </div>
-            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Verified Quality</span>
-          </div>
-          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
-            <div className="p-3 md:p-4 bg-orange-500/10 rounded-xl md:rounded-2xl group-hover:bg-orange-500/20 transition-colors">
-              <RefreshCcw className="h-6 w-6 md:h-8 md:w-8 text-orange-500" />
-            </div>
-            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Easy Returns</span>
-          </div>
-          <div className="flex flex-col items-center text-center gap-2 md:gap-3 p-2 md:p-4 hover:bg-muted/50 rounded-2xl md:rounded-3xl transition-colors group">
-            <div className="p-3 md:p-4 bg-green-500/10 rounded-xl md:rounded-2xl group-hover:bg-green-500/20 transition-colors">
-              <Zap className="h-6 w-6 md:h-8 md:w-8 text-green-500" />
-            </div>
-            <span className="font-black uppercase text-[10px] md:text-xs tracking-widest leading-tight">Active Support</span>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Featured Categories */}
-      <section className="container mx-auto px-4 py-6 md:py-8">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-6">
-          <div className="space-y-1">
-            <div className="h-0.5 w-12 bg-primary mb-2" />
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
-            <p className="text-muted-foreground font-bold uppercase text-[10px] tracking-widest">Find the best products</p>
+      <section className="container mx-auto px-4 py-8 md:py-12">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-8 md:mb-16 gap-4 border-b-2 border-slate-50 pb-8 md:pb-10">
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter italic pr-0 md:pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
+            <p className="text-muted-foreground font-black uppercase text-[9px] md:text-xs tracking-[0.3em] mt-2">The ultimate science gear collection</p>
           </div>
-          <Link href="/shop" className="group flex items-center gap-3 text-xs font-black uppercase tracking-widest hover:text-primary transition-colors">
+          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black uppercase tracking-widest hover:text-primary transition-all p-3 md:p-0">
             View All Products <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
           {(categories.length > 0 ? categories : [
             { name: "Experiments", slug: "experiments" },
             { name: "Gadgets", slug: "gadgets" },
@@ -187,16 +175,16 @@ export default function Home() {
             { name: "Seasonal", slug: "seasonal" }
           ]).slice(0, 4).map((cat) => (
             <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
-              <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl bg-muted/30 border-2 border-transparent hover:border-primary/20 p-4 md:p-8 text-center transition-all hover:bg-background">
-                <div className="mb-4 md:mb-6 group-hover:scale-110 group-hover:-rotate-12 transition-all duration-500 flex justify-center text-primary">
-                  {cat.slug === 'experiments' && <FlaskConical className="h-10 w-10 md:h-16 md:w-16" />}
-                  {cat.slug === 'gadgets' && <Cpu className="h-10 w-10 md:h-16 md:w-16" />}
-                  {cat.slug === 'toys' && <Puzzle className="h-10 w-10 md:h-16 md:w-16" />}
-                  {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-16 md:w-16" />}
-                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-16 md:w-16" />}
+              <div className="group relative overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-slate-50 border-2 border-transparent hover:border-primary/10 p-6 md:p-12 text-center transition-all hover:bg-white hover:shadow-2xl hover:shadow-primary/5">
+                <div className="mb-6 md:mb-10 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500 flex justify-center text-primary">
+                  {cat.slug === 'experiments' && <FlaskConical className="h-10 w-10 md:h-20 md:w-20" />}
+                  {cat.slug === 'gadgets' && <Cpu className="h-10 w-10 md:h-20 md:w-20" />}
+                  {cat.slug === 'toys' && <Puzzle className="h-10 w-10 md:h-20 md:w-20" />}
+                  {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-20 md:w-20" />}
+                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-20 md:w-20" />}
                 </div>
-                <h3 className="font-black text-sm md:text-lg uppercase tracking-tight line-clamp-1">{cat.name}</h3>
-                <p className="text-[9px] md:text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1 md:mt-2">View More →</p>
+                <h3 className="font-black text-sm md:text-xl uppercase tracking-tight italic line-clamp-1">{cat.name}</h3>
+                <p className="text-[8px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity">Explore Category →</p>
               </div>
             </Link>
           ))}
@@ -204,26 +192,26 @@ export default function Home() {
       </section>
 
       {/* Best Sellers */}
-      <section className="container mx-auto px-4 py-6 md:py-8">
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 md:mb-12 gap-4 md:gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 bg-red-500/10 text-red-500 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
-              <Zap className="h-3 w-3 fill-red-500" /> Hot This Week
+      <section className="container mx-auto px-4 py-8 md:py-12">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-8 md:mb-16 gap-6 md:gap-10">
+          <div className="text-center md:text-left space-y-3">
+            <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-red-500/20">
+              <Zap className="h-3 w-3 fill-white" /> Hot Arrivals
             </div>
-            <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tight leading-none italic pr-4">Best <span className="text-primary NOT-italic">Sellers</span></h2>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Top <span className="text-primary NOT-italic">Performers</span></h2>
           </div>
-          <Link href="/shop" className="group flex items-center gap-3 text-xs font-black uppercase tracking-widest hover:text-primary transition-colors">
-            View More <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
+          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black uppercase tracking-widest hover:text-primary transition-all p-3 md:p-0">
+            Browse Full Shop <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
 
         {loading ? (
-          <div className="h-96 flex flex-col items-center justify-center gap-4">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="font-black text-xs uppercase tracking-widest text-muted-foreground">Loading Products...</p>
+          <div className="h-64 md:h-96 flex flex-col items-center justify-center gap-4">
+            <Loader2 className="h-8 md:h-10 w-8 md:w-10 animate-spin text-primary" />
+            <p className="font-black text-[10px] uppercase tracking-widest text-muted-foreground italic">Syncing inventory...</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
@@ -233,32 +221,32 @@ export default function Home() {
 
       {/* Seasonal Promo */}
       {(!cmsContent || cmsContent.showPromoBanner) && (
-        <section className="container mx-auto px-4 py-8">
-          <div className="relative rounded-3xl overflow-hidden bg-slate-900 h-fit md:min-h-[350px] flex items-center p-8 md:p-12 border border-white/10">
-            <div className="relative z-20 w-full max-w-2xl space-y-6">
-              <div className="inline-block px-4 py-1 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-[10px] font-black uppercase tracking-widest">
-                Limited Time Offer
+        <section className="container mx-auto px-4 py-12 md:py-16">
+          <div className="relative rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-slate-900 h-auto min-h-[400px] md:min-h-[500px] flex items-center p-8 md:p-20 border border-white/5">
+            <div className="relative z-20 w-full max-w-2xl space-y-8 md:space-y-12">
+              <div className="inline-block px-5 py-2 rounded-full bg-primary/20 backdrop-blur-xl border border-primary/30 text-primary text-[10px] md:text-xs font-black uppercase tracking-[0.3em] shadow-2xl">
+                Cyber Sale Live
               </div>
-              <h2 className="text-white text-5xl md:text-7xl font-black leading-none tracking-tight italic uppercase pr-10">
-                {cmsContent?.seasonalSaleText || "Big Sale Is Live"}
+              <h2 className="text-white text-5xl md:text-8xl lg:text-9xl font-black leading-[0.85] tracking-tighter italic uppercase pr-4">
+                {cmsContent?.seasonalSaleText || "Gear Up For Science"}
               </h2>
-              <p className="text-gray-400 font-bold text-sm max-w-sm">Shop our exclusive collection with massive discounts. Hurry up, stocks are running low!</p>
-              <div className="flex flex-wrap gap-6 items-center">
-                <Button size="lg" className="h-14 rounded-2xl px-12 font-black text-lg uppercase italic group">
-                  Explore Sale <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <p className="text-white/60 font-bold text-sm md:text-lg max-w-sm uppercase tracking-tight">Unlock the future with premium science kits. Limited stock remaining.</p>
+              <div className="flex flex-col sm:flex-row gap-8 items-center pt-4">
+                <Button size="lg" className="w-full sm:w-auto h-16 md:h-20 rounded-2xl md:rounded-3xl px-12 md:px-16 font-black text-lg md:text-2xl uppercase italic group shadow-2xl shadow-primary/40 active:scale-95 transition-all">
+                  Shop Sale <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
                 </Button>
-                <div className="flex flex-col">
-                  <span className="text-white/60 text-[10px] font-black uppercase tracking-widest">Ending In</span>
-                  <span className="text-primary text-2xl font-black tabular-nums tracking-tighter">12 : 45 : 33</span>
+                <div className="flex flex-col items-center sm:items-start">
+                  <span className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Time Left</span>
+                  <span className="text-primary text-3xl md:text-4xl font-black tabular-nums tracking-tighter italic">12 : 45 : 33</span>
                 </div>
               </div>
             </div>
 
-            <div className="absolute inset-0 h-full w-full pointer-events-none opacity-40 md:opacity-100">
-              <div className="absolute inset-0 bg-linear-to-r from-slate-900 via-slate-900/80 to-transparent z-10" />
+            <div className="absolute inset-0 h-full w-full pointer-events-none">
+              <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-950/80 to-transparent z-10" />
               <img
-                src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&q=80&w=800"
-                className="absolute right-0 top-0 w-2/3 h-full object-cover grayscale opacity-30"
+                src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&q=80&w=1200"
+                className="absolute right-0 top-0 w-full md:w-2/3 h-full object-cover grayscale opacity-40 mix-blend-overlay"
                 alt=""
               />
             </div>
@@ -267,33 +255,33 @@ export default function Home() {
       )}
 
       {/* Newsletter */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="relative rounded-3xl overflow-hidden bg-slate-950 h-fit md:min-h-[350px] flex items-center justify-end p-8 md:p-12 border-2 border-white/5">
-          <div className="relative z-20 w-full max-w-xl space-y-6 text-center flex flex-col items-center">
-            <div className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-widest">
-              Stay Updated
+      <section className="container mx-auto px-4 py-12 md:py-20">
+        <div className="relative rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-black h-auto min-h-[400px] md:min-h-[500px] flex items-center justify-center md:justify-end p-8 md:p-20 border-2 border-white/5">
+          <div className="relative z-20 w-full max-w-xl space-y-10 text-center flex flex-col items-center">
+            <div className="inline-block px-5 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">
+              The Lab Report
             </div>
-            <h2 className="text-white text-5xl md:text-6xl font-black leading-none tracking-tight italic uppercase w-full pr-4">
-              Subscribe To <span className="text-primary NOT-italic">Our Newsletter</span>
+            <h2 className="text-white text-5xl md:text-8xl font-black leading-[0.85] tracking-tighter italic uppercase">
+              Join The <span className="text-primary NOT-italic">Science Elite</span>
             </h2>
-            <p className="text-gray-400 font-bold text-sm max-w-sm">Get early access to deals, coupons, and new products directly in your inbox. No spam, only value.</p>
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+            <p className="text-white/40 font-bold text-sm md:text-base max-w-sm uppercase tracking-tight">Stay ahead of the curve. Get exclusive drops and secret deals.</p>
+            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md pt-4">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="grow h-12 px-6 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-primary transition-all font-bold text-sm text-center"
+                placeholder="Enter email address"
+                className="grow h-14 md:h-16 px-8 rounded-xl md:rounded-2xl bg-white/5 border-2 border-white/10 text-white focus:outline-none focus:border-primary transition-all font-black text-sm uppercase tracking-widest text-center"
               />
-              <Button className="h-12 rounded-xl px-8 font-black text-sm uppercase italic">
-                Join Now
+              <Button className="h-14 md:h-16 rounded-xl md:rounded-2xl px-12 font-black text-sm md:text-base uppercase italic group active:scale-95 transition-all">
+                Submit <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
           </div>
 
-          <div className="absolute inset-0 h-full w-full pointer-events-none opacity-30 md:opacity-100">
-            <div className="absolute inset-0 bg-linear-to-l from-slate-950 via-slate-950/80 to-transparent z-10" />
+          <div className="absolute inset-0 h-full w-full pointer-events-none">
+            <div className="absolute inset-0 bg-linear-to-l from-black via-black/80 to-transparent z-10" />
             <img
-              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=800"
-              className="absolute left-0 top-0 w-2/3 h-full object-cover grayscale opacity-20"
+              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1200"
+              className="absolute left-0 top-0 w-full md:w-2/3 h-full object-cover grayscale opacity-20"
               alt=""
             />
           </div>
