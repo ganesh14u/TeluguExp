@@ -98,12 +98,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* Badges */}
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
                 {discountPercent > 0 && (
-                    <Badge className="bg-primary text-white font-black text-[9px] md:text-[10px] uppercase tracking-widest border-none px-3 py-1 rounded-lg md:rounded-xl shadow-lg shadow-primary/20">
+                    <Badge className="bg-primary text-white font-black text-[9px] md:text-[10px] capitalize tracking-widest border-none px-3 py-1 rounded-lg md:rounded-xl shadow-lg shadow-primary/20">
                         {discountPercent}% OFF
                     </Badge>
                 )}
                 {product.isFeatured && (
-                    <Badge className="bg-slate-950 text-white font-black text-[9px] md:text-[10px] uppercase tracking-widest border-none px-3 py-1 rounded-lg md:rounded-xl shadow-lg ring-1 ring-white/10">
+                    <Badge className="bg-slate-950 text-white font-black text-[9px] md:text-[10px] capitalize tracking-widest border-none px-3 py-1 rounded-lg md:rounded-xl shadow-lg ring-1 ring-white/10">
                         LAB PICK
                     </Badge>
                 )}
@@ -130,7 +130,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* Content */}
             <div className="p-4 md:p-8 flex flex-col grow bg-white group-hover:bg-transparent transition-colors">
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[0.3em] text-primary italic">
+                    <span className="text-[8px] md:text-[9px] font-black capitalize tracking-[0.3em] text-primary italic">
                         {product.category}
                     </span>
                     <div className="flex text-yellow-500">
@@ -145,7 +145,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 <Link href={`/product/${product.slug}`}>
-                    <h3 className="font-black text-sm md:text-xl uppercase italic tracking-tighter leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-10 md:min-h-14">
+                    <h3 className="font-black text-sm md:text-xl capitalize italic tracking-tighter leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-10 md:min-h-14">
                         {product.name}
                     </h3>
                 </Link>
@@ -153,7 +153,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {/* Pricing & Add Button */}
                 <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between gap-4">
                     <div className="flex flex-col">
-                        <span className="text-lg md:text-2xl font-black text-slate-900 tracking-tighter italic">
+                        <span className="text-sm md:text-base font-black text-slate-900 tracking-tighter italic">
                             ₹{(product.discountPrice || product.price).toLocaleString()}
                         </span>
                         {product.discountPrice && (

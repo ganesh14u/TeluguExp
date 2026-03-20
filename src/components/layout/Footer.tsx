@@ -18,11 +18,11 @@ const Footer = () => {
                     {/* Brand and About */}
                     <div className="space-y-6 md:space-y-8">
                         <Link href="/" className="inline-block group">
-                            <h3 className="text-3xl md:text-4xl font-black uppercase italic tracking-tighter transition-all group-hover:text-primary">
+                            <h3 className="text-lg md:text-xl font-black capitalize italic tracking-tighter transition-all group-hover:text-primary">
                                 Telugu <span className="text-primary NOT-italic">Experiments</span>
                             </h3>
                         </Link>
-                        <p className="text-white/40 leading-relaxed text-xs md:text-sm font-bold uppercase tracking-tight">
+                        <p className="text-white/40 leading-relaxed text-xs md:text-sm font-bold capitalize tracking-tight">
                             Bringing the frontier of innovation to your doorstep. We curate the world's most advanced science kits and gadgets.
                         </p>
                         <div className="flex space-x-5">
@@ -36,7 +36,7 @@ const Footer = () => {
 
                     {/* Quick Links */}
                     <div className="space-y-6 md:space-y-8">
-                        <h4 className="font-black text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">Catalog</h4>
+                        <h4 className="font-black text-[10px] md:text-xs capitalize tracking-[0.3em] text-primary">Catalog</h4>
                         <ul className="space-y-3">
                             {[
                                 { name: "All Products", href: "/shop" },
@@ -46,7 +46,7 @@ const Footer = () => {
                                 { name: "Special Offers", href: "/shop?q=sale" }
                             ].map((link) => (
                                 <li key={link.name}>
-                                    <Link href={link.href} className="text-white/40 hover:text-white font-black text-[10px] md:text-xs uppercase tracking-widest transition-colors flex items-center group">
+                                    <Link href={link.href} className="text-white/40 hover:text-white font-black text-[10px] md:text-xs capitalize tracking-widest transition-colors flex items-center group">
                                         <div className="h-1 w-0 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all" />
                                         {link.name}
                                     </Link>
@@ -57,7 +57,7 @@ const Footer = () => {
 
                     {/* Policy Links */}
                     <div className="space-y-6 md:space-y-8">
-                        <h4 className="font-black text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">Support</h4>
+                        <h4 className="font-black text-[10px] md:text-xs capitalize tracking-[0.3em] text-primary">Support</h4>
                         <ul className="space-y-3">
                             {[
                                 { name: "Help Center", href: "/contact" },
@@ -67,7 +67,7 @@ const Footer = () => {
                                 { name: "Privacy Policy", href: "/privacy" }
                             ].map((link) => (
                                 <li key={link.name}>
-                                    <Link href={link.href} className="text-white/40 hover:text-white font-black text-[10px] md:text-xs uppercase tracking-widest transition-colors flex items-center group">
+                                    <Link href={link.href} className="text-white/40 hover:text-white font-black text-[10px] md:text-xs capitalize tracking-widest transition-colors flex items-center group">
                                         <div className="h-1 w-0 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all" />
                                         {link.name}
                                     </Link>
@@ -78,33 +78,33 @@ const Footer = () => {
 
                     {/* Contact Info */}
                     <div className="space-y-6 md:space-y-8">
-                        <h4 className="font-black text-[10px] md:text-xs uppercase tracking-[0.3em] text-primary">Headquarters</h4>
+                        <h4 className="font-black text-[10px] md:text-xs capitalize tracking-[0.3em] text-primary">Headquarters</h4>
                         <ul className="space-y-4">
                             <li className="flex items-start space-x-4">
                                 <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
                                     <MapPin className="h-4 w-4 text-primary" />
                                 </div>
-                                <span className="text-white/40 font-bold text-[10px] md:text-xs uppercase tracking-widest mt-1.5 leading-relaxed">Hyderabad, Telangana State, India</span>
+                                <span className="text-white/40 font-bold text-[10px] md:text-xs capitalize tracking-widest mt-1.5 leading-relaxed">Hyderabad, Telangana State, India</span>
                             </li>
                             <li className="flex items-center space-x-4">
                                 <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
                                     <Phone className="h-4 w-4 text-primary" />
                                 </div>
-                                <span className="text-white/40 font-bold text-[10px] md:text-xs uppercase tracking-widest leading-none">+91 81425 04687</span>
+                                <span className="text-white/40 font-bold text-[10px] md:text-xs capitalize tracking-widest leading-none">+91 81425 04687</span>
                             </li>
                             <li className="flex items-center space-x-4">
                                 <div className="h-8 w-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0">
                                     <Mail className="h-4 w-4 text-primary" />
                                 </div>
-                                <span className="text-white/40 font-bold text-[10px] md:text-xs uppercase tracking-widest leading-none truncate pr-2">support@teluguexperiments.com</span>
+                                <span className="text-white/40 font-bold text-[10px] md:text-xs capitalize tracking-widest leading-none truncate pr-2">support@teluguadventures.com</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
                 <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-white/20 italic">
-                        © {new Date().getFullYear()} Telugu Experiments Lab. All rights reserved. Made for Science.
+                    <p className="text-[9px] md:text-[10px] font-black capitalize tracking-[0.2em] text-white/20 italic">
+                        © {new Date().getFullYear()} Telugu Adventures Lab. All rights reserved. Made for Science.
                     </p>
                     <div className="flex items-center space-x-6 md:space-x-8 opacity-20 hover:opacity-100 transition-opacity">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-3 md:h-4 grayscale invert" />

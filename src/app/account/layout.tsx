@@ -43,7 +43,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                 <aside className="md:col-span-1">
                     <Card className="rounded-[2rem] border-2 overflow-hidden bg-white sticky top-24">
                         <CardHeader className="border-b border-dashed p-6 bg-muted/10">
-                            <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Quick <span className="text-primary NOT-italic">Links</span></CardTitle>
+                            <CardTitle className="text-lg font-black capitalize tracking-tighter italic">Quick <span className="text-primary NOT-italic">Links</span></CardTitle>
                         </CardHeader>
                         <CardContent className="p-4">
                             <div className="space-y-2">
@@ -53,7 +53,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                                         <Link
                                             key={link.href}
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all ${isActive
+                                            className={`flex items-center gap-3 px-5 py-4 rounded-2xl font-black capitalize tracking-widest text-[10px] transition-all ${isActive
                                                     ? "bg-primary text-white shadow-lg shadow-primary/20"
                                                     : "hover:bg-muted text-muted-foreground hover:text-foreground"
                                                 }`}

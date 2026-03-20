@@ -26,10 +26,10 @@ export default function WishlistPage() {
                 <div className="bg-red-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Heart className="h-10 w-10 text-red-300 fill-red-100" />
                 </div>
-                <h1 className="text-4xl font-black mb-4 tracking-tighter uppercase italic">Wishlist is <span className="text-red-500 NOT-italic">Empty</span></h1>
-                <p className="text-muted-foreground font-bold mb-8 uppercase tracking-widest text-xs">You haven't saved any items yet.</p>
+                <h1 className="text-xl font-black mb-4 tracking-tighter capitalize italic">Wishlist is <span className="text-red-500 NOT-italic">Empty</span></h1>
+                <p className="text-muted-foreground font-bold mb-8 capitalize tracking-widest text-xs">You haven't saved any items yet.</p>
                 <Link href="/shop">
-                    <Button size="lg" className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs shadow-xl shadow-red-500/20">
+                    <Button size="lg" className="h-14 rounded-2xl px-12 font-black capitalize tracking-widest text-xs shadow-xl shadow-red-500/20">
                         Explore Shop
                     </Button>
                 </Link>
@@ -51,8 +51,8 @@ export default function WishlistPage() {
     return (
         <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-12">
-                <h1 className="text-3xl md:text-5xl font-black tracking-tighter uppercase italic pr-4">My <span className="text-red-500 NOT-italic">Wishlist</span></h1>
-                <Button variant="ghost" className="text-red-500 hover:text-red-600 font-black uppercase tracking-[0.2em] text-[9px] md:text-xs shrink-0 p-0" onClick={clearWishlist}>
+                <h1 className="text-lg md:text-2xl font-black tracking-tighter capitalize italic pr-4">My <span className="text-red-500 NOT-italic">Wishlist</span></h1>
+                <Button variant="ghost" className="text-red-500 hover:text-red-600 font-black capitalize tracking-[0.2em] text-[9px] md:text-xs shrink-0 p-0" onClick={clearWishlist}>
                     Clear Wishlist
                 </Button>
             </div>
@@ -78,21 +78,21 @@ export default function WishlistPage() {
 
                         <div className="p-5 md:p-6">
                             <div className="mb-4">
-                                <p className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">{item.category}</p>
+                                <p className="text-[9px] md:text-[10px] font-black capitalize tracking-widest text-muted-foreground mb-1">{item.category}</p>
                                 <Link href={`/product/${item.slug}`}>
-                                    <h3 className="font-black text-lg md:text-xl leading-tight line-clamp-1 uppercase italic hover:text-primary transition-colors">{item.name}</h3>
+                                    <h3 className="font-black text-lg md:text-xl leading-tight line-clamp-1 capitalize italic hover:text-primary transition-colors">{item.name}</h3>
                                 </Link>
                             </div>
 
                             <div className="flex items-end justify-between gap-4 mt-auto">
                                 <div>
-                                    <p className="font-black text-xl md:text-2xl tracking-tighter italic">₹{(item.discountPrice || item.price).toLocaleString()}</p>
+                                    <p className="font-black text-sm md:text-base tracking-tighter italic">₹{(item.discountPrice || item.price).toLocaleString()}</p>
                                     {item.discountPrice && (
                                         <p className="text-[10px] md:text-xs text-muted-foreground line-through font-bold">₹{item.price.toLocaleString()}</p>
                                     )}
                                 </div>
                                 <Button
-                                    className="rounded-xl font-black uppercase tracking-widest text-[9px] md:text-xs h-10 px-4 md:px-6 shadow-lg shadow-primary/10"
+                                    className="rounded-xl font-black capitalize tracking-widest text-[9px] md:text-xs h-10 px-4 md:px-6 shadow-lg shadow-primary/10"
                                     onClick={() => handleAddToCart(item)}
                                 >
                                     <ShoppingBag className="mr-2 h-3.5 md:h-4 w-3.5 md:w-4" /> Add
@@ -105,7 +105,7 @@ export default function WishlistPage() {
 
             <div className="mt-12 md:mt-16 text-center">
                 <Link href="/shop">
-                    <Button variant="outline" size="lg" className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs border-2">
+                    <Button variant="outline" size="lg" className="h-14 rounded-2xl px-12 font-black capitalize tracking-widest text-xs border-2">
                         Explore Shop <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </Link>

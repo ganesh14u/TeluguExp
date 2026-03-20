@@ -87,8 +87,8 @@ export default function AdminUsersPage() {
         <div className="space-y-10 p-2">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Manage <span className="text-primary NOT-italic">Users</span></h1>
-                    <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2 italic opacity-70">View and manage all registered users.</p>
+                    <h1 className="text-2xl font-black tracking-tighter capitalize italic pr-4">Manage <span className="text-primary NOT-italic">Users</span></h1>
+                    <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2 italic opacity-70">View and manage all registered users.</p>
                 </div>
                 <Button variant="outline" size="icon" onClick={fetchUsers} disabled={loading} className="rounded-2xl h-14 w-14 border-2 shadow-sm">
                     <RefreshCw className={`h-5 w-5 ${loading && "animate-spin"}`} />
@@ -109,10 +109,10 @@ export default function AdminUsersPage() {
                 <Table>
                     <TableHeader className="bg-muted/50 border-b-2">
                         <TableRow className="hover:bg-transparent border-none">
-                            <TableHead className="h-20 pl-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">User Name</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Role</TableHead>
-                            <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Joined Date</TableHead>
-                            <TableHead className="h-20 text-right pr-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
+                            <TableHead className="h-20 pl-10 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">User Name</TableHead>
+                            <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Role</TableHead>
+                            <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Joined Date</TableHead>
+                            <TableHead className="h-20 text-right pr-10 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -121,14 +121,14 @@ export default function AdminUsersPage() {
                                 <TableCell colSpan={4} className="h-80 text-center">
                                     <div className="flex flex-col items-center justify-center">
                                         <Loader2 className="h-12 w-12 animate-spin text-primary opacity-20 mb-4" />
-                                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Loading Users...</p>
+                                        <p className="text-[10px] font-black capitalize tracking-[0.3em] text-muted-foreground animate-pulse">Loading Users...</p>
                                     </div>
                                 </TableCell>
                             </TableRow>
                         ) : filteredUsers.length === 0 ? (
                             <TableRow>
                                 <TableCell colSpan={4} className="h-80 text-center">
-                                    <p className="text-muted-foreground font-black uppercase opacity-20 text-4xl italic tracking-tighter">No Users Found</p>
+                                    <p className="text-muted-foreground font-black capitalize opacity-20 text-xl italic tracking-tighter">No Users Found</p>
                                 </TableCell>
                             </TableRow>
                         ) : (
@@ -151,10 +151,10 @@ export default function AdminUsersPage() {
                                             </div>
                                             <div className="flex flex-col">
                                                 <p className="font-black text-xl tracking-tight group-hover:text-primary transition-colors">{u.name}</p>
-                                                <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 uppercase tracking-widest opacity-60">
+                                                <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 capitalize tracking-widest opacity-60">
                                                     <Mail className="h-3 w-3" /> {u.email}
                                                 </p>
-                                                <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 uppercase tracking-widest opacity-60">
+                                                <p className="text-xs text-muted-foreground font-bold flex items-center gap-2 mt-1 capitalize tracking-widest opacity-60">
                                                     <Phone className="h-3 w-3" /> {u.phone || "N/A"}
                                                 </p>
                                             </div>
@@ -163,11 +163,11 @@ export default function AdminUsersPage() {
                                     <TableCell>
                                         <div className="flex items-center gap-2">
                                             {u.role === 'admin' ? (
-                                                <Badge className="bg-purple-600 text-white border-none gap-2 rounded-xl px-4 py-2 font-black text-[10px] uppercase tracking-widest shadow-lg shadow-purple-500/20 italic">
+                                                <Badge className="bg-purple-600 text-white border-none gap-2 rounded-xl px-4 py-2 font-black text-[10px] capitalize tracking-widest shadow-lg shadow-purple-500/20 italic">
                                                     <Shield className="h-3.5 w-3.5" /> System Admin
                                                 </Badge>
                                             ) : (
-                                                <Badge variant="secondary" className="gap-2 rounded-xl px-4 py-2 font-black text-[10px] uppercase tracking-widest text-muted-foreground bg-muted border-2 italic">
+                                                <Badge variant="secondary" className="gap-2 rounded-xl px-4 py-2 font-black text-[10px] capitalize tracking-widest text-muted-foreground bg-muted border-2 italic">
                                                     <User className="h-3.5 w-3.5" /> Standard User
                                                 </Badge>
                                             )}
@@ -179,7 +179,7 @@ export default function AdminUsersPage() {
                                     <TableCell>
                                         <div className="flex items-center gap-2">
                                             <div className="h-2 w-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-green-600">Active</span>
+                                            <span className="text-[10px] font-black capitalize tracking-widest text-green-600">Active</span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right pr-10">
@@ -190,7 +190,7 @@ export default function AdminUsersPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end" className="rounded-[1.5rem] border-2 p-3 w-56 shadow-2xl">
-                                                <DropdownMenuLabel className="font-black uppercase tracking-widest text-[10px] opacity-40 px-3 py-2">Account Actions</DropdownMenuLabel>
+                                                <DropdownMenuLabel className="font-black capitalize tracking-widest text-[10px] opacity-40 px-3 py-2">Account Actions</DropdownMenuLabel>
                                                 <DropdownMenuSeparator className="my-2" />
                                                 <DropdownMenuItem onClick={() => handleRoleChange(u._id, u.role === 'admin' ? 'user' : 'admin')} className="rounded-xl px-3 py-3 font-bold cursor-pointer hover:bg-primary/5">
                                                     <Shield className="mr-3 h-4 w-4 text-primary" />

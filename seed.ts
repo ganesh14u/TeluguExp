@@ -68,7 +68,7 @@ async function seed() {
         const hashedPassword = await bcrypt.hash("admin123", 10);
         await User.create({
             name: "Admin Ganesh",
-            email: "admin@teluguexperiments.com",
+            email: "admin@teluguadventures.com",
             password: hashedPassword,
             role: "admin"
         });

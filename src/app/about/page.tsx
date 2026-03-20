@@ -12,16 +12,16 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 py-12 md:py-24 max-w-6xl">
             {/* Hero Section */}
             <div className="text-center space-y-6 mb-20 animate-in fade-in slide-in-from-bottom-5 duration-700">
-                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest border border-primary/20">
+                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black capitalize tracking-widest border border-primary/20">
                     Our Story
                 </span>
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-tight">
-                    Welcome to <span className="text-primary NOT-italic">Teluguexperiments</span>
+                <h1 className="text-xl md:text-3xl font-black tracking-tighter capitalize italic leading-tight">
+                    Welcome to <span className="text-primary NOT-italic">Telugu Adventures</span>
                     <br />
-                    <span className="text-2xl md:text-4xl text-muted-foreground mt-2 block normal-case font-bold tracking-tight">Bringing Experiments to Your Doorstep!</span>
+                    <span className="text-base md:text-xl text-muted-foreground mt-2 block normal-case font-bold tracking-tight">Bringing Experiments to Your Doorstep!</span>
                 </h1>
                 <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed">
-                    At Teluguexperiments, we believe that learning should be fun, hands-on, and available in your own language.
+                    At Teluguadventures, we believe that learning should be fun, hands-on, and available in your own language.
                     That’s why we’ve created a platform dedicated to providing science experiment kits, DIY projects, and educational tools — all in Telugu.
                 </p>
             </div>
@@ -31,7 +31,7 @@ export default function AboutPage() {
                 <div className="bg-slate-50 p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden group">
                     <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent" />
                     <div className="relative z-10 space-y-6">
-                        <h3 className="text-2xl font-black uppercase tracking-tighter">Our Mission</h3>
+                        <h3 className="text-base font-black capitalize tracking-tighter">Our Mission</h3>
                         <p className="text-muted-foreground font-medium leading-loose">
                             Whether you're a student, parent, teacher, or just a curious mind, our goal is to make science simple and exciting.
                             We offer carefully designed kits and guides that help you explore concepts through real-world experiments — right from your home.
@@ -39,7 +39,7 @@ export default function AboutPage() {
                     </div>
                 </div>
                 <div className="space-y-8">
-                    <h2 className="text-3xl font-black uppercase italic tracking-tighter">Why Choose <span className="text-primary NOT-italic">Us?</span></h2>
+                    <h2 className="text-lg font-black capitalize italic tracking-tighter">Why Choose <span className="text-primary NOT-italic">Us?</span></h2>
                     <ul className="space-y-6">
                         {[
                             "Easy-to-follow instructions in Telugu",
@@ -86,7 +86,7 @@ export default function AboutPage() {
                             <info.icon className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                            <h4 className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-1">{info.label}</h4>
+                            <h4 className="text-xs font-black capitalize tracking-widest text-muted-foreground mb-1">{info.label}</h4>
                             <p className="text-xl font-black">{info.value}</p>
                             <p className="text-xs font-bold text-muted-foreground mt-1">{info.subtext}</p>
                         </div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <div className="rounded-[2.5rem] bg-slate-900 overflow-hidden relative">
                 <div className="absolute inset-0 bg-linear-to-r from-primary/20 to-purple-500/20" />
                 <div className="relative z-10 px-6 py-20 text-center space-y-8">
-                    <h2 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+                    <h2 className="text-lg md:text-2xl font-black text-white capitalize italic tracking-tighter">
                         Join the <span className="text-primary NOT-italic">Revolution</span>
                     </h2>
                     <p className="text-slate-300 max-w-2xl mx-auto text-lg font-medium">
@@ -106,12 +106,12 @@ export default function AboutPage() {
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link href="/shop">
-                            <Button size="lg" className="h-14 px-10 rounded-2xl text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/25">
+                            <Button size="lg" className="h-14 px-10 rounded-2xl text-lg font-black capitalize tracking-widest shadow-xl shadow-primary/25">
                                 Start Exploring
                             </Button>
                         </Link>
                         <Link href="/contact">
-                            <Button size="lg" variant="outline" className="h-14 px-10 rounded-2xl text-lg font-black uppercase tracking-widest bg-transparent text-white border-white/20 hover:bg-white/10 hover:text-white">
+                            <Button size="lg" variant="outline" className="h-14 px-10 rounded-2xl text-lg font-black capitalize tracking-widest bg-transparent text-white border-white/20 hover:bg-white/10 hover:text-white">
                                 Contact Us
                             </Button>
                         </Link>

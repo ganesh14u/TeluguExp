@@ -25,10 +25,10 @@ export default function CartPage() {
                 <div className="bg-muted w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
                     <ShoppingBag className="h-10 w-10 text-muted-foreground" />
                 </div>
-                <h1 className="text-4xl font-black mb-4 tracking-tighter uppercase italic">Bag is <span className="text-primary NOT-italic">Empty</span></h1>
-                <p className="text-muted-foreground font-bold mb-8 uppercase tracking-widest text-xs">Seems like you haven't added anything to your cart yet.</p>
+                <h1 className="text-xl font-black mb-4 tracking-tighter capitalize italic">Bag is <span className="text-primary NOT-italic">Empty</span></h1>
+                <p className="text-muted-foreground font-bold mb-8 capitalize tracking-widest text-xs">Seems like you haven't added anything to your cart yet.</p>
                 <Link href="/shop">
-                    <Button size="lg" className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20">
+                    <Button size="lg" className="h-14 rounded-2xl px-12 font-black capitalize tracking-widest text-xs shadow-xl shadow-primary/20">
                         Start Shopping
                     </Button>
                 </Link>
@@ -38,7 +38,7 @@ export default function CartPage() {
 
     return (
         <div className="container mx-auto px-4 py-8 md:py-12 max-w-6xl">
-            <h1 className="text-3xl md:text-5xl font-black mb-6 md:mb-12 tracking-tighter uppercase italic pr-4">Shopping <span className="text-primary NOT-italic">Cart</span></h1>
+            <h1 className="text-lg md:text-2xl font-black mb-6 md:mb-12 tracking-tighter capitalize italic pr-4">Shopping <span className="text-primary NOT-italic">Cart</span></h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
                 {/* Cart Items */}
@@ -51,8 +51,8 @@ export default function CartPage() {
                             <div className="flex flex-col justify-between grow">
                                 <div className="flex justify-between items-start gap-4">
                                     <div>
-                                        <h3 className="font-black text-lg sm:text-xl line-clamp-1 uppercase tracking-tight italic">{item.name}</h3>
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary mt-1">Authentic Gear</p>
+                                        <h3 className="font-black text-lg sm:text-xl line-clamp-1 capitalize tracking-tight italic">{item.name}</h3>
+                                        <p className="text-[10px] font-black capitalize tracking-widest text-primary mt-1">Authentic Gear</p>
                                     </div>
                                     <button
                                         onClick={() => removeItem(item._id)}
@@ -89,7 +89,7 @@ export default function CartPage() {
                                         </Button>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-black text-2xl text-primary tracking-tighter italic">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</p>
+                                        <p className="font-black text-base text-primary tracking-tighter italic">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</p>
                                         {item.discountPrice && (
                                             <p className="text-[10px] text-muted-foreground line-through font-bold">₹{(item.price * item.quantity).toLocaleString()}</p>
                                         )}
@@ -106,33 +106,33 @@ export default function CartPage() {
                         <div className="absolute top-0 right-0 p-8 opacity-10">
                             <ShoppingBag className="h-24 w-24" />
                         </div>
-                        <h2 className="text-xl md:text-2xl font-black mb-6 md:mb-8 italic uppercase tracking-tighter">Order Summary</h2>
+                        <h2 className="text-sm md:text-base font-black mb-6 md:mb-8 italic capitalize tracking-tighter">Order Summary</h2>
                         <div className="space-y-4 md:space-y-5">
-                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs uppercase tracking-widest">
+                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs capitalize tracking-widest">
                                 <span>Subtotal ({totalItems()} items)</span>
                                 <span className="text-white">₹{totalPrice().toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs uppercase tracking-widest">
+                            <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs capitalize tracking-widest">
                                 <span>Shipping Fees</span>
                                 <span className="text-green-400">FREE</span>
                             </div>
                             <Separator className="bg-white/10 my-4 md:my-6" />
-                            <div className="flex justify-between text-2xl md:text-3xl font-black italic">
-                                <span className="uppercase tracking-tighter">Total</span>
+                            <div className="flex justify-between text-base md:text-lg font-black italic">
+                                <span className="capitalize tracking-tighter">Total</span>
                                 <span className="text-primary tracking-tighter">₹{totalPrice().toLocaleString()}</span>
                             </div>
 
                             <Link href="/checkout" className="block mt-8 md:mt-10">
-                                <Button className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl text-base md:text-lg font-black uppercase italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform">
+                                <Button className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl text-base md:text-lg font-black capitalize italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform">
                                     Secure Checkout <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </Link>
 
                             <div className="mt-8 md:mt-10 space-y-4 pt-8 md:pt-10 border-t border-white/5">
-                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black uppercase tracking-widest">
+                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black capitalize tracking-widest">
                                     <div className="h-2 w-2 rounded-full bg-green-500" /> Secure Payments
                                 </div>
-                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black uppercase tracking-widest">
+                                <div className="flex items-center gap-3 text-[9px] md:text-[10px] text-white/40 font-black capitalize tracking-widest">
                                     <div className="h-2 w-2 rounded-full bg-green-500" /> Easy Returns
                                 </div>
                             </div>

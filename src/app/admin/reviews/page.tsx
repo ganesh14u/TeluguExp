@@ -15,7 +15,7 @@ export default function AdminReviewsPage() {
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold">Product Reviews</h1>
+                <h1 className="text-lg font-bold">Product Reviews</h1>
                 <p className="text-muted-foreground">Moderate customer feedback.</p>
             </div>
 

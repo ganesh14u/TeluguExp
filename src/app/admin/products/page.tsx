@@ -212,8 +212,8 @@ export default function AdminProductsPage() {
         <div className="space-y-6 container mx-auto p-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight uppercase italic">Store <span className="text-primary NOT-italic">Products</span></h1>
-                    <p className="text-gray-500 font-bold text-xs uppercase tracking-widest mt-1">Add and manage your store products.</p>
+                    <h1 className="text-lg font-black tracking-tight capitalize italic">Store <span className="text-primary NOT-italic">Products</span></h1>
+                    <p className="text-gray-500 font-bold text-xs capitalize tracking-widest mt-1">Add and manage your store products.</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
                     {/* Payment Mode Toggle */}
@@ -222,7 +222,7 @@ export default function AdminProductsPage() {
                             variant={paymentMode === "test" ? "default" : "ghost"}
                             size="sm"
                             className={cn(
-                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all",
+                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black capitalize tracking-widest transition-all",
                                 paymentMode === "test" ? "bg-amber-500 hover:bg-amber-600 text-white shadow-lg shadow-amber-500/20" : "text-slate-400 hover:text-slate-600"
                             )}
                             onClick={() => paymentMode !== "test" && togglePaymentMode()}
@@ -234,7 +234,7 @@ export default function AdminProductsPage() {
                             variant={paymentMode === "live" ? "default" : "ghost"}
                             size="sm"
                             className={cn(
-                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all",
+                                "rounded-xl h-8 px-3 md:px-4 text-[9px] md:text-[10px] font-black capitalize tracking-widest transition-all",
                                 paymentMode === "live" ? "bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20" : "text-slate-400 hover:text-slate-600"
                             )}
                             onClick={() => paymentMode !== "live" && togglePaymentMode()}
@@ -253,20 +253,20 @@ export default function AdminProductsPage() {
                         if (!open) resetForm();
                     }}>
                         <DialogTrigger asChild>
-                            <Button className="font-black uppercase tracking-widest italic h-10 px-6 rounded-xl grow md:grow-0 text-xs">
+                            <Button className="font-black capitalize tracking-widest italic h-10 px-6 rounded-xl grow md:grow-0 text-xs">
                                 <Plus className="h-4 w-4 mr-2" /> Add Product
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="w-[95vw] max-w-[600px] rounded-[2rem] border-2 shadow-2xl p-4 md:p-6 overflow-hidden">
                             <DialogHeader>
-                                <DialogTitle className="text-xl font-black uppercase tracking-tight italic">
+                                <DialogTitle className="text-xl font-black capitalize tracking-tight italic">
                                     {editingProduct ? "Edit Product" : "Add New <span className='text-primary NOT-italic'>Product</span>"}
                                 </DialogTitle>
                             </DialogHeader>
                             {/* Form content exactly as before... */}
                             <form onSubmit={handleSubmit} className="space-y-4 py-4 max-h-[75vh] overflow-y-auto px-1 scrollbar-none">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Product Name</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Product Name</label>
                                     <Input
                                         placeholder="e.g. Science Experiment Kit"
                                         className="h-12 rounded-xl border-2 font-bold"
@@ -277,7 +277,7 @@ export default function AdminProductsPage() {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Description</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Description</label>
                                     <textarea
                                         className="w-full min-h-[120px] rounded-xl border-2 bg-transparent px-4 py-3 text-sm font-medium focus-visible:outline-none focus-visible:border-primary transition-colors"
                                         placeholder="Enter product details..."
@@ -289,7 +289,7 @@ export default function AdminProductsPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Price (₹)</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Price (₹)</label>
                                         <Input
                                             type="number"
                                             className="h-12 rounded-xl border-2 font-black italic"
@@ -300,7 +300,7 @@ export default function AdminProductsPage() {
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Offer Price (₹)</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Offer Price (₹)</label>
                                         <Input
                                             type="number"
                                             className="h-12 rounded-xl border-2 font-black italic text-primary"
@@ -313,7 +313,7 @@ export default function AdminProductsPage() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Category</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Category</label>
                                         <Select
                                             value={productForm.category}
                                             onValueChange={(val) => setProductForm({ ...productForm, category: val })}
@@ -329,7 +329,7 @@ export default function AdminProductsPage() {
                                         </Select>
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Stock Units</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Stock Units</label>
                                         <Input
                                             type="number"
                                             className="h-12 rounded-xl border-2 font-bold"
@@ -343,8 +343,8 @@ export default function AdminProductsPage() {
 
                                 <div className="space-y-3">
                                     <div className="flex justify-between items-center">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Images (URLs)</label>
-                                        <Button type="button" variant="outline" size="sm" onClick={addImageField} className="h-7 px-3 rounded-lg text-[9px] uppercase font-black border-2">
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Images (URLs)</label>
+                                        <Button type="button" variant="outline" size="sm" onClick={addImageField} className="h-7 px-3 rounded-lg text-[9px] capitalize font-black border-2">
                                             + Add More
                                         </Button>
                                     </div>
@@ -366,7 +366,7 @@ export default function AdminProductsPage() {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Video Link (YouTube)</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Video Link (YouTube)</label>
                                     <Input
                                         placeholder="https://youtube.com/watch?v=..."
                                         className="h-12 rounded-xl border-2 text-xs font-medium"
@@ -375,7 +375,7 @@ export default function AdminProductsPage() {
                                     />
                                 </div>
 
-                                <Button type="submit" className="w-full font-black uppercase tracking-[0.2em] italic h-14 rounded-2xl shadow-xl shadow-primary/20 mt-4">
+                                <Button type="submit" className="w-full font-black capitalize tracking-[0.2em] italic h-14 rounded-2xl shadow-xl shadow-primary/20 mt-4">
                                     {editingProduct ? "Save Changes" : "Deploy Product"}
                                 </Button>
                             </form>
@@ -399,12 +399,12 @@ export default function AdminProductsPage() {
                     <Table>
                         <TableHeader className="bg-slate-50/50">
                             <TableRow className="hover:bg-transparent">
-                                <TableHead className="w-[80px] font-black uppercase text-[10px] tracking-widest pl-6">Image</TableHead>
-                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Name</TableHead>
-                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Category</TableHead>
-                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Price</TableHead>
-                                <TableHead className="font-black uppercase text-[10px] tracking-widest">Stock</TableHead>
-                                <TableHead className="text-right font-black uppercase text-[10px] tracking-widest pr-6">Action</TableHead>
+                                <TableHead className="w-[80px] font-black capitalize text-[10px] tracking-widest pl-6">Image</TableHead>
+                                <TableHead className="font-black capitalize text-[10px] tracking-widest">Name</TableHead>
+                                <TableHead className="font-black capitalize text-[10px] tracking-widest">Category</TableHead>
+                                <TableHead className="font-black capitalize text-[10px] tracking-widest">Price</TableHead>
+                                <TableHead className="font-black capitalize text-[10px] tracking-widest">Stock</TableHead>
+                                <TableHead className="text-right font-black capitalize text-[10px] tracking-widest pr-6">Action</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -412,13 +412,13 @@ export default function AdminProductsPage() {
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-40 text-center">
                                         <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary opacity-20" />
-                                        <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Syncing products...</p>
+                                        <p className="mt-4 text-[10px] font-black capitalize tracking-widest text-slate-400">Syncing products...</p>
                                     </TableCell>
                                 </TableRow>
                             ) : filteredProducts.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-40 text-center">
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No products found</p>
+                                        <p className="text-[10px] font-black capitalize tracking-widest text-slate-400">No products found</p>
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -429,7 +429,7 @@ export default function AdminProductsPage() {
                                                 <img src={(product.images && product.images[0]) || product.image || 'https://placehold.co/100'} alt="" className="w-full h-full object-cover" />
                                             </div>
                                         </TableCell>
-                                        <TableCell className="font-black text-sm uppercase tracking-tight">{product.name}</TableCell>
+                                        <TableCell className="font-black text-sm capitalize tracking-tight">{product.name}</TableCell>
                                         <TableCell>
                                             <Badge variant="secondary" className="capitalize text-[10px] font-bold bg-slate-100/50 text-slate-600 border-none px-3 py-1 rounded-lg italic">{product.category}</Badge>
                                         </TableCell>
@@ -441,7 +441,7 @@ export default function AdminProductsPage() {
                                         </TableCell>
                                         <TableCell>
                                             <span className={cn(
-                                                "text-[10px] font-black uppercase px-2 py-1 rounded-lg",
+                                                "text-[10px] font-black capitalize px-2 py-1 rounded-lg",
                                                 product.stock < 5 ? "bg-red-50 text-red-500" : "bg-emerald-50 text-emerald-500"
                                             )}>
                                                 {product.stock} Units

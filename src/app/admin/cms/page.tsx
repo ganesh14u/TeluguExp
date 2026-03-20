@@ -71,7 +71,7 @@ export default function AdminCMSPage() {
     if (loading) return (
         <div className="h-[60vh] flex flex-col items-center justify-center gap-4">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="font-black text-xs uppercase tracking-widest text-muted-foreground">Synchronizing live content...</p>
+            <p className="font-black text-xs capitalize tracking-widest text-muted-foreground">Synchronizing live content...</p>
         </div>
     );
 
@@ -79,7 +79,7 @@ export default function AdminCMSPage() {
         <div className="space-y-8">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tighter uppercase italic">Content <span className="text-primary NOT-italic">Nucleus</span></h1>
+                    <h1 className="text-xl font-black tracking-tighter capitalize italic">Content <span className="text-primary NOT-italic">Nucleus</span></h1>
                     <p className="text-muted-foreground font-medium">Control the visual output of your laboratory storefront globally.</p>
                 </div>
                 <Button
@@ -109,14 +109,14 @@ export default function AdminCMSPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <Card className="rounded-[2.5rem] border-2 shadow-sm overflow-hidden bg-card/50">
                             <CardHeader className="bg-muted/30 border-b">
-                                <CardTitle className="uppercase font-black flex items-center gap-2 italic">
+                                <CardTitle className="capitalize font-black flex items-center gap-2 italic">
                                     <CheckCircle2 className="h-5 w-5 text-green-500" /> Hero Section
                                 </CardTitle>
                                 <CardDescription className="font-bold">Main branding text on the landing page.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6 p-8">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Main Headline</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Main Headline</label>
                                     <Input
                                         placeholder="Enter headline"
                                         className="h-14 rounded-2xl bg-muted/30 border-none font-bold text-lg"
@@ -125,7 +125,7 @@ export default function AdminCMSPage() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Supporting Text</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Supporting Text</label>
                                     <Input
                                         placeholder="Enter subtitle"
                                         className="h-14 rounded-2xl bg-muted/30 border-none font-medium text-muted-foreground"
@@ -138,7 +138,7 @@ export default function AdminCMSPage() {
 
                         <Card className="rounded-[2.5rem] border-2 shadow-sm overflow-hidden bg-card/50">
                             <CardHeader className="bg-muted/30 border-b">
-                                <CardTitle className="uppercase font-black flex items-center gap-2 italic">
+                                <CardTitle className="capitalize font-black flex items-center gap-2 italic">
                                     <AlertCircle className="h-5 w-5 text-primary" /> Promo Engine
                                 </CardTitle>
                                 <CardDescription className="font-bold">Toggle seasonal alerts and banners.</CardDescription>
@@ -146,7 +146,7 @@ export default function AdminCMSPage() {
                             <CardContent className="grid grid-cols-1 gap-6 p-8">
                                 <div className="flex items-center justify-between p-6 rounded-3xl bg-muted/20 border-2 border-dashed border-primary/20">
                                     <div className="space-y-1">
-                                        <p className="font-black uppercase text-sm">Sale Banner</p>
+                                        <p className="font-black capitalize text-sm">Sale Banner</p>
                                         <p className="text-xs text-muted-foreground font-bold italic">Currently: {content.showPromoBanner ? 'ACTIVE' : 'OFFLINE'}</p>
                                     </div>
                                     <Button
@@ -159,7 +159,7 @@ export default function AdminCMSPage() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Season Headline</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Season Headline</label>
                                     <Input
                                         placeholder="e.g. Diwal Special"
                                         className="h-14 rounded-2xl bg-muted/30 border-none font-black italic text-lg text-primary"
@@ -175,7 +175,7 @@ export default function AdminCMSPage() {
                 <TabsContent value="pages" className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-[3rem]">
                     <div className="text-center grayscale opacity-20 transform hover:scale-105 transition-transform">
                         <FileText className="h-12 w-12 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold uppercase tracking-tighter italic">Pages are hardcoded for now</h3>
+                        <h3 className="text-xl font-bold capitalize tracking-tighter italic">Pages are hardcoded for now</h3>
                         <p className="text-sm">Static routing is active for /about and /faq</p>
                     </div>
                 </TabsContent>
@@ -183,7 +183,7 @@ export default function AdminCMSPage() {
                 <TabsContent value="media" className="h-[400px] flex items-center justify-center border-2 border-dashed rounded-[3rem]">
                     <div className="text-center grayscale opacity-20 transform hover:scale-105 transition-transform">
                         <ImageIcon className="h-12 w-12 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold uppercase tracking-tighter italic">Cloudinary Connection Active</h3>
+                        <h3 className="text-xl font-bold capitalize tracking-tighter italic">Cloudinary Connection Active</h3>
                         <p className="text-sm">Upload images directly in product editor</p>
                     </div>
                 </TabsContent>

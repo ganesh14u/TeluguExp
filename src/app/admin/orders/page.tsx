@@ -147,8 +147,8 @@ export default function AdminOrdersPage() {
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Store <span className="text-primary NOT-italic">Orders</span></h1>
-                    <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2 italic opacity-70">View and manage all customer orders.</p>
+                    <h1 className="text-2xl font-black tracking-tighter capitalize italic pr-4">Store <span className="text-primary NOT-italic">Orders</span></h1>
+                    <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2 italic opacity-70">View and manage all customer orders.</p>
                 </div>
                 <Button variant="outline" size="icon" onClick={fetchOrders} disabled={loading} className="rounded-2xl h-14 w-14 border-2 shadow-sm">
                     <RefreshCw className={`h-5 w-5 ${loading && "animate-spin"}`} />
@@ -167,10 +167,10 @@ export default function AdminOrdersPage() {
                 </div>
                 <div className="flex gap-3">
                     <Select value={statusFilter} onValueChange={setStatusFilter}>
-                        <SelectTrigger className="h-16 px-8 rounded-2xl font-black uppercase tracking-widest text-[10px] border-2 gap-3 hover:bg-black hover:text-white transition-all w-40">
+                        <SelectTrigger className="h-16 px-8 rounded-2xl font-black capitalize tracking-widest text-[10px] border-2 gap-3 hover:bg-black hover:text-white transition-all w-40">
                             <SelectValue placeholder="FILTER" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-2xl border-2 font-bold uppercase text-[10px] tracking-widest">
+                        <SelectContent className="rounded-2xl border-2 font-bold capitalize text-[10px] tracking-widest">
                             <SelectItem value="All">All Status</SelectItem>
                             <SelectItem value="Pending">Pending</SelectItem>
                             <SelectItem value="Processing">Processing</SelectItem>
@@ -180,7 +180,7 @@ export default function AdminOrdersPage() {
                         </SelectContent>
                     </Select>
 
-                    <Button onClick={handleExport} className="h-16 px-8 rounded-2xl font-black uppercase tracking-widest text-[10px] gap-3 shadow-xl shadow-primary/20 hover:scale-105 transition-all italic">
+                    <Button onClick={handleExport} className="h-16 px-8 rounded-2xl font-black capitalize tracking-widest text-[10px] gap-3 shadow-xl shadow-primary/20 hover:scale-105 transition-all italic">
                         <Download className="h-4 w-4" /> Export Report
                     </Button>
                 </div>
@@ -191,12 +191,12 @@ export default function AdminOrdersPage() {
                     <Table>
                         <TableHeader className="bg-muted/50 border-b-2">
                             <TableRow className="hover:bg-transparent border-none">
-                                <TableHead className="h-20 pl-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order ID</TableHead>
-                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Customer</TableHead>
-                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Order Date</TableHead>
-                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Amount</TableHead>
-                                <TableHead className="h-20 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Status</TableHead>
-                                <TableHead className="h-20 text-right pr-10 font-black uppercase text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
+                                <TableHead className="h-20 pl-10 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Order ID</TableHead>
+                                <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Customer</TableHead>
+                                <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Order Date</TableHead>
+                                <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Amount</TableHead>
+                                <TableHead className="h-20 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Status</TableHead>
+                                <TableHead className="h-20 text-right pr-10 font-black capitalize text-[10px] tracking-[0.2em] text-muted-foreground">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -205,14 +205,14 @@ export default function AdminOrdersPage() {
                                     <TableCell colSpan={6} className="h-80 text-center">
                                         <div className="flex flex-col items-center justify-center">
                                             <Loader2 className="h-12 w-12 animate-spin text-primary opacity-20 mb-4" />
-                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Loading Orders...</p>
+                                            <p className="text-[10px] font-black capitalize tracking-[0.3em] text-muted-foreground animate-pulse">Loading Orders...</p>
                                         </div>
                                     </TableCell>
                                 </TableRow>
                             ) : filteredOrders.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={6} className="h-80 text-center">
-                                        <p className="text-muted-foreground font-black uppercase opacity-20 text-4xl italic tracking-tighter">No Orders Found</p>
+                                        <p className="text-muted-foreground font-black capitalize opacity-20 text-xl italic tracking-tighter">No Orders Found</p>
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -228,26 +228,26 @@ export default function AdminOrdersPage() {
                                         </TableCell>
                                         <TableCell>
                                             <div className="flex flex-col">
-                                                <span className="font-black text-xl tracking-tight uppercase italic">{order.shippingAddress?.name || "GUEST"}</span>
-                                                <span className="text-[9px] font-black text-muted-foreground uppercase mt-1 tracking-[0.2em] opacity-50">{order.shippingAddress?.city}</span>
+                                                <span className="font-black text-xl tracking-tight capitalize italic">{order.shippingAddress?.name || "GUEST"}</span>
+                                                <span className="text-[9px] font-black text-muted-foreground capitalize mt-1 tracking-[0.2em] opacity-50">{order.shippingAddress?.city}</span>
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-sm font-black text-muted-foreground italic">
                                             {format(new Date(order.createdAt), "MMM d, yyyy")}
                                         </TableCell>
-                                        <TableCell className="font-black text-primary text-2xl tracking-tighter italic">₹{(order.totalPrice || 0).toLocaleString()}</TableCell>
+                                        <TableCell className="font-black text-primary text-base tracking-tighter italic">₹{(order.totalPrice || 0).toLocaleString()}</TableCell>
                                         <TableCell>
                                             <Select
                                                 defaultValue={order.orderStatus}
                                                 onValueChange={(val: any) => handleStatusUpdate(order._id, val)}
                                             >
-                                                <SelectTrigger className={`w-36 h-10 rounded-xl font-black uppercase text-[9px] tracking-widest border-2 ${order.orderStatus === 'Delivered' ? 'text-green-600 bg-green-50 border-green-200' :
+                                                <SelectTrigger className={`w-36 h-10 rounded-xl font-black capitalize text-[9px] tracking-widest border-2 ${order.orderStatus === 'Delivered' ? 'text-green-600 bg-green-50 border-green-200' :
                                                     order.orderStatus === 'Cancelled' ? 'text-red-600 bg-red-50 border-red-200' :
                                                         'text-primary bg-primary/5 border-primary/20'
                                                     }`}>
                                                     <SelectValue />
                                                 </SelectTrigger>
-                                                <SelectContent className="rounded-2xl border-2 font-bold uppercase text-[10px] tracking-widest">
+                                                <SelectContent className="rounded-2xl border-2 font-bold capitalize text-[10px] tracking-widest">
                                                     <SelectItem value="Pending">Pending</SelectItem>
                                                     <SelectItem value="Processing">Processing</SelectItem>
                                                     <SelectItem value="Shipped">Shipped</SelectItem>
@@ -276,38 +276,45 @@ export default function AdminOrdersPage() {
 
             {/* Order Details Modal */}
             <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-                <DialogContent className="invoice-modal-content max-w-4xl p-0 bg-white rounded-2xl shadow-2xl border-none overflow-hidden my-8 h-[90vh] flex flex-col">
+                <DialogContent className="invoice-modal-content w-[95vw] max-w-7xl p-0 bg-white rounded-2xl shadow-2xl border-none overflow-hidden my-8 h-[90vh] flex flex-col">
                     <DialogTitle className="sr-only">Order Details</DialogTitle>
                     <style suppressHydrationWarning>{`
                         @media print {
-                            /* Remove browser headers and footers */
                             @page { 
-                                size: auto; 
                                 margin: 0; 
                             }
-                            
                             body { 
-                                visibility: hidden !important;
                                 background: white !important;
                                 margin: 0 !important;
                                 padding: 0 !important;
                             }
                             
-                            /* Fix for double pages and layout */
-                            .print-container {
+                            /* Hide everything by default via visibility so we don't accidentally display: none the portal root */
+                            body * {
+                                visibility: hidden;
+                            }
+                            
+                            /* Set the print container and its children to visible */
+                            .print-container, .print-container * {
                                 visibility: visible !important;
+                            }
+                            
+                            /* Absolute position the print container to the top-left of the paper */
+                            .print-container {
                                 position: absolute !important;
                                 left: 0 !important;
                                 top: 0 !important;
                                 width: 100% !important;
                                 margin: 0 !important;
-                                padding: 25mm !important; /* Standard print padding */
-                                background: white !important;
-                                color: black !important;
+                                padding: 15mm !important;
                                 display: block !important;
-                                height: auto !important;
-                                min-height: 0 !important;
-                                overflow: visible !important;
+                            }
+
+                            /* Ensure the screen UI doesn't push down the absolute container */
+                            .screen-only {
+                                display: none !important;
+                                height: 0 !important;
+                                overflow: hidden !important;
                             }
 
                             .no-print {
@@ -317,110 +324,112 @@ export default function AdminOrdersPage() {
                     `}</style>
 
                     {selectedOrder && (
-                        /* --- SINGLE VIEW FOR BOTH SCREEN ACND PRINT --- */
-                        <div className="flex flex-col h-full print:h-auto">
-                            {/* Header */}
-                            <div className="bg-slate-950 text-white p-6 flex justify-between items-center shrink-0">
-                                <div>
-                                    <p className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em] mb-1">Order Details</p>
-                                    <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-3 italic">
-                                        #{selectedOrder._id.substring(selectedOrder._id.length - 8).toUpperCase()}
-                                        <Badge className={`px-3 py-1 rounded-lg font-black uppercase text-[10px] tracking-widest ${selectedOrder.isPaid ? 'bg-green-500 text-white border-none' : 'bg-amber-500 text-white border-none'
-                                            }`}>
-                                            {selectedOrder.isPaid ? 'PAID' : 'PENDING'}
-                                        </Badge>
-                                    </h2>
-                                    <div className="flex items-center gap-3 text-slate-400 text-[11px] font-bold mt-2 uppercase tracking-wider">
-                                        <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(new Date(selectedOrder.createdAt), "MMM d, yyyy")}</span>
-                                        <span>•</span>
-                                        <span>{selectedOrder.paymentMethod || 'Razorpay'}</span>
-                                    </div>
-                                </div>
-                                <Button variant="outline" size="sm" className="bg-white/5 text-white border-white/20 hover:bg-white/10 rounded-xl h-10 px-6 font-bold uppercase tracking-widest text-[10px] print:hidden" onClick={() => setIsDetailsOpen(false)}>
-                                    Close
-                                </Button>
-                            </div>
-
-                            {/* Scrollable Content */}
-                            <div className="flex-1 overflow-y-auto p-6 space-y-6 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                                {/* Details Grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-center">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary"><ShieldAlert className="w-4 h-4" /></div>
-                                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Customer</h3>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="font-black text-slate-900 uppercase italic text-lg tracking-tight">{selectedOrder.shippingAddress?.name}</p>
-                                            <p className="text-sm text-slate-500 font-bold">{selectedOrder.shippingAddress?.phone}</p>
+                        <div className="flex flex-col h-full">
+                            {/* --- SCREEN ONLY VIEW --- */}
+                            <div className="flex flex-col h-full screen-only">
+                                {/* Header */}
+                                <div className="bg-slate-950 text-white p-6 md:p-8 flex justify-between items-center shrink-0">
+                                    <div>
+                                        <p className="text-slate-500 font-black text-[10px] capitalize tracking-[0.2em] mb-1">Order Details</p>
+                                        <h2 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-3 italic">
+                                            #{selectedOrder._id.substring(selectedOrder._id.length - 8).toUpperCase()}
+                                            <Badge className={`px-3 py-1 rounded-lg font-black capitalize text-[10px] tracking-widest ${selectedOrder.isPaid ? 'bg-green-500 text-white border-none' : 'bg-amber-500 text-white border-none'
+                                                }`}>
+                                                {selectedOrder.isPaid ? 'PAID' : 'PENDING'}
+                                            </Badge>
+                                        </h2>
+                                        <div className="flex items-center gap-3 text-slate-400 text-xs font-bold mt-2 capitalize tracking-wider">
+                                            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {format(new Date(selectedOrder.createdAt), "MMM d, yyyy")}</span>
+                                            <span>•</span>
+                                            <span>{selectedOrder.paymentMethod || 'Razorpay'}</span>
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-center">
-                                        <div className="flex items-center gap-3 mb-3">
-                                            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center text-primary"><Truck className="w-4 h-4" /></div>
-                                            <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Shipping</h3>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <p className="font-black text-slate-900 uppercase italic text-sm tracking-tight line-clamp-1">{selectedOrder.shippingAddress?.street}</p>
-                                            <p className="text-[11px] text-slate-500 font-black uppercase tracking-wider">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
-                                        </div>
-                                    </div>
+                                    <Button variant="outline" size="sm" className="bg-white/5 text-white border-white/20 hover:bg-white/10 rounded-xl h-12 px-8 font-bold capitalize tracking-widest text-[10px] no-print" onClick={() => setIsDetailsOpen(false)}>
+                                        Close
+                                    </Button>
                                 </div>
 
-                                {/* Items List */}
-                                <div>
-                                    <h3 className="text-sm font-bold text-slate-900 mb-4">Order Items</h3>
-                                    <div className="space-y-3">
-                                        {selectedOrder.orderItems.map((item: any, idx: number) => (
-                                            <div key={idx} className="flex items-center gap-4 py-2 border-b border-dashed border-slate-100 last:border-0">
-                                                <div className="h-12 w-12 bg-slate-100 rounded-lg overflow-hidden shrink-0 border border-slate-200">
-                                                    {item.image ? (
-                                                        // eslint-disable-next-line @next/next/no-img-element
-                                                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
-                                                    ) : (
-                                                        <div className="h-full w-full flex items-center justify-center"><Package className="h-4 w-4 text-slate-400" /></div>
-                                                    )}
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="font-medium text-slate-900 text-sm truncate">{item.name}</p>
-                                                    <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
-                                                </div>
-                                                <div className="text-right">
-                                                    <p className="font-bold text-slate-900 text-sm">₹{(item.price * item.quantity).toLocaleString()}</p>
-                                                </div>
+                                {/* Scrollable Content */}
+                                <div className="flex-1 overflow-y-auto p-6 md:p-8 space-y-6 md:space-y-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                                    {/* Details Grid */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                        <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 flex flex-col justify-center">
+                                            <div className="flex items-center gap-3 mb-4">
+                                                <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary"><ShieldAlert className="w-5 h-5" /></div>
+                                                <h3 className="text-[11px] font-black text-slate-400 capitalize tracking-[0.2em]">Customer</h3>
                                             </div>
-                                        ))}
+                                            <div className="space-y-1">
+                                                <p className="font-black text-slate-900 capitalize italic text-xl tracking-tight">{selectedOrder.shippingAddress?.name}</p>
+                                                <p className="text-sm text-slate-500 font-bold tracking-wide">{selectedOrder.shippingAddress?.phone}</p>
+                                            </div>
+                                        </div>
+                                        <div className="bg-slate-50 p-6 rounded-3xl border-2 border-slate-100 flex flex-col justify-center">
+                                            <div className="flex items-center gap-3 mb-4">
+                                                <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary"><Truck className="w-5 h-5" /></div>
+                                                <h3 className="text-[11px] font-black text-slate-400 capitalize tracking-[0.2em]">Shipping</h3>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="font-black text-slate-900 capitalize italic text-base tracking-tight">{selectedOrder.shippingAddress?.street}</p>
+                                                <p className="text-sm text-slate-500 font-black capitalize tracking-wider">{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state} - {selectedOrder.shippingAddress?.zipCode}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Items List */}
+                                    <div>
+                                        <h3 className="text-lg font-black text-slate-900 mb-4 capitalize italic">Order Items</h3>
+                                        <div className="space-y-4">
+                                            {selectedOrder.orderItems.map((item: any, idx: number) => (
+                                                <div key={idx} className="flex items-center gap-6 py-4 border-b-2 border-dashed border-slate-100 last:border-0">
+                                                    <div className="h-16 w-16 bg-slate-100 rounded-2xl overflow-hidden shrink-0 border border-slate-200">
+                                                        {item.image ? (
+                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                            <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                                                        ) : (
+                                                            <div className="h-full w-full flex items-center justify-center"><Package className="h-6 w-6 text-slate-400" /></div>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-bold text-slate-900 text-base">{item.name}</p>
+                                                        <p className="text-sm font-black text-slate-500 mt-1 capitalize tracking-wider">Qty: {item.quantity}</p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="font-black italic text-slate-900 text-lg tracking-tighter">₹{(item.price * item.quantity).toLocaleString()}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Breakdown */}
+                                    <div className="bg-slate-950 rounded-[2rem] p-8 text-white text-right space-y-2 relative overflow-hidden">
+                                        <div className="absolute top-0 right-0 p-8 opacity-5">
+                                            <CheckCircle className="h-32 w-32" />
+                                        </div>
+                                        <p className="text-[11px] font-black capitalize tracking-[0.3em] text-white/40 mb-3">Final Summary</p>
+                                        <div className="flex justify-between items-center text-base font-bold text-white/60">
+                                            <span>Subtotal</span>
+                                            <span>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
+                                        </div>
+                                        <div className="flex justify-between items-end pt-6 border-t border-white/10 mt-4 relative z-10">
+                                            <span className="text-[11px] font-black capitalize tracking-[0.2em] text-white/40 mb-1">Total Amount</span>
+                                            <span className="text-3xl md:text-4xl font-black italic tracking-tighter text-primary">₹{(selectedOrder.totalPrice || 0).toLocaleString()}</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Breakdown */}
-                                <div className="bg-slate-950 rounded-2xl p-6 text-white text-right space-y-1 relative overflow-hidden">
-                                    <div className="absolute top-0 right-0 p-8 opacity-5">
-                                        <CheckCircle className="h-24 w-24" />
-                                    </div>
-                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">Final Summary</p>
-                                    <div className="flex justify-between items-center text-sm font-bold text-white/60">
-                                        <span>Subtotal</span>
-                                        <span>₹{(selectedOrder.totalPrice + (selectedOrder.discountAmount || 0)).toLocaleString()}</span>
-                                    </div>
-                                    <div className="flex justify-between items-end pt-4 border-t border-white/10 mt-2">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Total Amount</span>
-                                        <span className="text-4xl font-black italic tracking-tighter text-primary">₹{(selectedOrder.totalPrice || 0).toLocaleString()}</span>
-                                    </div>
+                                {/* Sticky Footer */}
+                                <div className="p-6 md:p-8 border-t-2 border-slate-50 bg-white flex justify-end gap-3 shrink-0 no-print shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.05)]">
+                                    <Button onClick={handlePrint} className="h-16 rounded-2xl px-12 font-black capitalize tracking-widest text-xs shadow-xl shadow-primary/30 hover:scale-105 transition-all italic gap-3">
+                                        <Download className="h-5 w-5" /> Print Invoice
+                                    </Button>
                                 </div>
                             </div>
 
-                            {/* Sticky Footer */}
-                            <div className="p-6 border-t border-slate-100 bg-white flex justify-end gap-3 shrink-0 no-print shadow-[0_-4px_20px_-10px_rgba(0,0,0,0.1)]">
-                                <Button onClick={handlePrint} className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/30 hover:scale-105 transition-all italic gap-3">
-                                    <Download className="h-4 w-4" /> Print Invoice
-                                </Button>
-                            </div>
-
-                            {/* This is the container that will be visible in Print */}
-                            <div className="hidden print:block print-container" style={{ width: '100%' }}>
+                            {/* --- PRINT ONLY VIEW --- */}
+                            <div className="hidden print-container">
                                 <div style={{ marginBottom: '45px' }}>
-                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Order Details</p>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'capitalize', letterSpacing: '0.2em', marginBottom: '10px' }}>Order Details</p>
                                     <h2 style={{ fontSize: '32px', fontWeight: '900', color: '#000', margin: '0 0 10px 0' }}>#{selectedOrder._id.slice(-8).toUpperCase()}</h2>
                                     <p style={{ fontSize: '15px', fontWeight: '900', color: '#16a34a', margin: '0' }}>{selectedOrder.isPaid ? 'PAID' : 'PENDING'}</p>
                                     <p style={{ fontSize: '15px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{format(new Date(selectedOrder.createdAt), 'MMM d, yyyy')}</p>
@@ -428,20 +437,20 @@ export default function AdminOrdersPage() {
                                 </div>
 
                                 <div style={{ marginBottom: '45px' }}>
-                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Customer</p>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'capitalize', letterSpacing: '0.2em', marginBottom: '10px' }}>Customer</p>
                                     <p style={{ fontSize: '18px', fontWeight: '900', color: '#000', margin: '0' }}>{selectedOrder.shippingAddress?.name}</p>
                                     <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.phone}</p>
                                 </div>
 
                                 <div style={{ marginBottom: '45px' }}>
-                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '10px' }}>Shipping</p>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'capitalize', letterSpacing: '0.2em', marginBottom: '10px' }}>Shipping</p>
                                     <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '0' }}>{selectedOrder.shippingAddress?.street}</p>
                                     <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.city}, {selectedOrder.shippingAddress?.state}</p>
                                     <p style={{ fontSize: '16px', fontWeight: '900', color: '#000', margin: '6px 0 0 0' }}>{selectedOrder.shippingAddress?.zipCode}</p>
                                 </div>
 
                                 <div style={{ marginBottom: '45px' }}>
-                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '20px' }}>Order Items</p>
+                                    <p style={{ color: '#000', fontSize: '12px', fontWeight: '900', textTransform: 'capitalize', letterSpacing: '0.2em', marginBottom: '20px' }}>Order Items</p>
                                     <div style={{ borderTop: '4px solid #000' }}>
                                         {selectedOrder.orderItems.map((item: any, idx: number) => (
                                             <div key={idx} style={{ padding: '20px 0', borderBottom: '1px solid #eee' }}>
@@ -465,7 +474,7 @@ export default function AdminOrdersPage() {
                                 </div>
 
                                 <div style={{ marginTop: '20px', textAlign: 'center', borderTop: '2px solid #000', paddingTop: '10px' }}>
-                                    <p style={{ color: '#000', fontSize: '16px', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.6em' }}>Telugu Experiments</p>
+                                    <p style={{ color: '#000', fontSize: '16px', fontWeight: '900', textTransform: 'capitalize', letterSpacing: '0.6em' }}>Telugu Adventures</p>
                                 </div>
                             </div>
 

@@ -44,13 +44,13 @@ export default function ShopPage() {
         <div className="container mx-auto px-4 py-6 md:py-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 md:mb-10">
                 <div className="space-y-2 md:space-y-3">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] md:text-[10px] font-black uppercase tracking-widest">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-[9px] md:text-[10px] font-black capitalize tracking-widest">
                         <Rocket className="h-3 w-3" /> Best Choice
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-tight md:leading-none italic uppercase">
+                    <h1 className="text-lg md:text-2xl font-black tracking-tighter leading-tight md:leading-none italic capitalize">
                         Our <span className="text-primary NOT-italic">Products</span>
                     </h1>
-                    <p className="text-muted-foreground text-xs md:text-lg font-bold md:font-medium max-w-xl uppercase tracking-tight md:normal-case">
+                    <p className="text-muted-foreground text-xs md:text-lg font-bold md:font-medium max-w-xl capitalize tracking-tight md:normal-case">
                         Explore the frontier of science with our kits.
                     </p>
                 </div>
@@ -70,7 +70,7 @@ export default function ShopPage() {
                 {/* Sidebar Filters */}
                 <div className="lg:col-span-1 space-y-4 md:space-y-8 sticky top-20 md:top-24 h-fit z-10 bg-background/80 backdrop-blur-sm lg:bg-transparent -mx-4 px-4 py-2 lg:m-0 lg:p-0">
                     <div>
-                        <h3 className="text-[10px] md:text-sm font-black uppercase tracking-widest mb-3 md:mb-6 flex items-center gap-2">
+                        <h3 className="text-[10px] md:text-sm font-black capitalize tracking-widest mb-3 md:mb-6 flex items-center gap-2">
                             <Sparkles className="h-3 md:h-4 w-3 md:w-4 text-primary" /> Categories
                         </h3>
                         <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-visible gap-2 pb-2 lg:pb-0 no-scrollbar items-center lg:items-start">
@@ -91,9 +91,9 @@ export default function ShopPage() {
 
                     <div className="hidden lg:block p-8 rounded-3xl bg-linear-to-br from-primary to-secondary text-white relative overflow-hidden group shadow-2xl shadow-primary/10">
                         <Zap className="absolute -right-4 -bottom-4 h-24 w-24 opacity-10 group-hover:scale-110 transition-transform duration-700" />
-                        <h4 className="text-xl font-black mb-2 relative italic uppercase tracking-tighter">Special Offer</h4>
+                        <h4 className="text-xl font-black mb-2 relative italic capitalize tracking-tighter">Special Offer</h4>
                         <p className="text-white/80 text-sm font-bold mb-4 relative">Get 20% off on your first order. Use code: <span className="text-white">WELCOME20</span></p>
-                        <Button variant="secondary" className="w-full rounded-xl h-12 font-black relative uppercase tracking-widest text-[10px]">Get Coupon</Button>
+                        <Button variant="secondary" className="w-full rounded-xl h-12 font-black relative capitalize tracking-widest text-[10px]">Get Coupon</Button>
                     </div>
                 </div>
 
@@ -102,15 +102,15 @@ export default function ShopPage() {
                     {loading ? (
                         <div className="h-64 md:h-96 flex flex-col items-center justify-center gap-3">
                             <Loader2 className="h-8 md:h-10 w-8 md:w-10 animate-spin text-primary" />
-                            <p className="font-black text-[10px] md:text-sm text-muted-foreground uppercase tracking-widest">Loading Products...</p>
+                            <p className="font-black text-[10px] md:text-sm text-muted-foreground capitalize tracking-widest">Loading Products...</p>
                         </div>
                     ) : filteredProducts.length === 0 ? (
                         <div className="h-64 md:h-96 flex flex-col items-center justify-center text-center">
                             <div className="w-12 md:w-16 h-12 md:h-16 rounded-full bg-muted flex items-center justify-center mb-4">
                                 <Search className="h-6 md:h-8 w-6 md:w-8 text-muted-foreground" />
                             </div>
-                            <h3 className="text-xl md:text-2xl font-black uppercase italic tracking-tighter">No Products Found</h3>
-                            <p className="text-muted-foreground text-[10px] md:text-sm font-black uppercase tracking-widest mt-2">Try changing your filters.</p>
+                            <h3 className="text-sm md:text-base font-black capitalize italic tracking-tighter">No Products Found</h3>
+                            <p className="text-muted-foreground text-[10px] md:text-sm font-black capitalize tracking-widest mt-2">Try changing your filters.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-8">

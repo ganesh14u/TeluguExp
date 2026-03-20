@@ -99,11 +99,11 @@ const Header = () => {
                 <Link href="/" className="flex items-center gap-3">
                     <img
                         src="/logo.png"
-                        alt="Telugu Experiments"
+                        alt="Telugu Adventures"
                         className="h-10 w-10 object-contain"
                     />
                     <span className="hidden sm:block text-xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-                        Telugu Experiments
+                        Telugu Adventures
                     </span>
                 </Link>
 
@@ -114,7 +114,7 @@ const Header = () => {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`text-xs font-bold uppercase tracking-widest transition-colors hover:text-primary ${pathname === link.href ? "text-primary" : "text-slate-500"
+                                className={`text-xs font-bold capitalize tracking-widest transition-colors hover:text-primary ${pathname === link.href ? "text-primary" : "text-slate-500"
                                     }`}
                             >
                                 {link.name}
@@ -159,7 +159,7 @@ const Header = () => {
                                             <div className="p-2">
                                                 {searchResults.length > 0 ? (
                                                     <div className="space-y-1">
-                                                        <p className="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-400 italic">Matching Products</p>
+                                                        <p className="px-3 py-2 text-[10px] font-black capitalize tracking-widest text-slate-400 italic">Matching Products</p>
                                                         {searchResults.map((p) => (
                                                             <Link
                                                                 key={p._id}
@@ -171,8 +171,8 @@ const Header = () => {
                                                                     <img src={p.image || p.images?.[0]} alt="" className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                                 </div>
                                                                 <div className="flex flex-col flex-1 min-w-0">
-                                                                    <span className="font-black uppercase tracking-tight text-sm truncate group-hover:text-primary transition-colors">{p.name}</span>
-                                                                    <span className="text-[10px] font-bold text-slate-400 uppercase italic">{p.category}</span>
+                                                                    <span className="font-black capitalize tracking-tight text-sm truncate group-hover:text-primary transition-colors">{p.name}</span>
+                                                                    <span className="text-[10px] font-bold text-slate-400 capitalize italic">{p.category}</span>
                                                                 </div>
                                                                 <div className="text-right">
                                                                     <p className="font-black text-sm italic">₹{(p.discountPrice || p.price).toLocaleString()}</p>
@@ -182,7 +182,7 @@ const Header = () => {
                                                         <Link
                                                             href={`/shop?q=${searchQuery}`}
                                                             onClick={() => setIsSearchOpen(false)}
-                                                            className="flex items-center justify-center p-3 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-xl mt-2 transition-all"
+                                                            className="flex items-center justify-center p-3 text-[10px] font-black capitalize tracking-widest text-primary hover:bg-primary/10 rounded-xl mt-2 transition-all"
                                                         >
                                                             View All Results
                                                         </Link>
@@ -190,20 +190,20 @@ const Header = () => {
                                                 ) : (
                                                     <div className="py-12 text-center">
                                                         <Search className="h-8 w-8 text-slate-200 mx-auto mb-3" />
-                                                        <p className="text-sm font-black uppercase italic text-slate-400">No matching experiments found</p>
+                                                        <p className="text-sm font-black capitalize italic text-slate-400">No matching experiments found</p>
                                                     </div>
                                                 )}
                                             </div>
                                         ) : searchQuery.length > 0 ? (
                                             <div className="py-8 text-center">
-                                                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 italic">Type at least 2 characters...</p>
+                                                <p className="text-[10px] font-bold capitalize tracking-widest text-slate-400 italic">Type at least 2 characters...</p>
                                             </div>
                                         ) : (
                                             <div className="p-12 text-center space-y-4">
                                                 <div className="h-20 w-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-4">
                                                     <Search className="h-8 w-8 text-primary/20" />
                                                 </div>
-                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Start typing to search products</p>
+                                                <p className="text-xs font-bold text-slate-400 capitalize tracking-widest">Start typing to search products</p>
                                             </div>
                                         )}
                                     </div>
@@ -249,11 +249,11 @@ const Header = () => {
                             <PopoverContent className="w-80 rounded-2xl p-0 overflow-hidden border-2 shadow-2xl bg-white" align="end">
                                 <div className="bg-slate-950 text-white p-4 flex items-center justify-between">
                                     <div>
-                                        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] opacity-60">Notifications</h3>
+                                        <h3 className="font-black text-[10px] capitalize tracking-[0.2em] opacity-60">Notifications</h3>
                                         <p className="text-xs font-bold">{unreadCount} New Orders</p>
                                     </div>
                                     {notifications.length > 0 && (
-                                        <Button onClick={clearAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/10 text-white border border-white/20">
+                                        <Button onClick={clearAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black capitalize tracking-widest hover:bg-white/10 text-white border border-white/20">
                                             Clear All
                                         </Button>
                                     )}
@@ -264,20 +264,20 @@ const Header = () => {
                                             <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                                 <Bell className="h-6 w-6 text-slate-300" />
                                             </div>
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">All caught up!</p>
+                                            <p className="text-[10px] font-black capitalize tracking-widest text-slate-400">All caught up!</p>
                                         </div>
                                     ) : (
                                         notifications.map((notif: any) => (
                                             <div key={notif.id} className="p-4 border-b last:border-0 hover:bg-slate-50 transition-all group relative">
                                                 <div className="flex justify-between items-start mb-1 pr-8">
                                                     <span className="font-black text-sm text-slate-950">{notif.title}</span>
-                                                    <span className="text-[10px] text-slate-400 font-bold uppercase">{format(notif.time, 'HH:mm')}</span>
+                                                    <span className="text-[10px] text-slate-400 font-bold capitalize">{format(notif.time, 'HH:mm')}</span>
                                                 </div>
                                                 <p className="text-xs text-slate-500 font-medium mb-2">{notif.description}</p>
                                                 <div className="flex gap-2">
                                                     <Button
                                                         onClick={() => markAsRead(notif.id)}
-                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary/90"
+                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black capitalize tracking-widest text-white hover:bg-primary/90"
                                                     >
                                                         <Check className="h-3 w-3 mr-1" /> Mark Read
                                                     </Button>
@@ -303,11 +303,11 @@ const Header = () => {
                             <PopoverContent className="w-80 rounded-2xl p-0 overflow-hidden border-2 shadow-2xl bg-white" align="end">
                                 <div className="bg-primary text-white p-4 flex items-center justify-between">
                                     <div>
-                                        <h3 className="font-black text-[10px] uppercase tracking-[0.2em] opacity-60">Alerts</h3>
+                                        <h3 className="font-black text-[10px] capitalize tracking-[0.2em] opacity-60">Alerts</h3>
                                         <p className="text-xs font-bold">{userUnread} New Updates</p>
                                     </div>
                                     {userNotifs.length > 0 && (
-                                        <Button onClick={clearUserAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-white/10 text-white border border-white/20">
+                                        <Button onClick={clearUserAll} variant="ghost" className="h-8 px-3 rounded-lg text-[10px] font-black capitalize tracking-widest hover:bg-white/10 text-white border border-white/20">
                                             Clear All
                                         </Button>
                                     )}
@@ -318,20 +318,20 @@ const Header = () => {
                                             <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                                 <Bell className="h-6 w-6 text-slate-300" />
                                             </div>
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">No new alerts</p>
+                                            <p className="text-[10px] font-black capitalize tracking-widest text-slate-400">No new alerts</p>
                                         </div>
                                     ) : (
                                         userNotifs.map((notif: any) => (
                                             <div key={notif._id} className="p-4 border-b last:border-0 hover:bg-slate-50 transition-all group relative">
                                                 <div className="flex justify-between items-start mb-1 pr-2">
                                                     <span className="font-black text-sm text-slate-950">{notif.title}</span>
-                                                    <span className="text-[9px] text-slate-400 font-bold uppercase">{format(new Date(notif.createdAt), 'HH:mm')}</span>
+                                                    <span className="text-[9px] text-slate-400 font-bold capitalize">{format(new Date(notif.createdAt), 'HH:mm')}</span>
                                                 </div>
                                                 <p className="text-xs text-slate-500 font-medium mb-2">{notif.message}</p>
                                                 <div className="flex gap-2">
                                                     <Button
                                                         onClick={() => markUserRead(notif._id)}
-                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black uppercase tracking-widest text-white hover:bg-primary/90"
+                                                        className="h-7 px-3 rounded-lg bg-primary text-[10px] font-black capitalize tracking-widest text-white hover:bg-primary/90"
                                                     >
                                                         <Check className="h-3 w-3 mr-1" /> Mark Read
                                                     </Button>
@@ -363,23 +363,23 @@ const Header = () => {
                                 <DropdownMenuContent className="w-56 mt-2 rounded-2xl p-2 border-2" align="end">
                                     <DropdownMenuLabel className="p-3">
                                         <div className="flex flex-col">
-                                            <p className="text-sm font-black uppercase tracking-tight">{session.user?.name}</p>
+                                            <p className="text-sm font-black capitalize tracking-tight">{session.user?.name}</p>
                                             <p className="text-[10px] font-bold text-muted-foreground truncate">{session.user?.email}</p>
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem asChild>
-                                        <Link href="/account" className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                                        <Link href="/account" className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs capitalize tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
                                             <User className="h-4 w-4" /> Profile
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
-                                        <Link href="/account/orders" className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs uppercase tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
+                                        <Link href="/account/orders" className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs capitalize tracking-widest text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all">
                                             <ShoppingCart className="h-4 w-4" /> Orders
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem onClick={() => signOut()} className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs uppercase tracking-widest text-red-500 hover:text-red-600 hover:bg-red-50 transition-all">
+                                    <DropdownMenuItem onClick={() => signOut()} className="flex items-center gap-2 p-3 rounded-xl cursor-pointer font-bold text-xs capitalize tracking-widest text-red-500 hover:text-red-600 hover:bg-red-50 transition-all">
                                         Sign Out
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
@@ -387,7 +387,7 @@ const Header = () => {
 
                             {session.user?.role === 'admin' && (
                                 <Link href={pathname.startsWith('/admin') ? "/" : "/admin"}>
-                                    <Button variant="default" size="sm" className="hidden md:flex font-black uppercase tracking-tighter italic h-9 rounded-xl">
+                                    <Button variant="default" size="sm" className="hidden md:flex font-black capitalize tracking-tighter italic h-9 rounded-xl">
                                         {pathname.startsWith('/admin') ? "Home" : "Admin"}
                                     </Button>
                                 </Link>
@@ -408,7 +408,7 @@ const Header = () => {
                         </SheetTrigger>
                         <SheetContent side="right" className="p-0 border-l-0 w-[85%] sm:w-[400px] bg-slate-950 text-white">
                             <SheetHeader className="p-8 border-b border-white/5">
-                                <SheetTitle className="text-left text-primary font-black uppercase italic tracking-tighter text-2xl flex items-center gap-2">
+                                <SheetTitle className="text-left text-primary font-black capitalize italic tracking-tighter text-base flex items-center gap-2">
                                     <FlaskConical className="h-6 w-6" /> Telugu <span className="text-white NOT-italic">Exp</span>
                                 </SheetTitle>
                             </SheetHeader>
@@ -417,13 +417,13 @@ const Header = () => {
                                 <div className="space-y-6">
                                     {!pathname.startsWith('/admin') ? (
                                         <div className="space-y-4">
-                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-6">Explore Site</p>
+                                            <p className="text-[10px] font-black capitalize tracking-[0.3em] text-white/30 mb-6">Explore Site</p>
                                             {navLinks.map((link) => (
                                                 <Link
                                                     key={link.name}
                                                     href={link.href}
                                                     onClick={() => setIsOpen(false)}
-                                                    className={`block text-3xl font-black uppercase italic tracking-tighter transition-all ${pathname === link.href ? 'text-primary' : 'text-white hover:text-primary'}`}
+                                                    className={`block text-lg font-black capitalize italic tracking-tighter transition-all ${pathname === link.href ? 'text-primary' : 'text-white hover:text-primary'}`}
                                                 >
                                                     {link.name}
                                                 </Link>
@@ -431,12 +431,12 @@ const Header = () => {
                                         </div>
                                     ) : (
                                         <div className="space-y-4">
-                                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-6">Admin Panel</p>
-                                            <Link href="/admin" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Dashboard</Link>
-                                            <Link href="/admin/products" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Products</Link>
-                                            <Link href="/admin/orders" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Orders</Link>
-                                            <Link href="/admin/coupons" onClick={() => setIsOpen(false)} className="block text-3xl font-black uppercase italic tracking-tighter text-white hover:text-primary transition-all">Coupons</Link>
-                                            <Link href="/" onClick={() => setIsOpen(false)} className="block text-sm font-black uppercase tracking-widest text-primary pt-10">← Back to Store</Link>
+                                            <p className="text-[10px] font-black capitalize tracking-[0.3em] text-primary mb-6">Admin Panel</p>
+                                            <Link href="/admin" onClick={() => setIsOpen(false)} className="block text-lg font-black capitalize italic tracking-tighter text-white hover:text-primary transition-all">Dashboard</Link>
+                                            <Link href="/admin/products" onClick={() => setIsOpen(false)} className="block text-lg font-black capitalize italic tracking-tighter text-white hover:text-primary transition-all">Products</Link>
+                                            <Link href="/admin/orders" onClick={() => setIsOpen(false)} className="block text-lg font-black capitalize italic tracking-tighter text-white hover:text-primary transition-all">Orders</Link>
+                                            <Link href="/admin/coupons" onClick={() => setIsOpen(false)} className="block text-lg font-black capitalize italic tracking-tighter text-white hover:text-primary transition-all">Coupons</Link>
+                                            <Link href="/" onClick={() => setIsOpen(false)} className="block text-sm font-black capitalize tracking-widest text-primary pt-10">← Back to Store</Link>
                                         </div>
                                     )}
                                 </div>
@@ -449,19 +449,19 @@ const Header = () => {
                                                     {session.user?.image ? <img src={session.user.image} className="h-full w-full object-cover" alt="" /> : <User className="h-full w-full p-3 text-white/40" />}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="text-sm font-black uppercase tracking-tight">{session.user?.name}</span>
-                                                    <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Active Session</span>
+                                                    <span className="text-sm font-black capitalize tracking-tight">{session.user?.name}</span>
+                                                    <span className="text-[10px] font-bold text-white/40 capitalize tracking-widest">Active Session</span>
                                                 </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-3">
-                                                <Link href="/account" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">Profile</Link>
-                                                <Link href="/account/orders" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all">Orders</Link>
+                                                <Link href="/account" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black capitalize tracking-widest hover:bg-white/10 transition-all">Profile</Link>
+                                                <Link href="/account/orders" onClick={() => setIsOpen(false)} className="flex items-center justify-center h-12 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black capitalize tracking-widest hover:bg-white/10 transition-all">Orders</Link>
                                             </div>
-                                            <Button variant="ghost" onClick={() => signOut()} className="w-full h-12 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 font-black uppercase text-[10px] tracking-[0.2em] transition-all">Sign Out Account</Button>
+                                            <Button variant="ghost" onClick={() => signOut()} className="w-full h-12 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20 font-black capitalize text-[10px] tracking-[0.2em] transition-all">Sign Out Account</Button>
                                         </div>
                                     ) : (
                                         <Link href="/login" onClick={() => setIsOpen(false)}>
-                                            <Button className="w-full h-16 rounded-2xl font-black uppercase italic text-lg shadow-2xl shadow-primary/20">
+                                            <Button className="w-full h-16 rounded-2xl font-black capitalize italic text-lg shadow-2xl shadow-primary/20">
                                                 Join The Lab <ArrowRight className="ml-2 h-5 w-5" />
                                             </Button>
                                         </Link>

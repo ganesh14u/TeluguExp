@@ -63,15 +63,15 @@ export default function SignupPage() {
         <div className="container mx-auto px-4 py-12 flex justify-center items-center">
             <Card className="w-full max-w-md shadow-2xl rounded-3xl overflow-hidden border-2">
                 <CardHeader className="text-center bg-primary/5 pb-8 pt-8">
-                    <CardTitle className="text-3xl font-black italic uppercase tracking-tighter">Create <span className="text-primary NOT-italic">Account</span></CardTitle>
+                    <CardTitle className="text-lg font-black italic capitalize tracking-tighter">Create <span className="text-primary NOT-italic">Account</span></CardTitle>
                     <CardDescription className="font-bold">Join our community today</CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Full Name</label>
+                            <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Full Name</label>
                             <Input
-                                placeholder="Ganesh .."
+                                placeholder="Telugu Adventures"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
@@ -79,10 +79,10 @@ export default function SignupPage() {
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Email Address</label>
+                            <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Email Address</label>
                             <Input
                                 type="email"
-                                placeholder="name@email.com"
+                                placeholder="name@gmail.com"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -90,7 +90,7 @@ export default function SignupPage() {
                             />
                         </div>
                         <div className="space-y-1">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Password</label>
+                            <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-1">Password</label>
                             <Input
                                 type="password"
                                 placeholder="••••••••"
@@ -100,7 +100,7 @@ export default function SignupPage() {
                                 className="h-12 rounded-xl bg-muted/30 border-none font-bold"
                             />
                         </div>
-                        <Button type="submit" className="w-full h-12 rounded-xl text-lg font-black uppercase tracking-widest shadow-xl shadow-primary/20" disabled={loading}>
+                        <Button type="submit" className="w-full h-12 rounded-xl text-lg font-black capitalize tracking-widest shadow-xl shadow-primary/20" disabled={loading}>
                             {loading ? "Creating..." : "Register Now"}
                         </Button>
                     </form>
@@ -109,7 +109,7 @@ export default function SignupPage() {
                         <div className="absolute inset-0 flex items-center">
                             <span className="w-full border-t" />
                         </div>
-                        <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest">
+                        <div className="relative flex justify-center text-[10px] capitalize font-black tracking-widest">
                             <span className="bg-background px-4 text-muted-foreground">Or Connect With</span>
                         </div>
                     </div>
@@ -121,7 +121,7 @@ export default function SignupPage() {
 
                     <p className="mt-6 text-center text-sm text-muted-foreground font-bold">
                         Already have an account?{" "}
-                        <Link href="/login" className="text-primary font-black hover:underline uppercase tracking-tighter">
+                        <Link href="/login" className="text-primary font-black hover:underline capitalize tracking-tighter">
                             Sign In
                         </Link>
                     </p>

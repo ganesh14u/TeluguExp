@@ -10,10 +10,10 @@ export default function ContactPage() {
     return (
         <div className="container mx-auto px-4 py-12 md:py-24 max-w-5xl">
             <div className="text-center space-y-6 mb-16 animate-in fade-in slide-in-from-bottom-5 duration-700">
-                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black uppercase tracking-widest border border-primary/20">
+                <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary text-xs font-black capitalize tracking-widest border border-primary/20">
                     Get in Touch
                 </span>
-                <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic">
+                <h1 className="text-xl md:text-3xl font-black tracking-tighter capitalize italic">
                     Contact <span className="text-primary NOT-italic">Us</span>
                 </h1>
                 <p className="max-w-xl mx-auto text-muted-foreground font-medium">
@@ -31,7 +31,7 @@ export default function ContactPage() {
                                 <Phone className="h-6 w-6 text-primary" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-1">Call Us</h3>
+                                <h3 className="text-sm font-black capitalize tracking-widest text-muted-foreground mb-1">Call Us</h3>
                                 <div className="space-y-1">
                                     <a href="tel:8341606873" className="block text-xl font-black hover:text-primary transition-colors">
                                         +91 8341606873
@@ -46,9 +46,9 @@ export default function ContactPage() {
                                 <Mail className="h-6 w-6 text-primary" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-1">Email Us</h3>
-                                <a href="mailto:teluguexperimentsshop@gmail.com" className="block text-lg font-bold hover:text-primary transition-colors break-all">
-                                    teluguexperimentsshop@gmail.com
+                                <h3 className="text-sm font-black capitalize tracking-widest text-muted-foreground mb-1">Email Us</h3>
+                                <a href="mailto:teluguadventuresshop@gmail.com" className="block text-lg font-bold hover:text-primary transition-colors break-all">
+                                    teluguadventuresshop@gmail.com
                                 </a>
                             </div>
                         </div>
@@ -59,14 +59,14 @@ export default function ContactPage() {
                                 <MapPin className="h-6 w-6 text-primary" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-1">Visit Us</h3>
+                                <h3 className="text-sm font-black capitalize tracking-widest text-muted-foreground mb-1">Visit Us</h3>
                                 <p className="text-lg font-bold leading-tight">Siddipet</p>
                                 <p className="text-muted-foreground font-medium">Siddipet, Telangana, India</p>
                                 <a
                                     href="https://www.google.com/maps/search/?api=1&query=Siddipet,+Telangana,+India"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-block mt-3 text-xs font-black uppercase tracking-widest text-primary border-b-2 border-primary/20 hover:border-primary transition-colors"
+                                    className="inline-block mt-3 text-xs font-black capitalize tracking-widest text-primary border-b-2 border-primary/20 hover:border-primary transition-colors"
                                 >
                                     Check Location on Google Map
                                 </a>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                                 <Clock className="h-6 w-6 text-primary" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-1">Operational Hours</h3>
+                                <h3 className="text-sm font-black capitalize tracking-widest text-muted-foreground mb-1">Operational Hours</h3>
                                 <p className="text-lg font-bold">12 AM - 12 AM</p>
                                 <p className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md inline-block mt-1">Always Open Online</p>
                             </div>

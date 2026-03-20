@@ -89,8 +89,8 @@ export default function AdminCategoriesPage() {
         <div className="space-y-10 p-2">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                    <h1 className="text-5xl font-black tracking-tighter uppercase italic pr-4">Product <span className="text-primary NOT-italic">Categories</span></h1>
-                    <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2 italic opacity-70">Organize your products into categories.</p>
+                    <h1 className="text-2xl font-black tracking-tighter capitalize italic pr-4">Product <span className="text-primary NOT-italic">Categories</span></h1>
+                    <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2 italic opacity-70">Organize your products into categories.</p>
                 </div>
 
                 <div className="flex gap-3">
@@ -106,19 +106,19 @@ export default function AdminCategoriesPage() {
                         }
                     }}>
                         <DialogTrigger asChild>
-                            <Button className="h-14 px-8 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 transition-all">
+                            <Button className="h-14 px-8 rounded-2xl font-black capitalize tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 transition-all">
                                 <Plus className="h-5 w-5 mr-3" /> Add Category
                             </Button>
                         </DialogTrigger>
                         <DialogContent className="rounded-[2.5rem] border-4 p-10 max-w-md">
                             <DialogHeader>
-                                <DialogTitle className="text-3xl font-black uppercase italic tracking-tighter">
+                                <DialogTitle className="text-lg font-black capitalize italic tracking-tighter">
                                     {editingCategory ? "Update" : "Add"} <span className="text-primary NOT-italic">Category</span>
                                 </DialogTitle>
                             </DialogHeader>
                             <form onSubmit={handleCreateOrUpdate} className="space-y-6 pt-6">
                                 <div className="space-y-3">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Category Name</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Category Name</label>
                                     <Input
                                         placeholder="e.g. Electronics, Clothing"
                                         className="h-16 rounded-2xl border-2 text-lg font-bold px-6 focus-visible:ring-primary shadow-inner bg-muted/20"
@@ -127,7 +127,7 @@ export default function AdminCategoriesPage() {
                                         required
                                     />
                                 </div>
-                                <Button type="submit" className="w-full h-16 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20 italic">
+                                <Button type="submit" className="w-full h-16 rounded-2xl font-black capitalize tracking-widest text-sm shadow-xl shadow-primary/20 italic">
                                     {editingCategory ? "Update Category" : "Save Category"}
                                 </Button>
                             </form>
@@ -139,12 +139,12 @@ export default function AdminCategoriesPage() {
             {loading ? (
                 <div className="h-96 flex flex-col items-center justify-center bg-muted/10 rounded-[3rem] border-2 border-dashed">
                     <Loader2 className="h-12 w-12 animate-spin text-primary opacity-20" />
-                    <p className="mt-4 font-black uppercase tracking-[0.3em] text-[10px] text-muted-foreground animate-pulse">Loading...</p>
+                    <p className="mt-4 font-black capitalize tracking-[0.3em] text-[10px] text-muted-foreground animate-pulse">Loading...</p>
                 </div>
             ) : categories.length === 0 ? (
                 <div className="h-96 flex flex-col items-center justify-center bg-muted/10 rounded-[3rem] border-2 border-dashed">
                     <LayoutGrid className="h-16 w-16 text-muted-foreground/20 mb-6" />
-                    <p className="font-black uppercase tracking-widest text-xs text-muted-foreground opacity-50">No Categories Found</p>
+                    <p className="font-black capitalize tracking-widest text-xs text-muted-foreground opacity-50">No Categories Found</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -164,8 +164,8 @@ export default function AdminCategoriesPage() {
                                         </Button>
                                     </div>
                                 </div>
-                                <h3 className="text-2xl font-black uppercase italic tracking-tighter group-hover:text-primary transition-colors duration-500">{cat.name}</h3>
-                                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-2">{cat.slug}</p>
+                                <h3 className="text-base font-black capitalize italic tracking-tighter group-hover:text-primary transition-colors duration-500">{cat.name}</h3>
+                                <p className="text-[10px] font-black text-muted-foreground capitalize tracking-widest mt-2">{cat.slug}</p>
                             </CardContent>
                         </Card>
                     ))}

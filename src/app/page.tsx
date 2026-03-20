@@ -86,13 +86,13 @@ export default function Home() {
                 className="inline-flex items-center gap-1.5 md:gap-2 bg-primary/90 backdrop-blur-xl px-3 md:px-5 py-1.5 md:py-2 rounded-full mb-5 md:mb-8 border border-white/20 w-fit shadow-xl shadow-primary/20"
               >
                 <Zap className="h-3 w-3 md:h-4 md:w-4 text-white fill-white" />
-                <span className="text-[9px] md:text-xs font-black uppercase tracking-[0.2em] text-white">Advanced Science Kits</span>
+                <span className="text-[9px] md:text-xs font-black capitalize tracking-[0.2em] text-white">Advanced Science Kits</span>
               </motion.div>
               <motion.h1
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.7 }}
-                className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black max-w-5xl mb-4 md:mb-8 tracking-tighter leading-[0.9] italic uppercase pr-4 md:pr-12 drop-shadow-2xl"
+                className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black max-w-5xl mb-4 md:mb-8 tracking-tighter leading-[0.9] italic capitalize pr-4 md:pr-12 drop-shadow-2xl"
               >
                 {cmsContent?.heroTitle || HERO_BANNERS[currentBanner].title}
               </motion.h1>
@@ -100,7 +100,7 @@ export default function Home() {
                 initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.7, duration: 0.7 }}
-                className="text-xs sm:text-lg md:text-2xl max-w-xl mb-8 md:mb-12 text-white/80 font-bold leading-relaxed uppercase tracking-tight md:normal-case md:tracking-normal"
+                className="text-xs sm:text-sm md:text-base max-w-xl mb-8 md:mb-12 text-white/80 font-bold leading-relaxed capitalize tracking-tight md:normal-case md:tracking-normal"
               >
                 {cmsContent?.heroSubtitle || HERO_BANNERS[currentBanner].description}
               </motion.p>
@@ -111,12 +111,12 @@ export default function Home() {
                 className="flex flex-col sm:flex-row gap-3 md:gap-5 w-full sm:w-auto"
               >
                 <Link href={HERO_BANNERS[currentBanner].link} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 gap-3 text-sm md:text-lg font-black uppercase italic shadow-2xl shadow-primary/30 active:scale-95 transition-all">
+                  <Button size="lg" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 gap-3 text-sm md:text-lg font-black capitalize italic shadow-2xl shadow-primary/30 active:scale-95 transition-all">
                     {HERO_BANNERS[currentBanner].buttonText} <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </Link>
                 <Link href="/shop" className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 bg-white/10 backdrop-blur-xl border-white/20 text-white font-black uppercase italic hover:bg-white/20 active:scale-95 transition-all text-sm md:text-lg">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto h-12 md:h-16 rounded-xl md:rounded-2xl px-8 md:px-12 bg-white/10 backdrop-blur-xl border-white/20 text-white font-black capitalize italic hover:bg-white/20 active:scale-95 transition-all text-sm md:text-lg">
                     Browse All
                   </Button>
                 </Link>
@@ -150,7 +150,7 @@ export default function Home() {
               <div className={`p-3 md:p-5 ${stat.bg} rounded-xl md:rounded-2xl group-hover:scale-110 transition-transform`}>
                 <stat.icon className={`h-5 w-5 md:h-7 md:w-7 ${stat.color}`} />
               </div>
-              <span className="font-black uppercase text-[9px] md:text-xs tracking-widest leading-tight italic">{stat.label}</span>
+              <span className="font-black capitalize text-[9px] md:text-xs tracking-widest leading-tight italic">{stat.label}</span>
             </div>
           ))}
         </div>
@@ -160,10 +160,10 @@ export default function Home() {
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-8 md:mb-16 gap-4 border-b-2 border-slate-50 pb-8 md:pb-10">
           <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter italic pr-0 md:pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
-            <p className="text-muted-foreground font-black uppercase text-[9px] md:text-xs tracking-[0.3em] mt-2">The ultimate science gear collection</p>
+            <h2 className="text-lg md:text-2xl font-black capitalize tracking-tighter italic pr-0 md:pr-4">Shop by <span className="text-primary NOT-italic">Category</span></h2>
+            <p className="text-muted-foreground font-black capitalize text-[9px] md:text-xs tracking-[0.3em] mt-2">The ultimate science gear collection</p>
           </div>
-          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black uppercase tracking-widest hover:text-primary transition-all p-3 md:p-0">
+          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black capitalize tracking-widest hover:text-primary transition-all p-3 md:p-0">
             View All Products <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
@@ -183,8 +183,8 @@ export default function Home() {
                   {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-20 md:w-20" />}
                   {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-20 md:w-20" />}
                 </div>
-                <h3 className="font-black text-sm md:text-xl uppercase tracking-tight italic line-clamp-1">{cat.name}</h3>
-                <p className="text-[8px] md:text-[10px] text-muted-foreground font-black uppercase tracking-[0.2em] mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity">Explore Category →</p>
+                <h3 className="font-black text-sm md:text-xl capitalize tracking-tight italic line-clamp-1">{cat.name}</h3>
+                <p className="text-[8px] md:text-[10px] text-muted-foreground font-black capitalize tracking-[0.2em] mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity">Explore Category →</p>
               </div>
             </Link>
           ))}
@@ -195,12 +195,12 @@ export default function Home() {
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-8 md:mb-16 gap-6 md:gap-10">
           <div className="text-center md:text-left space-y-3">
-            <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-red-500/20">
+            <div className="inline-flex items-center gap-2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] md:text-[10px] font-black capitalize tracking-[0.2em] shadow-lg shadow-red-500/20">
               <Zap className="h-3 w-3 fill-white" /> Hot Arrivals
             </div>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter italic">Top <span className="text-primary NOT-italic">Performers</span></h2>
+            <h2 className="text-lg md:text-2xl font-black capitalize tracking-tighter italic">Top <span className="text-primary NOT-italic">Performers</span></h2>
           </div>
-          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black uppercase tracking-widest hover:text-primary transition-all p-3 md:p-0">
+          <Link href="/shop" className="group flex items-center gap-3 text-[10px] md:text-xs font-black capitalize tracking-widest hover:text-primary transition-all p-3 md:p-0">
             Browse Full Shop <ArrowRight className="h-4 w-4 group-hover:translate-x-2 transition-transform" />
           </Link>
         </div>
@@ -208,7 +208,7 @@ export default function Home() {
         {loading ? (
           <div className="h-64 md:h-96 flex flex-col items-center justify-center gap-4">
             <Loader2 className="h-8 md:h-10 w-8 md:w-10 animate-spin text-primary" />
-            <p className="font-black text-[10px] uppercase tracking-widest text-muted-foreground italic">Syncing inventory...</p>
+            <p className="font-black text-[10px] capitalize tracking-widest text-muted-foreground italic">Syncing inventory...</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-10">
@@ -224,20 +224,20 @@ export default function Home() {
         <section className="container mx-auto px-4 py-12 md:py-16">
           <div className="relative rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-slate-900 h-auto min-h-[400px] md:min-h-[500px] flex items-center p-8 md:p-20 border border-white/5">
             <div className="relative z-20 w-full max-w-2xl space-y-8 md:space-y-12">
-              <div className="inline-block px-5 py-2 rounded-full bg-primary/20 backdrop-blur-xl border border-primary/30 text-primary text-[10px] md:text-xs font-black uppercase tracking-[0.3em] shadow-2xl">
+              <div className="inline-block px-5 py-2 rounded-full bg-primary/20 backdrop-blur-xl border border-primary/30 text-primary text-[10px] md:text-xs font-black capitalize tracking-[0.3em] shadow-2xl">
                 Cyber Sale Live
               </div>
-              <h2 className="text-white text-5xl md:text-8xl lg:text-9xl font-black leading-[0.85] tracking-tighter italic uppercase pr-4">
+              <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-black leading-[0.85] tracking-tighter italic capitalize pr-4">
                 {cmsContent?.seasonalSaleText || "Gear Up For Science"}
               </h2>
-              <p className="text-white/60 font-bold text-sm md:text-lg max-w-sm uppercase tracking-tight">Unlock the future with premium science kits. Limited stock remaining.</p>
+              <p className="text-white/60 font-bold text-sm md:text-lg max-w-sm capitalize tracking-tight">Unlock the future with premium science kits. Limited stock remaining.</p>
               <div className="flex flex-col sm:flex-row gap-8 items-center pt-4">
-                <Button size="lg" className="w-full sm:w-auto h-16 md:h-20 rounded-2xl md:rounded-3xl px-12 md:px-16 font-black text-lg md:text-2xl uppercase italic group shadow-2xl shadow-primary/40 active:scale-95 transition-all">
+                <Button size="lg" className="w-full sm:w-auto h-16 md:h-20 rounded-2xl md:rounded-3xl px-12 md:px-16 font-black text-sm md:text-base capitalize italic group shadow-2xl shadow-primary/40 active:scale-95 transition-all">
                   Shop Sale <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
                 </Button>
                 <div className="flex flex-col items-center sm:items-start">
-                  <span className="text-white/40 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Time Left</span>
-                  <span className="text-primary text-3xl md:text-4xl font-black tabular-nums tracking-tighter italic">12 : 45 : 33</span>
+                  <span className="text-white/40 text-[10px] font-black capitalize tracking-[0.3em] mb-1">Time Left</span>
+                  <span className="text-primary text-lg md:text-xl font-black tabular-nums tracking-tighter italic">12 : 45 : 33</span>
                 </div>
               </div>
             </div>
@@ -258,20 +258,20 @@ export default function Home() {
       <section className="container mx-auto px-4 py-12 md:py-20">
         <div className="relative rounded-[2.5rem] md:rounded-[4rem] overflow-hidden bg-black h-auto min-h-[400px] md:min-h-[500px] flex items-center justify-center md:justify-end p-8 md:p-20 border-2 border-white/5">
           <div className="relative z-20 w-full max-w-xl space-y-10 text-center flex flex-col items-center">
-            <div className="inline-block px-5 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white text-[10px] md:text-xs font-black uppercase tracking-[0.3em]">
+            <div className="inline-block px-5 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white text-[10px] md:text-xs font-black capitalize tracking-[0.3em]">
               The Lab Report
             </div>
-            <h2 className="text-white text-5xl md:text-8xl font-black leading-[0.85] tracking-tighter italic uppercase">
+            <h2 className="text-white text-2xl md:text-4xl font-black leading-[0.85] tracking-tighter italic capitalize">
               Join The <span className="text-primary NOT-italic">Science Elite</span>
             </h2>
-            <p className="text-white/40 font-bold text-sm md:text-base max-w-sm uppercase tracking-tight">Stay ahead of the curve. Get exclusive drops and secret deals.</p>
+            <p className="text-white/40 font-bold text-sm md:text-base max-w-sm capitalize tracking-tight">Stay ahead of the curve. Get exclusive drops and secret deals.</p>
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md pt-4">
               <input
                 type="email"
                 placeholder="Enter email address"
-                className="grow h-14 md:h-16 px-8 rounded-xl md:rounded-2xl bg-white/5 border-2 border-white/10 text-white focus:outline-none focus:border-primary transition-all font-black text-sm uppercase tracking-widest text-center"
+                className="grow h-14 md:h-16 px-8 rounded-xl md:rounded-2xl bg-white/5 border-2 border-white/10 text-white focus:outline-none focus:border-primary transition-all font-black text-sm capitalize tracking-widest text-center"
               />
-              <Button className="h-14 md:h-16 rounded-xl md:rounded-2xl px-12 font-black text-sm md:text-base uppercase italic group active:scale-95 transition-all">
+              <Button className="h-14 md:h-16 rounded-xl md:rounded-2xl px-12 font-black text-sm md:text-base capitalize italic group active:scale-95 transition-all">
                 Submit <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -292,7 +292,7 @@ export default function Home() {
       <div className="fixed bottom-10 right-10 z-100">
         <Link href="https://wa.me/918142504687" target="_blank" className="relative group flex items-center">
           <div className="absolute right-full mr-4 bg-white px-4 py-2 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 pointer-events-none">
-            <p className="text-xs font-black uppercase tracking-widest text-primary whitespace-nowrap">Need Help? Chat Now</p>
+            <p className="text-xs font-black capitalize tracking-widest text-primary whitespace-nowrap">Need Help? Chat Now</p>
           </div>
           <div className="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-90 relative">
             <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-20" />

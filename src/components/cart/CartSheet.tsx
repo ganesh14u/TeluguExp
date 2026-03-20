@@ -32,8 +32,8 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                 <ShoppingBag className="h-5 w-5 text-primary" />
                             </div>
                             <div className="flex flex-col items-start">
-                                <span className="font-black uppercase tracking-widest text-sm">My Cart</span>
-                                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                <span className="font-black capitalize tracking-widest text-sm">My Cart</span>
+                                <span className="text-[10px] text-muted-foreground font-bold capitalize tracking-widest">
                                     {cart.totalItems()} Items
                                 </span>
                             </div>
@@ -46,7 +46,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                     cart.clearCart();
                                     toast.success("Cart cleared");
                                 }}
-                                className="text-[10px] text-red-500 hover:text-red-600 font-bold uppercase tracking-widest h-8 px-3 hover:bg-red-50"
+                                className="text-[10px] text-red-500 hover:text-red-600 font-bold capitalize tracking-widest h-8 px-3 hover:bg-red-50"
                             >
                                 Clear All
                             </Button>
@@ -65,13 +65,13 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                         <div className="absolute top-0 right-0 h-32 w-32 border-2 border-dashed border-slate-200 rounded-full animate-spin-slow pointer-events-none" />
                                     </div>
                                     <div className="space-y-2 max-w-[250px]">
-                                        <h3 className="font-black text-xl uppercase italic tracking-tighter">Your Bag is Empty</h3>
+                                        <h3 className="font-black text-xl capitalize italic tracking-tighter">Your Bag is Empty</h3>
                                         <p className="text-xs text-muted-foreground font-medium leading-relaxed">
                                             Looks like you haven't discovered our awesome gadgets yet.
                                         </p>
                                     </div>
                                     <SheetTrigger asChild>
-                                        <Button className="h-12 px-8 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-primary/20">
+                                        <Button className="h-12 px-8 rounded-xl font-black capitalize tracking-widest text-[10px] shadow-xl shadow-primary/20">
                                             Start Exploring
                                         </Button>
                                     </SheetTrigger>
@@ -92,7 +92,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                             {/* Details */}
                                             <div className="flex flex-col flex-1 gap-1 py-1">
                                                 <div className="flex justify-between items-start gap-2">
-                                                    <Link href={`/product/${item.slug}`} className="font-bold text-sm hover:text-primary line-clamp-2 leading-snug uppercase tracking-tight">
+                                                    <Link href={`/product/${item.slug}`} className="font-bold text-sm hover:text-primary line-clamp-2 leading-snug capitalize tracking-tight">
                                                         {item.name}
                                                     </Link>
                                                     <button
@@ -103,7 +103,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                                                     </button>
                                                 </div>
 
-                                                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-auto">
+                                                <div className="text-[10px] text-muted-foreground font-bold capitalize tracking-wider mb-auto">
                                                     Science Kit
                                                 </div>
 
@@ -155,24 +155,24 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                     <div className="p-6 bg-white border-t border-slate-100 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] z-20 shrink-0">
                         <div className="space-y-4">
                             <div className="space-y-2 pb-4 border-b border-dashed border-slate-200">
-                                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground capitalize tracking-wider">
                                     <span>Subtotal</span>
                                     <span>₹{cart.totalPrice().toLocaleString()}</span>
                                 </div>
-                                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider">
+                                <div className="flex items-center justify-between text-xs font-bold text-muted-foreground capitalize tracking-wider">
                                     <span>Shipping</span>
                                     <span className="text-green-500">Free</span>
                                 </div>
                             </div>
 
                             <div className="flex items-center justify-between mb-4">
-                                <span className="text-sm font-black uppercase italic tracking-tighter">Total Amount</span>
-                                <span className="text-2xl font-black text-primary italic tracking-tight">₹{cart.totalPrice().toLocaleString()}</span>
+                                <span className="text-sm font-black capitalize italic tracking-tighter">Total Amount</span>
+                                <span className="text-base font-black text-primary italic tracking-tight">₹{cart.totalPrice().toLocaleString()}</span>
                             </div>
 
                             <SheetTrigger asChild>
                                 <Link href="/checkout" className="block">
-                                    <Button className="w-full h-14 rounded-2xl text-sm font-black uppercase italic tracking-widest shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-[1.02] flex items-center justify-between px-6">
+                                    <Button className="w-full h-14 rounded-2xl text-sm font-black capitalize italic tracking-widest shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all hover:scale-[1.02] flex items-center justify-between px-6">
                                         <span>Checkout Securely</span>
                                         <ArrowRight className="h-5 w-5 bg-white/20 rounded-full p-1" />
                                     </Button>
@@ -180,7 +180,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                             </SheetTrigger>
 
                             <SheetTrigger asChild>
-                                <Button variant="ghost" className="w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
+                                <Button variant="ghost" className="w-full text-[10px] font-bold capitalize tracking-widest text-muted-foreground hover:text-primary">
                                     Continue Shopping
                                 </Button>
                             </SheetTrigger>

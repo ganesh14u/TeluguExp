@@ -46,13 +46,13 @@ export default function AccountPage() {
             <section className="bg-white p-8 rounded-[2rem] border-2">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic pr-4">Welcome Back, <span className="text-primary NOT-italic">{session.user.name?.split(' ')[0]}</span></h1>
-                        <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2">Manage your purchases and account details</p>
+                        <h1 className="text-xl md:text-2xl font-black tracking-tighter capitalize italic pr-4">Welcome Back, <span className="text-primary NOT-italic">{session.user.name?.split(' ')[0]}</span></h1>
+                        <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2">Manage your purchases and account details</p>
                     </div>
                     <div className="flex items-center gap-4 bg-muted/30 px-6 py-3 rounded-2xl border">
                         <ShoppingCart className="h-6 w-6 text-primary" />
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Bag Items</p>
+                            <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Bag Items</p>
                             <p className="font-black">{cart.totalItems()} Products</p>
                         </div>
                     </div>
@@ -64,7 +64,7 @@ export default function AccountPage() {
                 {/* 1. Basic Profile Card */}
                 <Card className="rounded-[2rem] border-2 overflow-hidden bg-white">
                     <CardHeader className="border-b border-dashed p-6 bg-muted/10">
-                        <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Basic <span className="text-primary NOT-italic">Profile</span></CardTitle>
+                        <CardTitle className="text-lg font-black capitalize tracking-tighter italic">Basic <span className="text-primary NOT-italic">Profile</span></CardTitle>
                     </CardHeader>
                     <CardContent className="p-8 space-y-6 flex flex-col items-center">
                         <div className="relative h-24 w-24 rounded-full border-4 border-white shadow-xl overflow-hidden mb-2">
@@ -83,24 +83,24 @@ export default function AccountPage() {
 
                         <div className="grid grid-cols-2 gap-x-8 gap-y-4 text-center w-full">
                             <div className="space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</p>
+                                <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Full Name</p>
                                 <p className="text-sm font-bold truncate">{userData?.name || session.user.name}</p>
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone Number</p>
+                                <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Phone Number</p>
                                 <p className="text-sm font-bold truncate">{userData?.phone || "Not Set"}</p>
                             </div>
                             <div className="space-y-1 col-span-2">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Member Since</p>
+                                <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Member Since</p>
                                 <p className="text-sm font-bold">{userData ? format(new Date(userData.createdAt), 'MMM yyyy') : '...'}</p>
                             </div>
                         </div>
                         <div className="space-y-1 text-center w-full">
-                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</p>
+                            <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Email Address</p>
                             <p className="text-sm font-bold truncate">{userData?.email || session.user.email}</p>
                         </div>
                         <Link href="/account/settings" className="w-full">
-                            <Button variant="outline" className="w-full h-12 rounded-xl border-2 font-black uppercase tracking-widest text-[10px]">Edit Profile Details</Button>
+                            <Button variant="outline" className="w-full h-12 rounded-xl border-2 font-black capitalize tracking-widest text-[10px]">Edit Profile Details</Button>
                         </Link>
                     </CardContent>
                 </Card>
@@ -109,7 +109,7 @@ export default function AccountPage() {
                 {/* 2. Recent Orders Card */}
                 <Card className="rounded-[2rem] border-2 overflow-hidden bg-white">
                     <CardHeader className="border-b border-dashed p-6 bg-muted/10">
-                        <CardTitle className="text-lg font-black uppercase tracking-tighter italic">Recent <span className="text-primary NOT-italic">Orders</span></CardTitle>
+                        <CardTitle className="text-lg font-black capitalize tracking-tighter italic">Recent <span className="text-primary NOT-italic">Orders</span></CardTitle>
                     </CardHeader>
                     <CardContent className="p-8">
                         {loading ? (
@@ -123,18 +123,18 @@ export default function AccountPage() {
                                                 <Package className="h-6 w-6 text-primary" />
                                             </div>
                                             <div>
-                                                <p className="text-xs font-black uppercase tracking-tighter italic">Order #{order._id.slice(-6)}</p>
+                                                <p className="text-xs font-black capitalize tracking-tighter italic">Order #{order._id.slice(-6)}</p>
                                                 <p className="text-[10px] font-bold text-muted-foreground">{format(new Date(order.createdAt), 'MMM dd, yyyy')}</p>
                                             </div>
                                         </div>
                                         <div className="text-right">
                                             <p className="text-sm font-black text-primary">₹{order.totalPrice.toLocaleString()}</p>
-                                            <p className="text-[10px] font-black uppercase text-green-600">{order.orderStatus}</p>
+                                            <p className="text-[10px] font-black capitalize text-green-600">{order.orderStatus}</p>
                                         </div>
                                     </div>
                                 ))}
                                 <Link href="/account/orders" className="block text-center mt-4">
-                                    <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary">View All Orders</Button>
+                                    <Button variant="ghost" className="text-[10px] font-black capitalize tracking-widest text-muted-foreground hover:text-primary">View All Orders</Button>
                                 </Link>
                             </div>
                         ) : (
@@ -147,7 +147,7 @@ export default function AccountPage() {
                                     <p className="text-xs text-muted-foreground font-medium">Start shopping to see your orders here.</p>
                                 </div>
                                 <Link href="/shop">
-                                    <Button className="h-12 rounded-xl px-8 font-black uppercase tracking-widest text-[10px]">Shop Products Now</Button>
+                                    <Button className="h-12 rounded-xl px-8 font-black capitalize tracking-widest text-[10px]">Shop Products Now</Button>
                                 </Link>
                             </div>
                         )}

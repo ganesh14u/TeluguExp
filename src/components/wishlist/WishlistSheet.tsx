@@ -39,8 +39,8 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                 <Heart className="h-5 w-5 text-red-500 fill-red-500" />
                             </div>
                             <div className="flex flex-col items-start">
-                                <span className="font-black uppercase tracking-widest text-sm">My Wishlist</span>
-                                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">
+                                <span className="font-black capitalize tracking-widest text-sm">My Wishlist</span>
+                                <span className="text-[10px] text-muted-foreground font-bold capitalize tracking-widest">
                                     {wishlist.items.length} Saved Items
                                 </span>
                             </div>
@@ -53,7 +53,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                     wishlist.clearWishlist();
                                     toast.success("Wishlist cleared");
                                 }}
-                                className="text-[10px] text-red-500 hover:text-red-600 font-bold uppercase tracking-widest h-8 px-3 hover:bg-red-50"
+                                className="text-[10px] text-red-500 hover:text-red-600 font-bold capitalize tracking-widest h-8 px-3 hover:bg-red-50"
                             >
                                 Clear All
                             </Button>
@@ -72,13 +72,13 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                         <div className="absolute top-0 right-0 h-32 w-32 border-2 border-dashed border-red-200 rounded-full animate-spin-slow pointer-events-none opacity-50" />
                                     </div>
                                     <div className="space-y-2 max-w-[250px]">
-                                        <h3 className="font-black text-xl uppercase italic tracking-tighter">Wishlist is Empty</h3>
+                                        <h3 className="font-black text-xl capitalize italic tracking-tighter">Wishlist is Empty</h3>
                                         <p className="text-xs text-muted-foreground font-medium leading-relaxed">
                                             Found anything you liked? Save your favorites here to find them easily later.
                                         </p>
                                     </div>
                                     <SheetTrigger asChild>
-                                        <Button className="h-12 px-8 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-xl shadow-red-500/10" variant="outline">
+                                        <Button className="h-12 px-8 rounded-xl font-black capitalize tracking-widest text-[10px] shadow-xl shadow-red-500/10" variant="outline">
                                             Continue Browsing
                                         </Button>
                                     </SheetTrigger>
@@ -99,7 +99,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                             {/* Details */}
                                             <div className="flex flex-col flex-1 gap-1 py-1">
                                                 <div className="flex justify-between items-start gap-2">
-                                                    <Link href={`/product/${item.slug}`} className="font-bold text-sm hover:text-primary line-clamp-2 leading-snug uppercase tracking-tight">
+                                                    <Link href={`/product/${item.slug}`} className="font-bold text-sm hover:text-primary line-clamp-2 leading-snug capitalize tracking-tight">
                                                         {item.name}
                                                     </Link>
                                                     <button
@@ -113,7 +113,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                                     </button>
                                                 </div>
 
-                                                <div className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider mb-auto">
+                                                <div className="text-[10px] text-muted-foreground font-bold capitalize tracking-wider mb-auto">
                                                     {item.category || "Science Kit"}
                                                 </div>
 
@@ -132,7 +132,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                                     <Button
                                                         size="sm"
                                                         onClick={() => handleAddToCart(item)}
-                                                        className="h-9 px-4 rounded-xl font-black uppercase italic tracking-widest text-[9px] bg-slate-900 hover:bg-primary transition-all group/btn"
+                                                        className="h-9 px-4 rounded-xl font-black capitalize italic tracking-widest text-[9px] bg-slate-900 hover:bg-primary transition-all group/btn"
                                                     >
                                                         <ShoppingBag className="h-3 w-3 mr-1.5 text-primary group-hover/btn:text-white transition-colors" /> Add to Cart
                                                     </Button>
@@ -152,7 +152,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                         <div className="space-y-4">
                             <SheetTrigger asChild>
                                 <Link href="/wishlist" className="block">
-                                    <Button className="w-full h-14 rounded-2xl text-sm font-black uppercase italic tracking-widest shadow-lg shadow-red-500/10 hover:shadow-red-500/20 transition-all hover:scale-[1.02] flex items-center justify-between px-6 bg-white text-slate-900 border-2 border-slate-900 hover:bg-slate-900 hover:text-white group">
+                                    <Button className="w-full h-14 rounded-2xl text-sm font-black capitalize italic tracking-widest shadow-lg shadow-red-500/10 hover:shadow-red-500/20 transition-all hover:scale-[1.02] flex items-center justify-between px-6 bg-white text-slate-900 border-2 border-slate-900 hover:bg-slate-900 hover:text-white group">
                                         <span>Go to My Wishlist</span>
                                         <ArrowRight className="h-5 w-5 bg-slate-100 group-hover:bg-white/20 rounded-full p-1 transition-colors" />
                                     </Button>
@@ -160,7 +160,7 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                             </SheetTrigger>
 
                             <SheetTrigger asChild>
-                                <Button variant="ghost" className="w-full text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary">
+                                <Button variant="ghost" className="w-full text-[10px] font-bold capitalize tracking-widest text-muted-foreground hover:text-primary">
                                     Continue Shopping
                                 </Button>
                             </SheetTrigger>

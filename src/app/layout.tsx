@@ -20,10 +20,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Telugu Experiments",
-    default: "Telugu Experiments | Science Kits & Gadgets"
+    template: "%s | Telugu Adventures",
+    default: "Telugu Adventures | Science Kits & Gadgets"
   },
-  description: "Shop for original science experiment kits, gadgets, and educational toys in India. Discover innovation with Telugu Experiments.",
+  description: "Shop for original science experiment kits, gadgets, and educational toys in India. Discover innovation with Telugu Adventures.",
   keywords: "science kits, experiments, gadgets, toys, india, educational toys",
   icons: {
     icon: [
@@ -33,14 +33,14 @@ export const metadata: Metadata = {
     apple: '/logo.png',
   },
   openGraph: {
-    title: "Telugu Experiments | Science Kits & Gadgets",
+    title: "Telugu Adventures | Science Kits & Gadgets",
     description: "Shop for original science experiment kits, gadgets, and educational toys in India.",
     images: ['/logo.png'],
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: "Telugu Experiments | Science Kits & Gadgets",
+    title: "Telugu Adventures | Science Kits & Gadgets",
     description: "Shop for original science experiment kits, gadgets, and educational toys in India.",
     images: ['/logo.png'],
   }

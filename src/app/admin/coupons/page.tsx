@@ -97,7 +97,7 @@ export default function AdminCouponsPage() {
         <div className="space-y-8">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-4xl font-black tracking-tighter uppercase italic">Discount <span className="text-primary NOT-italic">Matrix</span></h1>
+                    <h1 className="text-xl font-black tracking-tighter capitalize italic">Discount <span className="text-primary NOT-italic">Matrix</span></h1>
                     <p className="text-muted-foreground font-medium">Engineer promotional campaigns to drive laboratory sales.</p>
                 </div>
 
@@ -114,14 +114,14 @@ export default function AdminCouponsPage() {
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px] rounded-[2.5rem] border-none shadow-2xl">
                             <DialogHeader>
-                                <DialogTitle className="text-2xl font-black uppercase tracking-tighter italic">Engine <span className="text-primary NOT-italic">Discount Code</span></DialogTitle>
+                                <DialogTitle className="text-base font-black capitalize tracking-tighter italic">Engine <span className="text-primary NOT-italic">Discount Code</span></DialogTitle>
                             </DialogHeader>
                             <form onSubmit={handleCreate} className="space-y-5 mt-4">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Promo Code</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Promo Code</label>
                                     <Input
                                         placeholder="e.g. SUMMER50"
-                                        className="h-12 rounded-2xl bg-muted/50 border-none focus-visible:ring-2 focus-visible:ring-primary font-black font-mono tracking-widest uppercase"
+                                        className="h-12 rounded-2xl bg-muted/50 border-none focus-visible:ring-2 focus-visible:ring-primary font-black font-mono tracking-widest capitalize"
                                         value={newCoupon.code}
                                         onChange={(e) => setNewCoupon({ ...newCoupon, code: e.target.value.toUpperCase() })}
                                         required
@@ -129,7 +129,7 @@ export default function AdminCouponsPage() {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Type</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Type</label>
                                         <Select
                                             value={newCoupon.discountType}
                                             onValueChange={(val) => setNewCoupon({ ...newCoupon, discountType: val })}
@@ -145,7 +145,7 @@ export default function AdminCouponsPage() {
                                         </Select>
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Value</label>
+                                        <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Value</label>
                                         <Input
                                             type="number"
                                             placeholder="e.g. 20"
@@ -158,7 +158,7 @@ export default function AdminCouponsPage() {
                                     </div>
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-2">Valid Until</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Valid Until</label>
                                     <Input
                                         type="date"
                                         className="h-12 rounded-2xl bg-muted/50 border-none focus-visible:ring-2 focus-visible:ring-primary font-bold"
@@ -178,12 +178,12 @@ export default function AdminCouponsPage() {
                 <Table>
                     <TableHeader className="bg-muted/30">
                         <TableRow className="hover:bg-transparent border-none">
-                            <TableHead className="h-16 pl-8 font-black uppercase text-xs tracking-widest text-muted-foreground">Promo Code</TableHead>
-                            <TableHead className="h-16 font-black uppercase text-xs tracking-widest text-muted-foreground">Benefit</TableHead>
-                            <TableHead className="h-16 font-black uppercase text-xs tracking-widest text-muted-foreground">Category</TableHead>
-                            <TableHead className="h-16 font-black uppercase text-xs tracking-widest text-muted-foreground">Expiration</TableHead>
-                            <TableHead className="h-16 font-black uppercase text-xs tracking-widest text-muted-foreground">Adoption Rate</TableHead>
-                            <TableHead className="h-16 text-right pr-8 font-black uppercase text-xs tracking-widest text-muted-foreground">Actions</TableHead>
+                            <TableHead className="h-16 pl-8 font-black capitalize text-xs tracking-widest text-muted-foreground">Promo Code</TableHead>
+                            <TableHead className="h-16 font-black capitalize text-xs tracking-widest text-muted-foreground">Benefit</TableHead>
+                            <TableHead className="h-16 font-black capitalize text-xs tracking-widest text-muted-foreground">Category</TableHead>
+                            <TableHead className="h-16 font-black capitalize text-xs tracking-widest text-muted-foreground">Expiration</TableHead>
+                            <TableHead className="h-16 font-black capitalize text-xs tracking-widest text-muted-foreground">Adoption Rate</TableHead>
+                            <TableHead className="h-16 text-right pr-8 font-black capitalize text-xs tracking-widest text-muted-foreground">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -191,7 +191,7 @@ export default function AdminCouponsPage() {
                             <TableRow>
                                 <TableCell colSpan={6} className="h-64 text-center">
                                     <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-                                    <p className="mt-2 text-xs font-black uppercase tracking-widest text-muted-foreground opacity-50">Decoding offer encrypted keys...</p>
+                                    <p className="mt-2 text-xs font-black capitalize tracking-widest text-muted-foreground opacity-50">Decoding offer encrypted keys...</p>
                                 </TableCell>
                             </TableRow>
                         ) : coupons.length === 0 ? (
@@ -216,7 +216,7 @@ export default function AdminCouponsPage() {
                                         {c.discountType === 'Percentage' ? `${c.discountValue}% OFF` : c.discountType === 'Flat' ? `₹${c.discountValue} OFF` : 'FREE SHIPPING'}
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant="secondary" className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest bg-muted text-muted-foreground">
+                                        <Badge variant="secondary" className="rounded-full px-3 py-1 text-[10px] font-black capitalize tracking-widest bg-muted text-muted-foreground">
                                             {c.discountType}
                                         </Badge>
                                     </TableCell>
@@ -226,7 +226,7 @@ export default function AdminCouponsPage() {
                                     <TableCell>
                                         <div className="flex items-center gap-2">
                                             <span className="font-black text-sm">{c.usedCount}</span>
-                                            <span className="text-[10px] font-bold text-muted-foreground uppercase">Adoptions</span>
+                                            <span className="text-[10px] font-bold text-muted-foreground capitalize">Adoptions</span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right pr-8">

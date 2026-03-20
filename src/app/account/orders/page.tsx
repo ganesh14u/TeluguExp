@@ -29,8 +29,8 @@ export default function OrdersPage() {
     return (
         <div className="space-y-8">
             <section className="bg-white p-8 rounded-[2rem] border-2">
-                <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic pr-4">My <span className="text-primary NOT-italic">Orders</span></h1>
-                <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2">Track and manage your purchase history</p>
+                <h1 className="text-xl md:text-2xl font-black tracking-tighter capitalize italic pr-4">My <span className="text-primary NOT-italic">Orders</span></h1>
+                <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2">Track and manage your purchase history</p>
             </section>
 
             {loading ? (
@@ -43,20 +43,20 @@ export default function OrdersPage() {
                                 <div className="bg-muted/30 p-6 flex flex-col md:flex-row justify-between gap-4 border-b border-dashed">
                                     <div className="flex flex-wrap gap-x-8 gap-y-2">
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Order Date</p>
+                                            <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Order Date</p>
                                             <p className="text-sm font-bold">{format(new Date(order.createdAt), 'MMMM dd, yyyy')}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Total Price</p>
+                                            <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Total Price</p>
                                             <p className="text-sm font-black text-primary">₹{order.totalPrice.toLocaleString()}</p>
                                         </div>
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Order ID</p>
-                                            <p className="text-sm font-bold uppercase">#{order._id.slice(-8)}</p>
+                                            <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Order ID</p>
+                                            <p className="text-sm font-bold capitalize">#{order._id.slice(-8)}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-700' :
+                                        <div className={`px-4 py-1.5 rounded-full text-[10px] font-black capitalize tracking-widest ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-700' :
                                             order.orderStatus === 'Cancelled' ? 'bg-red-100 text-red-700' :
                                                 'bg-blue-100 text-blue-700'
                                             }`}>
@@ -114,10 +114,10 @@ export default function OrdersPage() {
                     <div className="h-24 w-24 rounded-full bg-muted flex items-center justify-center mb-6">
                         <ShoppingBag className="h-12 w-12 text-muted-foreground" />
                     </div>
-                    <h2 className="text-2xl font-black uppercase italic tracking-tighter mb-2">No Orders Found</h2>
+                    <h2 className="text-base font-black capitalize italic tracking-tighter mb-2">No Orders Found</h2>
                     <p className="text-muted-foreground font-bold max-w-md mb-8">You haven't placed any orders yet. Explore our latest collections and start shopping!</p>
                     <Link href="/shop">
-                        <Button className="h-14 rounded-2xl px-12 font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
+                        <Button className="h-14 rounded-2xl px-12 font-black capitalize tracking-widest text-xs shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
                             Start Shopping Now
                         </Button>
                     </Link>

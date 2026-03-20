@@ -149,10 +149,10 @@ export default function AddressesPage() {
         <div className="space-y-8">
             <section className="bg-white p-8 rounded-[2rem] border-2 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic pr-4">Saved <span className="text-primary NOT-italic">Addresses</span></h1>
-                    <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2">Manage your delivery locations</p>
+                    <h1 className="text-xl md:text-2xl font-black tracking-tighter capitalize italic pr-4">Saved <span className="text-primary NOT-italic">Addresses</span></h1>
+                    <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2">Manage your delivery locations</p>
                 </div>
-                <Button onClick={() => handleOpenDialog()} className="h-12 rounded-xl px-6 font-black uppercase tracking-widest text-[10px] gap-2">
+                <Button onClick={() => handleOpenDialog()} className="h-12 rounded-xl px-6 font-black capitalize tracking-widest text-[10px] gap-2">
                     <Plus className="h-4 w-4" /> Add New Address
                 </Button>
             </section>
@@ -169,9 +169,9 @@ export default function AddressesPage() {
                             <div className="space-y-4 relative z-10">
                                 <div className="flex items-center gap-2">
                                     {address.isDefault && (
-                                        <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Default</span>
+                                        <span className="bg-primary text-white px-3 py-1 rounded-full text-[10px] font-black capitalize tracking-widest">Default</span>
                                     )}
-                                    <h3 className="font-black uppercase tracking-tight italic">{address.name}</h3>
+                                    <h3 className="font-black capitalize tracking-tight italic">{address.name}</h3>
                                 </div>
                                 <div className="space-y-1 text-sm font-bold text-muted-foreground">
                                     <p>{address.street}</p>
@@ -179,8 +179,8 @@ export default function AddressesPage() {
                                     <p>Phone: {address.phone}</p>
                                 </div>
                                 <div className="flex gap-3 pt-2">
-                                    <Button onClick={() => handleOpenDialog(address)} variant="outline" className="h-10 rounded-lg text-[10px] font-black uppercase tracking-widest border-2">Edit</Button>
-                                    <Button onClick={() => handleDelete(address._id)} variant="ghost" className="h-10 rounded-lg text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50">Remove</Button>
+                                    <Button onClick={() => handleOpenDialog(address)} variant="outline" className="h-10 rounded-lg text-[10px] font-black capitalize tracking-widest border-2">Edit</Button>
+                                    <Button onClick={() => handleDelete(address._id)} variant="ghost" className="h-10 rounded-lg text-[10px] font-black capitalize tracking-widest text-red-500 hover:bg-red-50">Remove</Button>
                                 </div>
                             </div>
                         </Card>
@@ -190,7 +190,7 @@ export default function AddressesPage() {
                         <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                             <Plus className="h-6 w-6 text-muted-foreground" />
                         </div>
-                        <p className="font-black uppercase tracking-widest text-[10px] text-muted-foreground">Add Another Address</p>
+                        <p className="font-black capitalize tracking-widest text-[10px] text-muted-foreground">Add Another Address</p>
                     </Card>
                 </div>
             )}
@@ -198,7 +198,7 @@ export default function AddressesPage() {
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogContent className="rounded-[2.5rem] border-2 p-8 max-w-lg">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-black uppercase italic tracking-tighter">
+                        <DialogTitle className="text-base font-black capitalize italic tracking-tighter">
                             {editingAddress ? 'Edit' : 'Add New'} <span className="text-primary NOT-italic">Address</span>
                         </DialogTitle>
                     </DialogHeader>
@@ -209,7 +209,7 @@ export default function AddressesPage() {
                             type="button"
                             variant="outline"
                             disabled={isLocating}
-                            className="w-full mb-4 gap-2 rounded-xl border-dashed border-2 font-black uppercase tracking-widest text-[10px] h-12"
+                            className="w-full mb-4 gap-2 rounded-xl border-dashed border-2 font-black capitalize tracking-widest text-[10px] h-12"
                         >
                             {isLocating ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
                             {isLocating ? "Getting Location..." : "Use My Current Location"}
@@ -218,30 +218,30 @@ export default function AddressesPage() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Name</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Name</label>
                                     <Input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Home/Work" className="rounded-xl border-2" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Phone</label>
                                     <Input required value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="+91..." className="rounded-xl border-2" />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Street Address</label>
+                                <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Street Address</label>
                                 <Input required value={formData.street} onChange={e => setFormData({ ...formData, street: e.target.value })} placeholder="House No, Area..." className="rounded-xl border-2" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">City</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">City</label>
                                     <Input required value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} placeholder="City" className="rounded-xl border-2" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Pincode</label>
+                                    <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Pincode</label>
                                     <Input required value={formData.zipCode} onChange={e => setFormData({ ...formData, zipCode: e.target.value })} placeholder="520001" className="rounded-xl border-2" />
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">State</label>
+                                <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">State</label>
                                 <Input required value={formData.state} onChange={e => setFormData({ ...formData, state: e.target.value })} placeholder="State" className="rounded-xl border-2" />
                             </div>
                             <div className="flex items-center gap-2 pt-2">
@@ -252,9 +252,9 @@ export default function AddressesPage() {
                                     onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
                                     className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                                 />
-                                <label htmlFor="isDefault" className="text-xs font-bold uppercase tracking-widest cursor-pointer">Set as default address</label>
+                                <label htmlFor="isDefault" className="text-xs font-bold capitalize tracking-widest cursor-pointer">Set as default address</label>
                             </div>
-                            <Button type="submit" className="w-full h-12 rounded-xl font-black uppercase tracking-widest mt-4">
+                            <Button type="submit" className="w-full h-12 rounded-xl font-black capitalize tracking-widest mt-4">
                                 {editingAddress ? 'Update' : 'Save'} Address
                             </Button>
                         </form>

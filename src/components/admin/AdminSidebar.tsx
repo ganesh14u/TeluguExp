@@ -43,7 +43,7 @@ export function AdminSidebar() {
                     <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                         <Settings className="h-5 w-5 text-white" />
                     </div>
-                    <span className="font-black text-xl tracking-tighter uppercase">Telugu Admin</span>
+                    <span className="font-black text-xl tracking-tighter capitalize">Telugu Admin</span>
                 </Link>
             </div>
 
@@ -91,7 +91,7 @@ export function AdminSidebar() {
                     <LogOut className="h-4 w-4" />
                     Logout Admin
                 </Button>
-                <Link href="/" className="flex items-center justify-center text-[10px] text-muted-foreground uppercase font-bold tracking-widest hover:text-primary transition-colors py-2">
+                <Link href="/" className="flex items-center justify-center text-[10px] text-muted-foreground capitalize font-bold tracking-widest hover:text-primary transition-colors py-2">
                     ← View Public Store
                 </Link>
             </div>

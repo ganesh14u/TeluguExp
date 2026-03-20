@@ -65,16 +65,16 @@ export default function OrderDetailsPage() {
 
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic">Order <span className="text-primary NOT-italic">#{order._id?.slice(-6) || '...'}</span></h1>
-                    <p className="text-muted-foreground font-bold text-sm uppercase tracking-widest mt-2">
+                    <h1 className="text-lg md:text-xl font-black tracking-tighter capitalize italic">Order <span className="text-primary NOT-italic">#{order._id?.slice(-6) || '...'}</span></h1>
+                    <p className="text-muted-foreground font-bold text-sm capitalize tracking-widest mt-2">
                         {order.createdAt ? format(new Date(order.createdAt), 'MMMM dd, yyyy') : '...'} • {order.createdAt ? format(new Date(order.createdAt), 'hh:mm a') : '...'}
                     </p>
                 </div>
                 <div className="flex gap-3">
-                    <Button onClick={downloadInvoice} variant="outline" className="h-10 px-4 rounded-xl font-black uppercase tracking-widest text-[10px] gap-2 border-2">
+                    <Button onClick={downloadInvoice} variant="outline" className="h-10 px-4 rounded-xl font-black capitalize tracking-widest text-[10px] gap-2 border-2">
                         <Download className="h-4 w-4" /> Download Invoice
                     </Button>
-                    <Badge className={`h-10 px-6 rounded-xl font-black uppercase tracking-widest text-[10px] ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-700 hover:bg-green-200' :
+                    <Badge className={`h-10 px-6 rounded-xl font-black capitalize tracking-widest text-[10px] ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-700 hover:bg-green-200' :
                         order.orderStatus === 'Cancelled' ? 'bg-red-100 text-red-700 hover:bg-red-200' :
                             'bg-blue-100 text-blue-700 hover:bg-blue-200'
                         }`}>
@@ -87,7 +87,7 @@ export default function OrderDetailsPage() {
                 <div className="md:col-span-2 space-y-8">
                     <Card className="rounded-[2rem] border-2 bg-white overflow-hidden">
                         <CardHeader className="border-b border-dashed p-8 bg-muted/10">
-                            <CardTitle className="text-lg font-black uppercase tracking-tighter italic flex items-center gap-2">
+                            <CardTitle className="text-lg font-black capitalize tracking-tighter italic flex items-center gap-2">
                                 <Package className="h-5 w-5 text-primary" /> Order <span className="text-primary NOT-italic">Items</span>
                             </CardTitle>
                         </CardHeader>
@@ -111,18 +111,18 @@ export default function OrderDetailsPage() {
 
                     <Card className="rounded-[2rem] border-2 bg-white overflow-hidden">
                         <CardHeader className="border-b border-dashed p-8 bg-muted/10">
-                            <CardTitle className="text-lg font-black uppercase tracking-tighter italic flex items-center gap-2">
+                            <CardTitle className="text-lg font-black capitalize tracking-tighter italic flex items-center gap-2">
                                 <Truck className="h-5 w-5 text-primary" /> Shipping <span className="text-primary NOT-italic">Details</span>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
                             <div className="space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Contact</p>
+                                <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Contact</p>
                                 <p className="font-bold">{order.shippingAddress?.name || "N/A"}</p>
                                 <p className="text-sm text-muted-foreground font-medium">{order.shippingAddress?.phone || "N/A"}</p>
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Address</p>
+                                <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Address</p>
                                 <p className="text-sm font-bold leading-relaxed">
                                     {order.shippingAddress?.street || "N/A"}<br />
                                     {order.shippingAddress?.city || ""}, {order.shippingAddress?.state || ""} {order.shippingAddress?.zipCode || ""}
@@ -138,7 +138,7 @@ export default function OrderDetailsPage() {
                             <CheckCircle className="h-24 w-24" />
                         </div>
                         <CardContent className="p-8 relative z-10 space-y-6">
-                            <h3 className="text-xl font-black uppercase italic tracking-tighter">Summary</h3>
+                            <h3 className="text-xl font-black capitalize italic tracking-tighter">Summary</h3>
 
                             <div className="space-y-3 pt-4 border-t border-white/10">
                                 <div className="flex justify-between items-center text-sm">
@@ -157,8 +157,8 @@ export default function OrderDetailsPage() {
 
                             <div className="pt-6 border-t border-white/10">
                                 <div className="flex justify-between items-end">
-                                    <span className="font-black text-white/60 text-sm uppercase tracking-widest">Total Paid</span>
-                                    <span className="text-3xl font-black italic tracking-tighter text-primary">₹{order.totalPrice.toLocaleString()}</span>
+                                    <span className="font-black text-white/60 text-sm capitalize tracking-widest">Total Paid</span>
+                                    <span className="text-lg font-black italic tracking-tighter text-primary">₹{order.totalPrice.toLocaleString()}</span>
                                 </div>
                             </div>
                         </CardContent>
@@ -187,7 +187,7 @@ export default function OrderDetailsPage() {
                             <p style={{ margin: 0, color: '#666' }}>Date: {format(new Date(order.createdAt), 'MMM dd, yyyy')}</p>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                            <h3 style={{ margin: 0, color: '#000' }}>Telugu Experiments</h3>
+                            <h3 style={{ margin: 0, color: '#000' }}>Telugu Adventures</h3>
                         </div>
                     </div>
 
