@@ -16,13 +16,11 @@ const Footer = () => {
             <div className="container mx-auto px-4 md:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-16">
                     {/* Brand and About */}
-                    <div className="space-y-6 md:space-y-8">
+                    <div className="space-y-6 md:space-y-8 flex flex-col items-center text-center sm:items-start sm:text-left md:items-center md:text-center">
                         <Link href="/" className="inline-block group">
-                            <h3 className="text-lg md:text-xl font-black capitalize italic tracking-tighter transition-all group-hover:text-primary">
-                                Telugu <span className="text-primary NOT-italic">Experiments</span>
-                            </h3>
+                            <img src="/logo.png" alt="Telugu Adventures" className="h-32 md:h-40 w-auto object-contain drop-shadow-2xl group-hover:-translate-y-1 transition-transform duration-500" />
                         </Link>
-                        <p className="text-white/40 leading-relaxed text-xs md:text-sm font-bold capitalize tracking-tight">
+                        <p className="text-white/40 leading-relaxed text-xs md:text-sm font-bold capitalize tracking-tight mt-2">
                             Bringing the frontier of innovation to your doorstep. We curate the world's most advanced science kits and gadgets.
                         </p>
                         <div className="flex space-x-5">

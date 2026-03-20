@@ -7,6 +7,7 @@ import CartSync from "@/components/CartSync";
 
 import { Providers } from "@/components/shared/Providers";
 import { UserNotificationProvider } from "@/context/UserNotificationContext";
+import ScrollToTop from "@/components/shared/ScrollToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,6 +57,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <UserNotificationProvider> {/* Added UserNotificationProvider */}
+            <ScrollToTop />
             <CartSync />
             <div className="flex flex-col min-h-screen">
               <Header />

@@ -94,15 +94,15 @@ const Header = () => {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-            <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+            <div className="container mx-auto px-4 h-16 md:h-20 flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-3">
+                <Link href="/" className="flex items-center gap-3 group">
                     <img
                         src="/logo.png"
                         alt="Telugu Adventures"
-                        className="h-10 w-10 object-contain"
+                        className="h-12 w-12 md:h-16 md:w-16 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-500"
                     />
-                    <span className="hidden sm:block text-xl font-bold bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    <span className="hidden lg:block text-xl font-black bg-linear-to-r from-primary to-amber-500 bg-clip-text text-transparent italic tracking-tighter">
                         Telugu Adventures
                     </span>
                 </Link>
@@ -408,8 +408,8 @@ const Header = () => {
                         </SheetTrigger>
                         <SheetContent side="right" className="p-0 border-l-0 w-[85%] sm:w-[400px] bg-slate-950 text-white">
                             <SheetHeader className="p-8 border-b border-white/5">
-                                <SheetTitle className="text-left text-primary font-black capitalize italic tracking-tighter text-base flex items-center gap-2">
-                                    <FlaskConical className="h-6 w-6" /> Telugu <span className="text-white NOT-italic">Exp</span>
+                                <SheetTitle className="text-left font-black capitalize tracking-tighter text-base flex items-center gap-2">
+                                    <img src="/logo.png" alt="Telugu Adventures" className="h-12 w-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]" />
                                 </SheetTitle>
                             </SheetHeader>
 
