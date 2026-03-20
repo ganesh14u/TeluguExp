@@ -8,9 +8,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProductCard from "@/components/products/ProductCard";
 import { usePageTitle } from "@/hooks/usePageTitle";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   usePageTitle("Home");
+  const { data: session } = useSession();
   const [currentBanner, setCurrentBanner] = useState(0);
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -290,7 +292,11 @@ export default function Home() {
 
       {/* Sticky WhatsApp Button */}
       <div className="fixed bottom-10 right-10 z-100">
-        <Link href="https://wa.me/918142504687" target="_blank" className="relative group flex items-center">
+        <Link 
+          href={`https://wa.me/918142504687?text=${encodeURIComponent(`Hi I am ${session?.user?.name || 'Guest'} and I need Help In Telugu Adventures Website.`)}`} 
+          target="_blank" 
+          className="relative group flex items-center"
+        >
           <div className="absolute right-full mr-4 bg-white px-4 py-2 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 pointer-events-none">
             <p className="text-xs font-black capitalize tracking-widest text-primary whitespace-nowrap">Need Help? Chat Now</p>
           </div>

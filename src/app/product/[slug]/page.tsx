@@ -317,7 +317,7 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                                 <Button onClick={handleWishlist} variant="outline" className={`h-11 md:h-12 rounded-xl md:rounded-2xl font-black capitalize tracking-widest border-2 text-[9px] md:text-[10px] gap-2 transition-colors ${isWishlisted ? 'bg-red-50 border-red-100 text-red-600' : 'hover:border-red-100 hover:text-red-500'}`}>
                                     <Heart className={`h-3.5 w-3.5 transition-all ${isWishlisted ? 'fill-red-600' : ''}`} /> {isWishlisted ? 'Saved' : 'Wishlist'}
                                 </Button>
-                                <Link href={`https://wa.me/918142504687?text=I'm interested in Buying ${product.name}`} className="block w-full">
+                                <Link href={`https://wa.me/918142504687?text=${encodeURIComponent(`Hi I am ${session?.user?.name || 'Guest'} and I need Help In Telugu Adventures Website. (Regarding: ${product.name})`)}`} className="block w-full">
                                     <Button variant="outline" className="h-11 md:h-12 w-full rounded-xl md:rounded-2xl font-black capitalize tracking-widest border-2 border-green-50/50 bg-green-50/20 text-green-600 hover:bg-green-600 hover:text-white transition-all text-[9px] md:text-[10px] gap-2 p-0">
                                         <MessageCircle className="h-3.5 w-3.5" /> Buy on WhatsApp
                                     </Button>
