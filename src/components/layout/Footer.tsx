@@ -106,8 +106,11 @@ const Footer = () => {
 
                 <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-8 pb-10">
                     <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-                        <p className="text-[9px] md:text-[10px] font-black capitalize tracking-[0.2em] text-white/20 italic">
-                            © {new Date().getFullYear()} Telugu Adventures Lab. All rights reserved. Made for Science.
+                        <p className="text-[9px] md:text-[10px] font-black tracking-[0.2em] text-white/20 italic uppercase">
+                            © {new Date().getFullYear()} Telugu Adventures Lab. All rights reserved. 
+                            <span className="ml-1 capitalize text-white">
+                                Designed With ❤️ By <a href="https://ganeshuk.netlify.app" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 underline transition-all">Sai Ganesh</a>
+                            </span>
                         </p>
                         
                         {/* Currency Switcher */}
