@@ -14,9 +14,11 @@ import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function CartSheet({ children }: { children: React.ReactNode }) {
     const cart = useCart();
+    const { formatPrice } = useCurrency();
 
     return (
         <Sheet>
@@ -133,10 +135,10 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
 
                                                     {/* Price */}
                                                     <div className="flex flex-col items-end">
-                                                        <span className="font-black text-sm">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
+                                                        <span className="font-black text-sm">{formatPrice(item.discountPrice || item.price, item.quantity)}</span>
                                                         {item.quantity > 1 && (
                                                             <span className="text-[9px] text-muted-foreground font-medium">
-                                                                ₹{(item.discountPrice || item.price).toLocaleString()} / ea
+                                                                {formatPrice(item.discountPrice || item.price)} / ea
                                                             </span>
                                                         )}
                                                     </div>
@@ -157,7 +159,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
                             <div className="space-y-2 pb-4 border-b border-dashed border-slate-200">
                                 <div className="flex items-center justify-between text-xs font-bold text-muted-foreground capitalize tracking-wider">
                                     <span>Subtotal</span>
-                                    <span>₹{cart.totalPrice().toLocaleString()}</span>
+                                    <span>{formatPrice(cart.totalPrice())}</span>
                                 </div>
                                 <div className="flex items-center justify-between text-xs font-bold text-muted-foreground capitalize tracking-wider">
                                     <span>Shipping</span>
@@ -167,7 +169,7 @@ export default function CartSheet({ children }: { children: React.ReactNode }) {
 
                             <div className="flex items-center justify-between mb-4">
                                 <span className="text-sm font-black capitalize italic tracking-tighter">Total Amount</span>
-                                <span className="text-base font-black text-primary italic tracking-tight">₹{cart.totalPrice().toLocaleString()}</span>
+                                <span className="text-base font-black text-primary italic tracking-tight">{formatPrice(cart.totalPrice())}</span>
                             </div>
 
                             <SheetTrigger asChild>

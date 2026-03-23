@@ -21,7 +21,8 @@ import {
     CheckCircle2,
     Zap,
     Box,
-    X
+    X,
+    Package
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -32,17 +33,27 @@ import { toast } from "sonner";
 import AddToCartToast from "@/components/cart/AddToCartToast";
 import { usePageTitle } from "@/hooks/usePageTitle";
 import { useWishlist } from "@/hooks/useWishlist";
+import { useCurrency } from "@/context/CurrencyContext";
+import { formatDistanceToNow } from "date-fns";
 
 export default function ProductDetails({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
-    const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(0);
     const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
     const [isPaused, setIsPaused] = useState(false);
+    const [isAnimating, setIsAnimating] = useState(false);
+    
+    // Review states
+    const [reviewMode, setReviewMode] = useState(false);
+    const [submitRating, setSubmitRating] = useState(5);
+    const [submitComment, setSubmitComment] = useState("");
+    const [submittingReview, setSubmittingReview] = useState(false);
+
     const cart = useCart();
     const wishlist = useWishlist();
+    const { formatPrice } = useCurrency();
     const { data: session } = useSession();
     const [hasBought, setHasBought] = useState(false);
 
@@ -104,30 +115,68 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
         setMounted(true);
     }, []);
 
+    const currentQty = mounted && product ? cart.items.find((item: any) => item._id === product._id)?.quantity || 0 : 0;
+
     const handleAddToCart = () => {
         if (!product) return;
 
-        // Stock Check
-        const currentQty = cart.items.find(item => item._id === product._id)?.quantity || 0;
-        if (product.stock <= currentQty + quantity - 1) { // -1 because quantity state starts at 1
-            toast.error("Out of Stock", { description: `You can only add ${Math.max(0, product.stock - currentQty)} more.` });
+        if (product.stock <= currentQty) { 
+            toast.error("Out of Stock", { description: `You have reached the maximum available quantity.` });
             return;
         }
 
-        if (currentQty + quantity > product.stock) {
-            toast.error("Insufficient Stock", { description: `Only ${product.stock} items available in total.` });
+        setIsAnimating(true);
+        setTimeout(() => {
+            cart.addItem(product, 1);
+            setIsAnimating(false);
+            toast.custom((t) => (
+                <AddToCartToast
+                    toastId={t}
+                    productName={product.name}
+                    productPrice={product.discountPrice || product.price}
+                    productImage={images[0] || product.image || "https://placehold.co/100"}
+                />
+            ), { duration: 4000 });
+        }, 1500);
+    };
+
+    const handleIncrement = () => {
+        if (!product) return;
+        if (product.stock <= currentQty) {
+            toast.error("Out of Stock", { description: "You have reached the maximum available stock." });
             return;
         }
+        cart.addItem(product, 1);
+    };
 
-        cart.addItem(product, quantity);
-        toast.custom((t) => (
-            <AddToCartToast
-                toastId={t}
-                productName={product.name}
-                productPrice={product.discountPrice || product.price}
-                productImage={images[0] || product.image || "https://placehold.co/100"}
-            />
-        ), { duration: 4000 });
+    const handleDecrement = () => {
+        if (!product) return;
+        if (currentQty > 1) {
+            cart.updateQuantity(product._id, currentQty - 1);
+        } else {
+            cart.removeItem(product._id);
+        }
+    };
+
+    const handleReviewSubmit = async () => {
+        if (!product) return;
+        setSubmittingReview(true);
+        try {
+            const res = await fetch(`/api/products/${product.slug}/reviews`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ rating: submitRating, comment: submitComment }),
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error);
+            toast.success("Review submitted! It will appear once approved by an admin.");
+            setReviewMode(false);
+            setSubmitComment("");
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setSubmittingReview(false);
+        }
     };
 
     const isWishlisted = mounted && product ? wishlist.isInWishlist(product._id) : false;
@@ -174,6 +223,60 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
 
     return (
         <div className="min-h-screen bg-white pb-12">
+            <style dangerouslySetInnerHTML={{ __html: `
+            .custom-cart-button {
+                position: relative;
+                width: 100%;
+                height: 48px;
+                border: 0;
+                border-radius: 12px;
+                background-color: #4834d4;
+                outline: none;
+                cursor: pointer;
+                color: #fff;
+                transition: .3s ease-in-out;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .custom-cart-button:hover:not(:disabled) { background-color: #35269b; }
+            .custom-cart-button:active:not(:disabled) { transform: scale(.95); }
+            
+            .custom-cart-button .cart-icon {
+                position: absolute;
+                z-index: 2;
+                top: 50%;
+                left: -10%;
+                transform: translate(-50%,-50%);
+            }
+            .custom-cart-button .box-icon {
+                position: absolute;
+                z-index: 3;
+                top: -20%;
+                left: 52%;
+                transform: translate(-50%,-50%);
+            }
+            .custom-cart-button span {
+                position: absolute;
+                z-index: 3;
+                left: 50%;
+                top: 50%;
+                color: #fff;
+                font-weight: 600;
+                font-size: 16px;
+                transform: translate(-50%,-50%);
+                white-space: nowrap;
+            }
+            .custom-cart-button span.add-to-cart { opacity: 1; }
+            .custom-cart-button span.added { opacity: 0; }
+            
+            .custom-cart-button.clicked .cart-icon { animation: cart-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked .box-icon { animation: box-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked span.add-to-cart { animation: txt1-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked span.added { animation: txt2-anim-btn 1.5s ease-in-out forwards; }
+            `}} />
+
             {/* Nav Bar - Reduced height */}
             <div className="bg-white/80 backdrop-blur-md sticky top-16 z-40 border-b">
                 <div className="container mx-auto px-4 h-12 flex items-center justify-between">
@@ -261,9 +364,9 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                         <div className="space-y-1">
                             <span className="text-[9px] md:text-[10px] font-black capitalize tracking-widest text-slate-400 italic">Limited Special Price:</span>
                             <div className="flex items-end gap-3 flex-wrap">
-                                <span className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter italic">₹{(product.discountPrice || product.price).toLocaleString()}</span>
+                                <span className="text-xl md:text-3xl font-black text-slate-900 tracking-tighter italic">{formatPrice(product.discountPrice || product.price)}</span>
                                 {product.discountPrice && (
-                                    <span className="text-sm md:text-base text-slate-400 line-through font-black italic opacity-50 mb-1">₹{product.price.toLocaleString()}</span>
+                                    <span className="text-sm md:text-base text-slate-400 line-through font-black italic opacity-50 mb-1">{formatPrice(product.price)}</span>
                                 )}
                             </div>
                             {product.stock > 0 && product.stock < 5 && (
@@ -280,49 +383,47 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
 
                         {/* Actions */}
                         <div className="space-y-4 md:space-y-5">
-                            <div className="flex gap-4">
-                                <div className="flex items-center border-2 rounded-xl md:rounded-2xl p-0.5 md:p-1 bg-slate-50 h-12 md:h-14">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="rounded-lg h-9 w-9 md:h-10 md:w-10 text-slate-500"
-                                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    >
-                                        <Minus className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                                    </Button>
-                                    <span className="text-base md:text-lg font-black w-8 md:w-10 text-center text-slate-900 italic">{quantity}</span>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="rounded-lg h-9 w-9 md:h-10 md:w-10 text-slate-500"
-                                        disabled={quantity >= product.stock}
-                                        onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                                    >
-                                        <Plus className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                                    </Button>
-                                </div>
-                                <Button
-                                    onClick={handleAddToCart}
-                                    disabled={product.stock === 0}
-                                    className="grow rounded-xl md:rounded-2xl h-12 md:h-14 text-sm md:text-base font-black capitalize tracking-widest gap-2 shadow-xl shadow-primary/20 bg-slate-900 border-none hover:bg-black italic disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none transition-all active:scale-95"
-                                >
-                                    {product.stock === 0 ? "Out of Stock" : (
-                                        <>
-                                            <ShoppingCart className="h-4 w-4 text-primary" /> Add to Cart
-                                        </>
+                            <div className="flex gap-3 md:gap-4 w-full">
+                                <div className="grow">
+                                    {currentQty > 0 && !isAnimating ? (
+                                        <div className="flex items-center justify-between border-2 border-primary bg-primary/5 rounded-2xl h-12 md:h-14 w-full px-6 text-primary">
+                                            <button onClick={handleDecrement} className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                                <Minus className="h-4 w-4 md:h-5 md:w-5" />
+                                            </button>
+                                            <span className="font-black text-lg md:text-xl tracking-widest leading-none">{currentQty}</span>
+                                            <button onClick={handleIncrement} className="h-8 w-8 md:h-10 md:w-10 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                                <Plus className="h-4 w-4 md:h-5 md:w-5" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <button
+                                            onClick={handleAddToCart}
+                                            disabled={product.stock === 0 || isAnimating}
+                                            className={`custom-cart-button h-12! md:h-14! rounded-2xl! text-sm! md:text-base! shadow-xl shadow-black/5 ${isAnimating ? "clicked" : ""} ${product.stock === 0 ? "opacity-30 cursor-not-allowed" : ""}`}
+                                            title={product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+                                        >
+                                            <ShoppingCart className="cart-icon h-5 w-5 md:h-6 md:w-6 stroke-2" />
+                                            <Package className="box-icon h-4 w-4 md:h-5 md:w-5 stroke-2" />
+                                            <span className="add-to-cart">{product.stock === 0 ? "Out of Stock" : "Add to cart"}</span>
+                                            <span className="added">Added</span>
+                                        </button>
                                     )}
+                                </div>
+                                <Button 
+                                    onClick={handleWishlist} 
+                                    variant="outline" 
+                                    className={`shrink-0 h-12 w-12 md:h-14 md:w-14 rounded-2xl border-2 transition-colors flex items-center justify-center p-0 ${isWishlisted ? 'bg-red-50 border-red-100 text-red-600' : 'hover:border-red-100 hover:text-red-500'}`}
+                                    title={isWishlisted ? 'Saved' : 'Wishlist'}
+                                >
+                                    <Heart className={`h-5 w-5 md:h-6 md:w-6 transition-all ${isWishlisted ? 'fill-red-600' : ''}`} />
                                 </Button>
                             </div>
-                            <div className="grid grid-cols-2 gap-3">
-                                <Button onClick={handleWishlist} variant="outline" className={`h-11 md:h-12 rounded-xl md:rounded-2xl font-black capitalize tracking-widest border-2 text-[9px] md:text-[10px] gap-2 transition-colors ${isWishlisted ? 'bg-red-50 border-red-100 text-red-600' : 'hover:border-red-100 hover:text-red-500'}`}>
-                                    <Heart className={`h-3.5 w-3.5 transition-all ${isWishlisted ? 'fill-red-600' : ''}`} /> {isWishlisted ? 'Saved' : 'Wishlist'}
+                            
+                            <Link href={`https://wa.me/918142504687?text=${encodeURIComponent(`Hi I am ${session?.user?.name || 'Guest'} and I need Help In Telugu Adventures Website. (Regarding: ${product.name})`)}`} className="block w-full">
+                                <Button className="h-12 md:h-14 w-full rounded-2xl font-black capitalize tracking-widest bg-[#25D366] text-white hover:bg-[#128C7E] shadow-lg shadow-[#25D366]/20 transition-all text-[10px] md:text-sm gap-2 border-none">
+                                    <MessageCircle className="h-4 w-4 md:h-5 md:w-5" /> Buy on WhatsApp
                                 </Button>
-                                <Link href={`https://wa.me/918142504687?text=${encodeURIComponent(`Hi I am ${session?.user?.name || 'Guest'} and I need Help In Telugu Adventures Website. (Regarding: ${product.name})`)}`} className="block w-full">
-                                    <Button variant="outline" className="h-11 md:h-12 w-full rounded-xl md:rounded-2xl font-black capitalize tracking-widest border-2 border-green-50/50 bg-green-50/20 text-green-600 hover:bg-green-600 hover:text-white transition-all text-[9px] md:text-[10px] gap-2 p-0">
-                                        <MessageCircle className="h-3.5 w-3.5" /> Buy on WhatsApp
-                                    </Button>
-                                </Link>
-                            </div>
+                            </Link>
                         </div>
 
                         {/* Trust Badges - Improved spacing and size */}
@@ -396,25 +497,79 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
                             </TabsContent>
 
                             <TabsContent value="reviews" className="mt-0 focus-visible:outline-none">
-                                <div className="flex flex-col items-center justify-center text-center py-12 px-6">
-                                    <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                                        <Star className="h-6 w-6 text-slate-200" />
-                                    </div>
-                                    <h4 className="text-xl font-black capitalize italic tracking-tight text-slate-900 mb-2">No Reviews Yet</h4>
-                                    <p className="text-slate-400 font-bold capitalize text-[9px] md:text-[10px] tracking-widest max-w-xs mb-8">Be the first to share your experience with this kit!</p>
-
-                                    {hasBought ? (
-                                        <Button className="rounded-xl h-12 px-10 font-black text-xs capitalize tracking-widest shadow-lg shadow-primary/10 transition-transform active:scale-95">
+                                <div className="mb-8 flex items-center justify-between border-b-2 border-slate-50 pb-6">
+                                    <h3 className="text-sm md:text-base font-black capitalize italic tracking-tighter text-slate-900 flex items-center gap-3">
+                                        <div className="h-6 w-1.5 bg-yellow-400 rounded-full" />
+                                        Customer Feedback
+                                    </h3>
+                                    {hasBought && !reviewMode && (
+                                        <Button onClick={() => setReviewMode(true)} className="rounded-xl h-10 px-6 font-black text-[10px] md:text-xs capitalize tracking-widest shadow-lg shadow-primary/10 transition-transform active:scale-95">
                                             Write Review
                                         </Button>
-                                    ) : (
-                                        <div className="p-4 bg-slate-50 rounded-xl max-w-xs">
-                                            <p className="text-[9px] font-black text-slate-400 capitalize tracking-widest leading-loose">
-                                                Verified purchase required to submit reviews.
-                                            </p>
-                                        </div>
                                     )}
                                 </div>
+
+                                {reviewMode && (
+                                    <div className="mb-10 p-6 md:p-8 bg-slate-50 border-2 border-slate-100 rounded-3xl relative">
+                                        <button onClick={() => setReviewMode(false)} className="absolute top-4 right-4 text-slate-400 hover:text-black transition-colors">
+                                            <X className="h-5 w-5" />
+                                        </button>
+                                        <h4 className="font-black italic text-sm md:text-base mb-4">Rate Your Experience</h4>
+                                        <div className="flex gap-1 mb-6">
+                                            {[1, 2, 3, 4, 5].map(v => (
+                                                <Star key={v} onClick={() => setSubmitRating(v)} className={`h-8 w-8 cursor-pointer transition-all hover:scale-110 active:scale-90 ${v <= submitRating ? "fill-yellow-400 text-yellow-400" : "text-slate-300"}`} />
+                                            ))}
+                                        </div>
+                                        <textarea
+                                            value={submitComment}
+                                            onChange={(e) => setSubmitComment(e.target.value)}
+                                            placeholder="What did you love about this? What could be better?"
+                                            className="w-full bg-white border-2 border-slate-100 rounded-2xl p-4 text-sm md:text-base outline-none focus:border-primary/50 transition-colors min-h-[120px] mb-4"
+                                        />
+                                        <Button onClick={handleReviewSubmit} disabled={submittingReview || !submitComment.trim()} className="rounded-xl h-12 px-10 font-black text-xs capitalize tracking-widest shadow-lg shadow-primary/20 w-full md:w-auto transition-transform active:scale-95">
+                                            {submittingReview ? <Loader2 className="h-4 w-4 animate-spin" /> : "Submit Feedback"}
+                                        </Button>
+                                    </div>
+                                )}
+
+                                {(!product?.reviews || product.reviews.filter((r: any) => r.isApproved).length === 0) ? (
+                                    !reviewMode && (
+                                        <div className="flex flex-col items-center justify-center text-center py-10 px-6">
+                                            <div className="w-14 h-14 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                                                <Star className="h-6 w-6 text-slate-200" />
+                                            </div>
+                                            <h4 className="text-xl font-black capitalize italic tracking-tight text-slate-900 mb-2">No Reviews Yet</h4>
+                                            <p className="text-slate-400 font-bold capitalize text-[9px] md:text-[10px] tracking-widest max-w-xs mb-8">Be the first to share your experience!</p>
+                                            {!hasBought && (
+                                                <div className="p-4 bg-slate-50 rounded-xl max-w-xs">
+                                                    <p className="text-[9px] font-black text-slate-400 capitalize tracking-widest leading-loose">
+                                                        Verified purchase required to submit reviews.
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )
+                                ) : (
+                                    <div className="space-y-6">
+                                        {product.reviews.filter((r: any) => r.isApproved).sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((r: any) => (
+                                            <div key={r._id} className="flex flex-col gap-3 pb-6 border-b-2 border-slate-50 last:border-0 last:pb-0">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="font-black text-sm md:text-base italic text-slate-900 line-clamp-1">{product.name}</span>
+                                                    <span className="text-[9px] md:text-[10px] text-slate-400 font-bold tracking-widest capitalize">
+                                                        {formatDistanceToNow(new Date(r.createdAt), { addSuffix: true })}
+                                                    </span>
+                                                </div>
+                                                <div className="flex gap-1">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={`h-3.5 w-3.5 ${i < r.rating ? "fill-yellow-400 text-yellow-400" : "text-slate-200"}`} />
+                                                    ))}
+                                                </div>
+                                                <p className="italic text-slate-600 text-sm md:text-base font-medium leading-relaxed">"{r.comment}"</p>
+                                                <span className="font-black text-[10px] md:text-xs mt-1 text-slate-900 capitalize tracking-widest">— {r.userName}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </TabsContent>
                         </div>
                     </Tabs>
@@ -444,11 +599,33 @@ export default function ProductDetails({ params }: { params: Promise<{ slug: str
             <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 p-4 md:p-5 bg-white/95 backdrop-blur-2xl border-t border-slate-100 flex items-center justify-between shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] rounded-t-3xl">
                 <div className="flex flex-col">
                     <span className="text-[9px] font-black text-slate-400 capitalize tracking-widest italic leading-none mb-1.5">Special Price</span>
-                    <span className="text-base font-black text-slate-900 tracking-tighter italic">₹{(product.discountPrice || product.price).toLocaleString()}</span>
+                    <span className="text-base font-black text-slate-900 tracking-tighter italic">{formatPrice(product.discountPrice || product.price)}</span>
                 </div>
-                <Button onClick={handleAddToCart} disabled={product.stock === 0} className="rounded-xl px-10 h-13 font-black capitalize text-xs tracking-widest bg-slate-900 shadow-xl shadow-slate-200">
-                    {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
-                </Button>
+                <div className="w-1/2 md:w-1/3">
+                    {currentQty > 0 && !isAnimating ? (
+                        <div className="flex items-center justify-between border-2 border-primary bg-primary/5 rounded-xl h-[48px] w-full px-4 text-primary">
+                            <button onClick={handleDecrement} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                <Minus className="h-4 w-4" />
+                            </button>
+                            <span className="font-black text-base">{currentQty}</span>
+                            <button onClick={handleIncrement} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                <Plus className="h-4 w-4" />
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={product.stock === 0 || isAnimating}
+                            className={`custom-cart-button shadow-xl shadow-slate-200 ${isAnimating ? "clicked" : ""} ${product.stock === 0 ? "opacity-30 cursor-not-allowed" : ""}`}
+                            style={{ height: '48px', borderRadius: '12px' }}
+                        >
+                            <ShoppingCart className="cart-icon h-5 w-5 stroke-2" />
+                            <Package className="box-icon h-4 w-4 stroke-2" />
+                            <span className="add-to-cart" style={{ fontSize: '13px' }}>{product.stock === 0 ? "Out of Stock" : "Add to cart"}</span>
+                            <span className="added" style={{ fontSize: '13px' }}>Added</span>
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

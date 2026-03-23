@@ -9,10 +9,12 @@ import { User, Package, MapPin, LogOut, Settings, Shield, ShoppingCart, Shopping
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import { format } from "date-fns";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function AccountPage() {
     const { data: session } = useSession();
     const cart = useCart();
+    const { formatPrice } = useCurrency();
     const [orders, setOrders] = useState<any[]>([]);
     const [userData, setUserData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -128,7 +130,7 @@ export default function AccountPage() {
                                             </div>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-sm font-black text-primary">₹{order.totalPrice.toLocaleString()}</p>
+                                            <p className="text-sm font-black text-primary">{formatPrice(order.totalPrice)}</p>
                                             <p className="text-[10px] font-black capitalize text-green-600">{order.orderStatus}</p>
                                         </div>
                                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingCart, X, MoveRight } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface AddToCartToastProps {
     productName: string;
@@ -10,6 +11,7 @@ interface AddToCartToastProps {
 }
 
 const AddToCartToast = ({ productName, productPrice, productImage, toastId }: AddToCartToastProps) => {
+    const { formatPrice } = useCurrency();
     return (
         <div className="w-[360px] h-[150px] bg-white/10 backdrop-blur-xl border border-white/20 rounded-[15px] shadow-2xl overflow-hidden p-0 animate-in fade-in slide-in-from-right-5">
             <div className="flex flex-row items-center w-full h-full">
@@ -37,7 +39,7 @@ const AddToCartToast = ({ productName, productPrice, productImage, toastId }: Ad
                     </div>
 
                     <div className="text-[0.9em] font-semibold text-[#333] pl-[10px] pb-[10px]">
-                        ₹{productPrice.toLocaleString()}
+                        {formatPrice(productPrice)}
                     </div>
 
                     <div className="flex pl-[10px]">

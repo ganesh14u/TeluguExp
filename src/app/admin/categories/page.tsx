@@ -110,7 +110,7 @@ export default function AdminCategoriesPage() {
                                 <Plus className="h-5 w-5 mr-3" /> Add Category
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="rounded-[2.5rem] border-4 p-10 max-w-md">
+                        <DialogContent className="rounded-[2rem] md:rounded-[2.5rem] border-4 p-6 md:p-10 w-[95vw] max-w-md">
                             <DialogHeader>
                                 <DialogTitle className="text-lg font-black capitalize italic tracking-tighter">
                                     {editingCategory ? "Update" : "Add"} <span className="text-primary NOT-italic">Category</span>

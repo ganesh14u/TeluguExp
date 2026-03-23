@@ -8,10 +8,12 @@ import { Trash2, ShoppingBag, Heart, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function WishlistPage() {
     const { items, removeItem, clearWishlist } = useWishlist();
     const cart = useCart();
+    const { formatPrice } = useCurrency();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -86,9 +88,9 @@ export default function WishlistPage() {
 
                             <div className="flex items-end justify-between gap-4 mt-auto">
                                 <div>
-                                    <p className="font-black text-sm md:text-base tracking-tighter italic">₹{(item.discountPrice || item.price).toLocaleString()}</p>
+                                    <p className="font-black text-sm md:text-base tracking-tighter italic">{formatPrice(item.discountPrice || item.price)}</p>
                                     {item.discountPrice && (
-                                        <p className="text-[10px] md:text-xs text-muted-foreground line-through font-bold">₹{item.price.toLocaleString()}</p>
+                                        <p className="text-[10px] md:text-xs text-muted-foreground line-through font-bold">{formatPrice(item.price)}</p>
                                     )}
                                 </div>
                                 <Button

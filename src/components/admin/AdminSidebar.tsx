@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 
 const sidebarLinks = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -35,6 +36,24 @@ import { useAdminNotifications } from "@/context/AdminNotificationContext";
 export function AdminSidebar() {
     const pathname = usePathname();
     const { unreadCount } = useAdminNotifications();
+    const [pendingReviews, setPendingReviews] = useState(0);
+
+    useEffect(() => {
+        const fetchPendingReviews = async () => {
+            try {
+                const res = await fetch("/api/admin/reviews/pending-count");
+                const data = await res.json();
+                if (data && data.count !== undefined) {
+                    setPendingReviews(data.count);
+                }
+            } catch (err) {
+                console.error("Failed to fetch pending reviews count", err);
+            }
+        };
+        fetchPendingReviews();
+        const interval = setInterval(fetchPendingReviews, 30000); // Check every 30s
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <aside className="w-64 border-r bg-muted/30 hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16">
@@ -52,6 +71,7 @@ export function AdminSidebar() {
                     {sidebarLinks.map((link) => {
                         const isActive = pathname === link.href;
                         const isOrders = link.name === "Orders";
+                        const isReviews = link.name === "Reviews";
 
                         return (
                             <Link
@@ -72,6 +92,11 @@ export function AdminSidebar() {
                                     {isOrders && unreadCount > 0 && (
                                         <span className="bg-primary text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-in zoom-in duration-300">
                                             {unreadCount}
+                                        </span>
+                                    )}
+                                    {isReviews && pendingReviews > 0 && (
+                                        <span className="bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full animate-in zoom-in duration-300">
+                                            {pendingReviews}
                                         </span>
                                     )}
                                     {isActive && <ChevronRight className="h-4 w-4" />}

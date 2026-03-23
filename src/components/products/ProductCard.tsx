@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ShoppingBag, Star, Heart } from "lucide-react";
+import { ShoppingBag, Star, Heart, ShoppingCart, Package, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
@@ -8,6 +8,7 @@ import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
 import { toast } from "sonner";
 import AddToCartToast from "@/components/cart/AddToCartToast";
+import { useCurrency } from "@/context/CurrencyContext";
 
 interface ProductCardProps {
     product: {
@@ -30,6 +31,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
     const cart = useCart();
     const wishlist = useWishlist();
+    const { formatPrice } = useCurrency();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -43,6 +45,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
         : 0;
 
+    const [isAnimating, setIsAnimating] = useState(false);
+
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
@@ -54,16 +58,44 @@ export default function ProductCard({ product }: ProductCardProps) {
             return;
         }
 
-        cart.addItem(product, 1);
-        toast.custom((t) => (
-            <AddToCartToast
-                toastId={t}
-                productName={product.name}
-                productPrice={product.discountPrice || product.price}
-                productImage={displayImage as string || "https://placehold.co/100"}
-            />
-        ), { duration: 4000 });
+        setIsAnimating(true);
+        setTimeout(() => {
+            cart.addItem(product, 1);
+            setIsAnimating(false);
+            toast.custom((t) => (
+                <AddToCartToast
+                    toastId={t}
+                    productName={product.name}
+                    productPrice={product.discountPrice || product.price}
+                    productImage={displayImage as string || "https://placehold.co/100"}
+                />
+            ), { duration: 4000 });
+        }, 1500); // Wait for animation
     };
+
+    const handleIncrement = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const currentQty = cart.items.find(item => item._id === product._id)?.quantity || 0;
+        if ((product as any).stock <= currentQty) {
+            toast.error("Out of Stock", { description: "You have reached the maximum available stock." });
+            return;
+        }
+        cart.addItem(product, 1);
+    };
+
+    const handleDecrement = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const currentQty = cart.items.find(item => item._id === product._id)?.quantity || 0;
+        if (currentQty > 1) {
+            cart.updateQuantity(product._id, currentQty - 1);
+        } else {
+            cart.removeItem(product._id);
+        }
+    };
+
+    const currentQty = mounted ? cart.items.find(item => item._id === product._id)?.quantity || 0 : 0;
 
     const isWishlisted = mounted && wishlist.isInWishlist(product._id);
 
@@ -74,6 +106,79 @@ export default function ProductCard({ product }: ProductCardProps) {
             viewport={{ once: true }}
             className="group relative bg-white border-2 border-slate-50 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden transition-all hover:bg-slate-50/50 hover:border-primary/10 hover:shadow-2xl hover:shadow-primary/5 h-full flex flex-col"
         >
+            <style dangerouslySetInnerHTML={{ __html: `
+            .custom-cart-button {
+                position: relative;
+                width: 100%;
+                height: 48px;
+                border: 0;
+                border-radius: 12px;
+                background-color: #4834d4;
+                outline: none;
+                cursor: pointer;
+                color: #fff;
+                transition: .3s ease-in-out;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .custom-cart-button:hover { background-color: #35269b; }
+            .custom-cart-button:active { transform: scale(.95); }
+            
+            .custom-cart-button .cart-icon {
+                position: absolute;
+                z-index: 2;
+                top: 50%;
+                left: -10%;
+                transform: translate(-50%,-50%);
+            }
+            .custom-cart-button .box-icon {
+                position: absolute;
+                z-index: 3;
+                top: -20%;
+                left: 52%;
+                transform: translate(-50%,-50%);
+            }
+            .custom-cart-button span {
+                position: absolute;
+                z-index: 3;
+                left: 50%;
+                top: 50%;
+                color: #fff;
+                font-weight: 600;
+                font-size: 16px;
+                transform: translate(-50%,-50%);
+                white-space: nowrap;
+            }
+            .custom-cart-button span.add-to-cart { opacity: 1; }
+            .custom-cart-button span.added { opacity: 0; }
+            
+            .custom-cart-button.clicked .cart-icon { animation: cart-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked .box-icon { animation: box-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked span.add-to-cart { animation: txt1-anim-btn 1.5s ease-in-out forwards; }
+            .custom-cart-button.clicked span.added { animation: txt2-anim-btn 1.5s ease-in-out forwards; }
+            
+            @keyframes cart-anim-btn {
+                0% { left: -10%; }
+                40%, 60% { left: 50%; }
+                100% { left: 110%; }
+            }
+            @keyframes box-anim-btn {
+                0%, 40% { top: -20%; }
+                60% { top: 40%; left: 52%; }
+                100% { top: 40%; left: 112%; }
+            }
+            @keyframes txt1-anim-btn {
+                0% { opacity: 1; }
+                20%, 100% { opacity: 0; }
+            }
+            @keyframes txt2-anim-btn {
+                0%, 80% { opacity: 0; }
+                100% { opacity: 1; }
+            }
+            `}} />
+            
             {/* Wishlist Button */}
             <button
                 onClick={(e) => {
@@ -151,25 +256,43 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </Link>
 
                 {/* Pricing & Add Button */}
-                <div className="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between gap-4">
-                    <div className="flex flex-col">
-                        <span className="text-sm md:text-base font-black text-slate-900 tracking-tighter italic">
-                            ₹{(product.discountPrice || product.price).toLocaleString()}
-                        </span>
-                        {product.discountPrice && (
-                            <span className="text-[10px] md:text-xs text-slate-400 line-through font-bold">
-                                ₹{product.price.toLocaleString()}
+                <div className="mt-6 pt-6 border-t border-slate-50 flex flex-col gap-4">
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col">
+                            <span className="text-sm md:text-base font-black text-slate-900 tracking-tighter italic">
+                                {formatPrice(product.discountPrice || product.price)}
                             </span>
-                        )}
+                            {product.discountPrice && (
+                                <span className="text-[10px] md:text-xs text-slate-400 line-through font-bold">
+                                    {formatPrice(product.price)}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
-                    <button
-                        onClick={handleAddToCart}
-                        className="h-10 w-10 md:h-14 md:w-14 bg-slate-950 text-white rounded-xl md:rounded-2xl flex items-center justify-center hover:bg-primary transition-all active:scale-90 shadow-xl shadow-black/5 hover:shadow-primary/20"
-                        title="Quick Add"
-                    >
-                        <ShoppingBag className="h-4 w-4 md:h-6 md:w-6" />
-                    </button>
+                    {currentQty > 0 && !isAnimating ? (
+                        <div className="flex items-center justify-between border-2 border-primary bg-primary/5 rounded-2xl h-12 w-full px-4 text-primary">
+                            <button onClick={handleDecrement} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                <Minus className="h-4 w-4 md:h-5 md:w-5" />
+                            </button>
+                            <span className="font-black text-sm md:text-base tracking-widest">{currentQty}</span>
+                            <button onClick={handleIncrement} className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-primary/20 transition-colors">
+                                <Plus className="h-4 w-4 md:h-5 md:w-5" />
+                            </button>
+                        </div>
+                    ) : (
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={isAnimating}
+                            className={`custom-cart-button ${isAnimating ? "clicked" : ""}`}
+                            title="Add to Cart"
+                        >
+                            <ShoppingCart className="cart-icon h-6 w-6 stroke-2" />
+                            <Package className="box-icon h-4 w-4 stroke-2" />
+                            <span className="add-to-cart">Add to cart</span>
+                            <span className="added">Added</span>
+                        </button>
+                    )}
                 </div>
             </div>
         </motion.div>

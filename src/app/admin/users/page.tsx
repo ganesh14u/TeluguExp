@@ -105,7 +105,8 @@ export default function AdminUsersPage() {
                 />
             </div>
 
-            <div className="bg-background border-2 rounded-[3.5rem] overflow-hidden shadow-2xl shadow-black/5">
+            <div className="bg-background border-2 rounded-[2rem] md:rounded-[3.5rem] overflow-hidden shadow-2xl shadow-black/5 overflow-x-auto">
+                <div className="min-w-[800px] md:min-w-full">
                 <Table>
                     <TableHeader className="bg-muted/50 border-b-2">
                         <TableRow className="hover:bg-transparent border-none">
@@ -207,6 +208,7 @@ export default function AdminUsersPage() {
                         )}
                     </TableBody>
                 </Table>
+                </div>
             </div>
         </div>
     );

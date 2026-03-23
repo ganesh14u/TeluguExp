@@ -37,9 +37,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
         <div className="flex min-h-screen bg-slate-50/50">
             <AdminSidebar />
-            <div className="grow flex flex-col min-h-screen">
-                <main className="grow p-8">
-                    <div className="container mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex-1 flex flex-col min-h-screen max-w-full md:max-w-[calc(100vw-16rem)] overflow-x-hidden overflow-y-auto">
+                <main className="flex-1 p-4 md:p-8">
+                    <div className="container mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-500 w-full">
                         {children}
                     </div>
                 </main>

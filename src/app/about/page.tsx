@@ -4,9 +4,11 @@ import { usePageTitle } from "@/hooks/usePageTitle";
 import { CheckCircle2, MapPin, Truck, Clock } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function AboutPage() {
     usePageTitle("About Us");
+    const { formatPrice } = useCurrency();
 
     return (
         <div className="container mx-auto px-4 py-12 md:py-24 max-w-6xl">
@@ -72,7 +74,7 @@ export default function AboutPage() {
                         icon: Truck,
                         label: "Delivering To",
                         value: "All Locations",
-                        subtext: "Free Shipping on Orders ₹5,000+"
+                        subtext: `Free Shipping on Orders ${formatPrice(5000)}+`
                     },
                     {
                         icon: MapPin,

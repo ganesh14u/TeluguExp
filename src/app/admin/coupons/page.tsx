@@ -94,8 +94,8 @@ export default function AdminCouponsPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-center">
+        <div className="space-y-8 p-2">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h1 className="text-xl font-black tracking-tighter capitalize italic">Discount <span className="text-primary NOT-italic">Matrix</span></h1>
                     <p className="text-muted-foreground font-medium">Engineer promotional campaigns to drive laboratory sales.</p>
@@ -174,7 +174,8 @@ export default function AdminCouponsPage() {
                 </div>
             </div>
 
-            <div className="bg-background border rounded-[2.5rem] overflow-hidden shadow-sm">
+            <div className="bg-background border rounded-[2.5rem] overflow-hidden shadow-sm overflow-x-auto">
+                <div className="min-w-[800px] md:min-w-full">
                 <Table>
                     <TableHeader className="bg-muted/30">
                         <TableRow className="hover:bg-transparent border-none">
@@ -244,6 +245,7 @@ export default function AdminCouponsPage() {
                         )}
                     </TableBody>
                 </Table>
+                </div>
             </div>
         </div>
     );

@@ -11,10 +11,12 @@ import { ShoppingBag, ArrowLeft, Truck, CheckCircle, Package, Download } from "l
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Script from "next/script";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function OrderDetailsPage() {
     const { data: session } = useSession();
     const params = useParams();
+    const { formatPrice } = useCurrency();
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -99,10 +101,10 @@ export default function OrderDetailsPage() {
                                     </div>
                                     <div className="grow">
                                         <h4 className="font-bold text-base line-clamp-1">{item.name}</h4>
-                                        <p className="text-sm text-muted-foreground font-medium mt-1">Quantity: {item.quantity} × ₹{item.price.toLocaleString()}</p>
+                                        <p className="text-sm text-muted-foreground font-medium mt-1">Quantity: {item.quantity} × {formatPrice(item.price)}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-black text-lg text-primary">₹{(item.price * item.quantity).toLocaleString()}</p>
+                                        <p className="font-black text-lg text-primary">{formatPrice(item.price * item.quantity)}</p>
                                     </div>
                                 </div>
                             ))}
@@ -143,7 +145,7 @@ export default function OrderDetailsPage() {
                             <div className="space-y-3 pt-4 border-t border-white/10">
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="font-bold text-white/60">Subtotal</span>
-                                    <span className="font-bold">₹{order.itemsPrice?.toLocaleString() || order.totalPrice.toLocaleString()}</span>
+                                    <span className="font-bold">{formatPrice(order.itemsPrice || order.totalPrice)}</span>
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="font-bold text-white/60">Shipping</span>
@@ -151,14 +153,14 @@ export default function OrderDetailsPage() {
                                 </div>
                                 <div className="flex justify-between items-center text-sm">
                                     <span className="font-bold text-white/60">Tax</span>
-                                    <span className="font-bold">₹0</span>
+                                    <span className="font-bold">{formatPrice(0)}</span>
                                 </div>
                             </div>
 
                             <div className="pt-6 border-t border-white/10">
                                 <div className="flex justify-between items-end">
                                     <span className="font-black text-white/60 text-sm capitalize tracking-widest">Total Paid</span>
-                                    <span className="text-lg font-black italic tracking-tighter text-primary">₹{order.totalPrice.toLocaleString()}</span>
+                                    <span className="text-lg font-black italic tracking-tighter text-primary">{formatPrice(order.totalPrice)}</span>
                                 </div>
                             </div>
                         </CardContent>
@@ -220,14 +222,14 @@ export default function OrderDetailsPage() {
                                         <div style={{ fontWeight: 'bold' }}>{item.name}</div>
                                     </td>
                                     <td style={{ textAlign: 'center' }}>{item.quantity}</td>
-                                    <td style={{ textAlign: 'right' }}>₹{item.price.toLocaleString()}</td>
+                                    <td style={{ textAlign: 'right' }}>{formatPrice(item.price)}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
 
                     <div className="total">
-                        <div style={{ marginBottom: '10px' }}>Total: <span style={{ fontWeight: 'bold' }}>₹{order.totalPrice.toLocaleString()}</span></div>
+                        <div style={{ marginBottom: '10px' }}>Total: <span style={{ fontWeight: 'bold' }}>{formatPrice(order.totalPrice)}</span></div>
                         <span className="paid">PAID</span>
                     </div>
                 </div>

@@ -5,7 +5,7 @@ import Settings from "@/models/Settings";
 
 export async function POST(req: Request) {
     try {
-        const { amount } = await req.json();
+        const { amount, currency = "INR" } = await req.json();
 
         if (!amount) {
             return NextResponse.json({ error: "Amount is required" }, { status: 400 });
@@ -30,9 +30,19 @@ export async function POST(req: Request) {
             key_secret: key_secret,
         });
 
+        // Validate supported currencies, fallback to INR if not supported
+        const supportedCurrencies = ["INR", "USD", "GBP", "AED"];
+        const finalCurrency = supportedCurrencies.includes(currency) ? currency : "INR";
+
+        // Provide multiplier: most currencies require amount in smallest subunit (e.g. cents -> * 100)
+        let multiplier = 100;
+        if (["BHD", "KWD", "OMR"].includes(finalCurrency)) {
+            multiplier = 1000;
+        }
+
         const options = {
-            amount: Math.round(amount * 100), // Razorpay accepts amount in paise
-            currency: "INR",
+            amount: Math.round(amount * multiplier), 
+            currency: finalCurrency,
             receipt: "receipt_" + Math.random().toString(36).substring(7),
         };
 

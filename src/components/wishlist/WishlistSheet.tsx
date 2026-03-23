@@ -14,10 +14,12 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function WishlistSheet({ children }: { children: React.ReactNode }) {
     const wishlist = useWishlist();
     const cart = useCart();
+    const { formatPrice } = useCurrency();
 
     const handleAddToCart = (product: any) => {
         cart.addItem(product, 1);
@@ -120,11 +122,11 @@ export default function WishlistSheet({ children }: { children: React.ReactNode 
                                                 <div className="flex items-end justify-between mt-2">
                                                     <div className="flex flex-col">
                                                         <span className="font-black text-sm text-slate-900 italic">
-                                                            ₹{(item.discountPrice || item.price).toLocaleString()}
+                                                            {formatPrice(item.discountPrice || item.price)}
                                                         </span>
                                                         {item.discountPrice && (
                                                             <span className="text-[9px] text-slate-300 line-through font-bold tracking-tight">
-                                                                ₹{item.price.toLocaleString()}
+                                                                {formatPrice(item.price)}
                                                             </span>
                                                         )}
                                                     </div>

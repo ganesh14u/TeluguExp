@@ -40,7 +40,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
         <div className="container mx-auto px-4 py-12 max-w-7xl">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                 {/* Sidebar - Quick Links */}
-                <aside className="md:col-span-1">
+                <aside className="md:col-span-1 order-last md:order-first">
                     <Card className="rounded-[2rem] border-2 overflow-hidden bg-white sticky top-24">
                         <CardHeader className="border-b border-dashed p-6 bg-muted/10">
                             <CardTitle className="text-lg font-black capitalize tracking-tighter italic">Quick <span className="text-primary NOT-italic">Links</span></CardTitle>
@@ -68,7 +68,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                 </aside>
 
                 {/* Main Content */}
-                <main className="md:col-span-3">
+                <main className="md:col-span-3 order-first md:order-last">
                     {children}
                 </main>
             </div>

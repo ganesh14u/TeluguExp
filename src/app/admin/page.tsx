@@ -88,7 +88,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {statCards.map((stat) => (
                     <Card key={stat.title} className="border-2 shadow-2xl shadow-black/5 rounded-[2rem] overflow-hidden bg-white group hover:border-primary transition-all duration-500">
-                        <CardContent className="p-8">
+                        <CardContent className="p-6 md:p-8">
                             <div className="flex justify-between items-start">
                                 <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color} group-hover:bg-primary group-hover:text-white transition-colors duration-500`}>
                                     <stat.icon className="h-7 w-7" />
@@ -109,9 +109,9 @@ export default function AdminDashboard() {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <Card className="lg:col-span-2 border-2 shadow-2xl shadow-black/5 rounded-[3rem] p-8 bg-white overflow-hidden group">
-                    <CardHeader className="pb-8 border-b-2 border-dashed flex flex-row items-center justify-between">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
+                <Card className="lg:col-span-2 border-2 shadow-2xl shadow-black/5 rounded-[2rem] md:rounded-[3rem] p-4 md:p-8 bg-white overflow-hidden group">
+                    <CardHeader className="pb-6 md:pb-8 border-b-2 border-dashed flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
                         <CardTitle className="text-lg font-black capitalize italic tracking-tighter">Sales <span className="text-primary NOT-italic">Report</span></CardTitle>
                         <Select defaultValue="7d">
                             <SelectTrigger className="w-40 rounded-xl h-10 border-2 font-black capitalize text-[10px] tracking-widest">
@@ -146,11 +146,11 @@ export default function AdminDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="lg:col-span-1 border-2 shadow-2xl shadow-black/5 rounded-[3rem] bg-white overflow-hidden group">
-                    <CardHeader className="pb-8 border-b-2 border-dashed">
+                <Card className="lg:col-span-1 border-2 shadow-2xl shadow-black/5 rounded-[2rem] md:rounded-[3rem] bg-white overflow-hidden group">
+                    <CardHeader className="pb-6 md:pb-8 border-b-2 border-dashed px-6 md:px-8 pt-6 md:pt-8">
                         <CardTitle className="text-lg font-black capitalize italic tracking-tighter">Recent <span className="text-primary NOT-italic">Orders</span></CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-6 pt-8">
+                    <CardContent className="space-y-4 md:space-y-6 pt-6 md:pt-8 px-4 md:px-8 pb-6 md:pb-8">
                         {recentOrders.length === 0 && !loading ? (
                             <div className="h-64 flex flex-col items-center justify-center text-center opacity-30">
                                 <ShoppingCart className="h-10 w-10 mb-4" />

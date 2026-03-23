@@ -15,6 +15,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [currentBanner, setCurrentBanner] = useState(0);
   const [products, setProducts] = useState<any[]>([]);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cmsContent, setCmsContent] = useState<any>(null);
@@ -50,6 +51,7 @@ export default function Home() {
       try {
         const res = await fetch("/api/products");
         const data = await res.json();
+        setAllProducts(data);
         // Take only first 4 for best sellers
         setProducts(data.slice(0, 4));
       } catch (error) {
@@ -175,21 +177,40 @@ export default function Home() {
             { name: "Gadgets", slug: "gadgets" },
             { name: "Educational", slug: "toys" },
             { name: "Seasonal", slug: "seasonal" }
-          ]).slice(0, 4).map((cat) => (
-            <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
-              <div className="group relative overflow-hidden rounded-[2rem] md:rounded-[3rem] bg-slate-50 border-2 border-transparent hover:border-primary/10 p-6 md:p-12 text-center transition-all hover:bg-white hover:shadow-2xl hover:shadow-primary/5">
-                <div className="mb-6 md:mb-10 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500 flex justify-center text-primary">
-                  {cat.slug === 'experiments' && <FlaskConical className="h-10 w-10 md:h-20 md:w-20" />}
-                  {cat.slug === 'gadgets' && <Cpu className="h-10 w-10 md:h-20 md:w-20" />}
-                  {cat.slug === 'toys' && <Puzzle className="h-10 w-10 md:h-20 md:w-20" />}
-                  {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-20 md:w-20" />}
-                  {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-20 md:w-20" />}
+          ]).slice(0, 4).map((cat) => {
+            const sampleProduct = allProducts.find(p => p.category?.toLowerCase() === cat.slug?.toLowerCase() || p.category?.toLowerCase() === cat.name?.toLowerCase());
+            const catImage = sampleProduct?.image || sampleProduct?.images?.[0];
+
+            return (
+              <Link key={cat.slug} href={`/shop?category=${cat.slug}`}>
+                <div className="group relative overflow-hidden rounded-2xl md:rounded-[2rem] bg-white border border-slate-100 hover:border-primary/20 p-3 md:p-4 flex flex-col transition-all hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
+                  <div className="aspect-4/3 w-full overflow-hidden rounded-xl md:rounded-2xl mb-4 bg-slate-50 relative pointer-events-none">
+                    {catImage ? (
+                      <img src={catImage} alt={cat.name} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <div className="flex items-center justify-center h-full w-full text-primary/30 group-hover:text-primary/50 transition-colors">
+                        {cat.slug === 'experiments' && <FlaskConical className="h-10 w-10 md:h-12 md:w-12" />}
+                        {cat.slug === 'gadgets' && <Cpu className="h-10 w-10 md:h-12 md:w-12" />}
+                        {cat.slug === 'toys' && <Puzzle className="h-10 w-10 md:h-12 md:w-12" />}
+                        {cat.slug === 'seasonal' && <Gift className="h-10 w-10 md:h-12 md:w-12" />}
+                        {!['experiments', 'gadgets', 'toys', 'seasonal'].includes(cat.slug) && <ShoppingBag className="h-10 w-10 md:h-12 md:w-12" />}
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+                  </div>
+                  <div className="px-2 pb-1 md:pb-2 flex items-center justify-between">
+                    <div>
+                      <h3 className="font-black text-sm md:text-lg capitalize tracking-tight italic line-clamp-1">{cat.name}</h3>
+                      <p className="text-[9px] md:text-[10px] text-muted-foreground font-bold capitalize tracking-widest mt-1">Explore Collection</p>
+                    </div>
+                    <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-slate-50 flex shrink-0 items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors text-slate-400">
+                      <ArrowRight className="h-3 w-3 md:h-4 md:w-4 group-hover:-rotate-45 transition-transform duration-300" />
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-black text-sm md:text-xl capitalize tracking-tight italic line-clamp-1">{cat.name}</h3>
-                <p className="text-[8px] md:text-[10px] text-muted-foreground font-black capitalize tracking-[0.2em] mt-2 md:mt-4 opacity-0 group-hover:opacity-100 transition-opacity">Explore Category →</p>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -291,14 +312,14 @@ export default function Home() {
       </section>
 
       {/* Sticky WhatsApp Button */}
-      <div className="fixed bottom-10 right-10 z-100">
+      <div className="fixed bottom-24 md:bottom-10 right-4 md:right-10 z-100">
         <Link 
           href={`https://wa.me/918142504687?text=${encodeURIComponent(`Hi I am ${session?.user?.name || 'Guest'} and I need Help In Telugu Adventures Website.`)}`} 
           target="_blank" 
           className="relative group flex items-center"
         >
-          <div className="absolute right-full mr-4 bg-white px-4 py-2 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 pointer-events-none">
-            <p className="text-xs font-black capitalize tracking-widest text-primary whitespace-nowrap">Need Help? Chat Now</p>
+          <div className="absolute right-full mr-4 bg-white px-4 py-2 rounded-2xl border-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100 pointer-events-none w-max">
+            <p className="text-xs font-black capitalize tracking-widest text-primary">Need Help? Chat Now</p>
           </div>
           <div className="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center hover:scale-110 transition-transform active:scale-90 relative">
             <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-20" />

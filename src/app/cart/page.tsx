@@ -8,9 +8,11 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function CartPage() {
     const { items, removeItem, updateQuantity, totalPrice, totalItems } = useCart();
+    const { formatPrice } = useCurrency();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -89,9 +91,9 @@ export default function CartPage() {
                                         </Button>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-black text-base text-primary tracking-tighter italic">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</p>
+                                        <p className="font-black text-base text-primary tracking-tighter italic">{formatPrice(item.discountPrice || item.price, item.quantity)}</p>
                                         {item.discountPrice && (
-                                            <p className="text-[10px] text-muted-foreground line-through font-bold">₹{(item.price * item.quantity).toLocaleString()}</p>
+                                            <p className="text-[10px] text-muted-foreground line-through font-bold">{formatPrice(item.price, item.quantity)}</p>
                                         )}
                                     </div>
                                 </div>
@@ -110,7 +112,7 @@ export default function CartPage() {
                         <div className="space-y-4 md:space-y-5">
                             <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs capitalize tracking-widest">
                                 <span>Subtotal ({totalItems()} items)</span>
-                                <span className="text-white">₹{totalPrice().toLocaleString()}</span>
+                                <span className="text-white">{formatPrice(totalPrice())}</span>
                             </div>
                             <div className="flex justify-between text-white/60 font-bold text-[10px] md:text-xs capitalize tracking-widest">
                                 <span>Shipping Fees</span>
@@ -118,8 +120,8 @@ export default function CartPage() {
                             </div>
                             <Separator className="bg-white/10 my-4 md:my-6" />
                             <div className="flex justify-between text-base md:text-lg font-black italic">
-                                <span className="capitalize tracking-tighter">Total</span>
-                                <span className="text-primary tracking-tighter">₹{totalPrice().toLocaleString()}</span>
+                                <span>Total</span>
+                                <span className="text-primary tracking-tighter">{formatPrice(totalPrice())}</span>
                             </div>
 
                             <Link href="/checkout" className="block mt-8 md:mt-10">

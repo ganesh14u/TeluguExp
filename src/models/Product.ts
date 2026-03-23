@@ -6,6 +6,7 @@ const ReviewSchema = new Schema(
         userName: String,
         rating: { type: Number, required: true, min: 1, max: 5 },
         comment: String,
+        isApproved: { type: Boolean, default: false },
     },
     { timestamps: true }
 );

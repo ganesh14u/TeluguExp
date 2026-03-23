@@ -10,10 +10,12 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function CheckoutPage() {
     const { items, totalPrice, clearCart } = useCart();
     const { data: session } = useSession();
+    const { formatPrice, convertPrice, selectedCountry } = useCurrency();
     const [step, setStep] = useState(1);
     const router = useRouter();
     const [loading, setLoading] = useState(true);
@@ -218,7 +220,7 @@ export default function CheckoutPage() {
             const razorpayOrderRes = await fetch("/api/razorpay/order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount: finalTotal }),
+                body: JSON.stringify({ amount: convertPrice(finalTotal), currency: selectedCountry.currency }),
             });
 
             const razorpayOrder = await razorpayOrderRes.json();
@@ -505,7 +507,7 @@ export default function CheckoutPage() {
                                         <span className="font-black capitalize text-[10px] md:text-xs tracking-widest text-white/80 italic line-clamp-1">{item.name}</span>
                                         <span className="text-white/40 font-black text-[8px] md:text-[9px] capitalize tracking-widest mt-1">QTY: {item.quantity}</span>
                                     </div>
-                                    <span className="font-black text-primary italic text-base md:text-lg tracking-tighter shrink-0">₹{((item.discountPrice || item.price) * item.quantity).toLocaleString()}</span>
+                                    <span className="font-black text-primary italic text-base md:text-lg tracking-tighter shrink-0">{formatPrice(item.discountPrice || item.price, item.quantity)}</span>
                                 </div>
                             ))}
                         </div>
@@ -541,7 +543,7 @@ export default function CheckoutPage() {
                         {appliedCoupon && (
                             <div className="flex justify-between items-center text-sm font-bold text-green-400 mb-2 relative z-10">
                                 <span className="capitalize tracking-widest text-[10px]">Discount</span>
-                                <span className="text-base">-₹{discount.toLocaleString()}</span>
+                                <span className="text-base">-{formatPrice(discount)}</span>
                             </div>
                         )}
 
@@ -550,7 +552,7 @@ export default function CheckoutPage() {
                                 <span className="italic capitalize tracking-tighter text-white/40 text-[10px] md:text-xs mb-1">Final Amount</span>
                                 <span className="italic capitalize tracking-tighter text-white/80 text-lg md:text-xl">Total To Pay</span>
                             </div>
-                            <span className="text-primary tracking-tighter italic text-base md:text-lg">₹{(totalPrice() - discount).toLocaleString()}</span>
+                            <span className="text-primary tracking-tighter italic text-base md:text-lg">{formatPrice(totalPrice() - discount)}</span>
                         </div>
                         <Button onClick={handlePayment} className="w-full h-14 md:h-16 rounded-xl md:rounded-2xl text-base md:text-lg font-black capitalize italic tracking-widest shadow-xl shadow-primary/40 hover:scale-[1.02] transition-transform relative z-10">
                             Complete Order

@@ -7,6 +7,7 @@ import CartSync from "@/components/CartSync";
 
 import { Providers } from "@/components/shared/Providers";
 import { UserNotificationProvider } from "@/context/UserNotificationContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 import ScrollToTop from "@/components/shared/ScrollToTop";
 
 const geistSans = Geist({
@@ -53,13 +54,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+        <CurrencyProvider>
         <Providers>
           <UserNotificationProvider> {/* Added UserNotificationProvider */}
             <ScrollToTop />
             <CartSync />
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen pb-16 md:pb-0 pb-safe">
               <Header />
               <main className="grow">
                 {children}
@@ -68,6 +70,7 @@ export default function RootLayout({
             </div>
           </UserNotificationProvider> {/* Closing tag for UserNotificationProvider */}
         </Providers>
+        </CurrencyProvider>
       </body>
     </html>
   );

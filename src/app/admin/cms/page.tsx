@@ -76,8 +76,8 @@ export default function AdminCMSPage() {
     );
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-center">
+        <div className="space-y-8 p-2">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h1 className="text-xl font-black tracking-tighter capitalize italic">Content <span className="text-primary NOT-italic">Nucleus</span></h1>
                     <p className="text-muted-foreground font-medium">Control the visual output of your laboratory storefront globally.</p>
@@ -93,14 +93,14 @@ export default function AdminCMSPage() {
             </div>
 
             <Tabs defaultValue="homepage" className="space-y-6">
-                <TabsList className="bg-muted/50 p-1 rounded-2xl border-none h-14 w-fit">
-                    <TabsTrigger value="homepage" className="rounded-xl px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg">
+                <TabsList className="bg-muted/50 p-1 rounded-2xl border-none h-auto sm:h-auto overflow-x-auto w-full md:w-fit flex-row justify-start flex-nowrap scrollbar-none snap-x snap-mandatory">
+                    <TabsTrigger value="homepage" className="rounded-xl shrink-0 px-6 sm:px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg py-3">
                         <Home className="h-4 w-4" /> Homepage
                     </TabsTrigger>
-                    <TabsTrigger value="pages" className="rounded-xl px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg">
+                    <TabsTrigger value="pages" className="rounded-xl shrink-0 px-6 sm:px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg py-3">
                         <FileText className="h-4 w-4" /> Static Pages
                     </TabsTrigger>
-                    <TabsTrigger value="media" className="rounded-xl px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg">
+                    <TabsTrigger value="media" className="rounded-xl shrink-0 px-6 sm:px-8 font-black gap-2 data-[state=active]:bg-background data-[state=active]:shadow-lg py-3">
                         <ImageIcon className="h-4 w-4" /> Asset Bank
                     </TabsTrigger>
                 </TabsList>
@@ -114,7 +114,7 @@ export default function AdminCMSPage() {
                                 </CardTitle>
                                 <CardDescription className="font-bold">Main branding text on the landing page.</CardDescription>
                             </CardHeader>
-                            <CardContent className="space-y-6 p-8">
+                            <CardContent className="space-y-6 p-6 md:p-8">
                                 <div className="space-y-2">
                                     <label className="text-[10px] font-black capitalize tracking-widest text-muted-foreground ml-2">Main Headline</label>
                                     <Input
@@ -143,8 +143,8 @@ export default function AdminCMSPage() {
                                 </CardTitle>
                                 <CardDescription className="font-bold">Toggle seasonal alerts and banners.</CardDescription>
                             </CardHeader>
-                            <CardContent className="grid grid-cols-1 gap-6 p-8">
-                                <div className="flex items-center justify-between p-6 rounded-3xl bg-muted/20 border-2 border-dashed border-primary/20">
+                            <CardContent className="grid grid-cols-1 gap-6 p-6 md:p-8">
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 sm:p-6 rounded-3xl bg-muted/20 border-2 border-dashed border-primary/20 gap-4 sm:gap-0">
                                     <div className="space-y-1">
                                         <p className="font-black capitalize text-sm">Sale Banner</p>
                                         <p className="text-xs text-muted-foreground font-bold italic">Currently: {content.showPromoBanner ? 'ACTIVE' : 'OFFLINE'}</p>

@@ -8,9 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export default function OrdersPage() {
     const { data: session } = useSession();
+    const { formatPrice } = useCurrency();
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +50,7 @@ export default function OrdersPage() {
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Total Price</p>
-                                            <p className="text-sm font-black text-primary">₹{order.totalPrice.toLocaleString()}</p>
+                                            <p className="text-sm font-black text-primary">{formatPrice(order.totalPrice)}</p>
                                         </div>
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black capitalize tracking-widest text-muted-foreground">Order ID</p>
@@ -75,7 +77,7 @@ export default function OrdersPage() {
                                                 <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="font-bold text-sm">₹{item.price.toLocaleString()}</p>
+                                                <p className="font-bold text-sm">{formatPrice(item.price)}</p>
                                             </div>
                                         </div>
                                     ))}

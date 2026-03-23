@@ -123,3 +123,86 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Cart Button Animation */
+.cart-btn-anim {
+	position: relative;
+	width: 100%;
+	height: 48px;
+	border: 0;
+	border-radius: 12px;
+	background-color: #020617; /* slate-950 */
+	outline: none;
+	cursor: pointer;
+	color: #fff;
+	transition: .3s ease-in-out;
+	overflow: hidden;
+}
+.cart-btn-anim:hover {
+	background-color: var(--color-primary);
+}
+.cart-btn-anim:active {
+	transform: scale(.95);
+}
+.cart-btn-anim .cart-icon {
+	position: absolute;
+	z-index: 2;
+	top: 50%;
+	left: -10%;
+	transform: translate(-50%,-50%);
+}
+.cart-btn-anim .box-icon {
+	position: absolute;
+	z-index: 3;
+	top: -20%;
+	left: 52%;
+	transform: translate(-50%,-50%);
+}
+.cart-btn-anim span {
+	position: absolute;
+	z-index: 3;
+	left: 50%;
+	top: 50%;
+	color: #fff;
+	font-weight: 900;
+	font-size: 14px;
+	text-transform: capitalize;
+	letter-spacing: 0.1em;
+	transform: translate(-50%,-50%);
+}
+.cart-btn-anim span.add-to-cart {
+	opacity: 1;
+}
+.cart-btn-anim span.added {
+	opacity: 0;
+}
+.cart-btn-anim.clicked .cart-icon {
+	animation: cart-anim 1.5s ease-in-out forwards;
+}
+.cart-btn-anim.clicked .box-icon {
+	animation: box-anim 1.5s ease-in-out forwards;
+}
+.cart-btn-anim.clicked span.add-to-cart {
+	animation: txt1-anim 1.5s ease-in-out forwards;
+}
+.cart-btn-anim.clicked span.added {
+	animation: txt2-anim 1.5s ease-in-out forwards;
+}
+@keyframes cart-anim {
+	0% { left: -10%; }
+	40%, 60% { left: 50%; }
+	100% { left: 110%; }
+}
+@keyframes box-anim {
+	0%, 40% { top: -20%; }
+	60% { top: 40%; left: 52%; }
+	100% { top: 40%; left: 112%; }
+}
+@keyframes txt1-anim {
+	0% { opacity: 1; }
+	20%, 100% { opacity: 0; }
+}
+@keyframes txt2-anim {
+	0%, 80% { opacity: 0; }
+	100% { opacity: 1; }
+}
